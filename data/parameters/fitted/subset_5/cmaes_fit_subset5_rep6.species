@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Species>
+  <Provenance>
+    <Name>Fagus_sylvatica</Name>
+    <Leaf Model="9">
+      <t0>-111.379096366712</t0>
+      <Vb>11.045652181741</Vb>
+      <d>-0.38362288652848</d>
+      <e>5.39056427812527</e>
+      <Ccrit>149.479244473313</Ccrit>
+      <Fcrit>43.5866768002298</Fcrit>
+    </Leaf>
+    <Flower Model="9">
+      <t0>-111.379096366712</t0>
+      <Vb>11.045652181741</Vb>
+      <d>-0.38362288652848</d>
+      <e>5.39056427812527</e>
+      <Ccrit>149.479244473313</Ccrit>
+      <Fcrit>50.9464058248387</Fcrit>
+    </Flower>
+    <FruitMaturation Model="1">
+      <aa>-1.99453860896214</aa>
+      <bb>17.5379886749827</bb>
+      <Fcrit>1.19546327921516</Fcrit>
+      <Top>6.56069809529881</Top>
+      <matmoy>21.0279219341215</matmoy>
+      <sigma>1.70566032399773</sigma>
+      <pfe50>0.24362138450554</pfe50>
+      <photosType>2</photosType>
+    </FruitMaturation>
+    <Senescence Model="6">
+      <Pb>3.55673719379563</Pb>
+      <Tb>9.97994753552663</Tb>
+      <alpha>1.32450093816973</alpha>
+      <beta>0.955748096154748</beta>
+      <Scrit>97.3001713191969</Scrit>
+      <sigmaSen>3.52230883642357</sigmaSen>
+    </Senescence>
+    <CompoundBud>2</CompoundBud>
+    <LeafHabit>1</LeafHabit>
+    <Tdeath>-30</Tdeath>
+    <Frost>
+      <FHfrmax1>-5.29999414003201</FHfrmax1>
+      <FHfrmax2>-13.486981417233</FHfrmax2>
+      <FHminfe>-9.62086987469015</FHminfe>
+      <FHminfl>-9.55257805361582</FHminfl>
+      <Te1>17.9205191569395</Te1>
+      <Te2>-19.9605441428765</Te2>
+      <FHtfemax>-7.96218515381357</FHtfemax>
+      <FHtflmax>-13.3318178537446</FHtflmax>
+      <FHpfemax>-13.2030252809742</FHpfemax>
+      <FHpflmax>-19.1935591945509</FHpflmax>
+      <NL1>10.0083579574507</NL1>
+      <NL2>7.45477344274592</NL2>
+    </Frost>
+    <Drought Model="6">
+      <ppextremelow>405.58806752944</ppextremelow>
+      <pplow>742.868237333464</pplow>
+      <pphigh>2726.5468701684</pphigh>
+      <ppextremehigh>3788.79530843077</ppextremehigh>
+    </Drought>
+  </Provenance>
+</Species>

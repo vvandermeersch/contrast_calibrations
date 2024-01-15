@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Species>
+    <Provenance>
+        <Name>Fagus_sylvatica_Global</Name><!-- Julie Gauzere Evolution Letters 2019, parameter e in leaf and flower model modified by V.V. -->
+        <Leaf Model="9"><!-- UniChill model ajusted on RENECOFOR data JG Fev 2016 -->
+			<t0>-62</t0>
+			<Vb>12.0</Vb> <!-- prev 13 -->
+            <d>-0.08</d>
+            <e>13.0</e> 
+            <Ccrit>73.7</Ccrit>
+            <Fcrit>37.3</Fcrit>
+        </Leaf>
+        <Flower Model="9"><!-- deltaF =3 - JG 04/2016 -->
+			<t0>-62</t0>
+			<Vb>12.0</Vb>  <!-- prev 13 -->
+            <d>-0.08</d>
+            <e>13.0</e> 
+            <Ccrit>73.7</Ccrit>
+            <Fcrit>40.3</Fcrit>
+        </Flower>
+         <FruitMaturation Model="1"><!-- Manu Gritti donnees Vosges-->
+	   	    <aa>-0.2</aa>
+            <bb>14.7297</bb>
+            <Fcrit>9</Fcrit>
+            <Top>5.002</Top>
+            <matmoy>100</matmoy>
+            <sigma>3.7</sigma>
+            <pfe50>0.6</pfe50>
+            <photosType>2</photosType>
+       </FruitMaturation>
+       <Senescence Model="6"><!-- Anne fit Aug 2012 on European data -->
+            <Pb>13.38</Pb>
+            <Tb>29.95</Tb>
+            <alpha>1</alpha>
+            <beta>2</beta>
+            <Scrit>570.6</Scrit>
+            <sigmaSen>0</sigmaSen>
+        </Senescence>
+       <CompoundBud>2</CompoundBud>
+        <LeafHabit>1</LeafHabit>
+        <Tdeath>-30</Tdeath>
+        <Frost>
+            <FHfrmax1>-6</FHfrmax1>
+            <FHfrmax2>-20</FHfrmax2>
+            <FHminfe>-5.3</FHminfe>
+            <FHminfl>-5.3</FHminfl>
+            <Te1>10</Te1>
+            <Te2>-16</Te2>
+            <FHtfemax>-8</FHtfemax>
+            <FHtflmax>-8</FHtflmax>
+            <FHpfemax>-12</FHpfemax>
+            <FHpflmax>-12</FHpflmax>
+            <NL1>10</NL1>
+            <NL2>16</NL2>
+        </Frost>
+        <Drought Model="6">
+            <ppextremelow>450</ppextremelow><!-- 1% quantile -->
+            <pplow>490</pplow><!-- 5% quantile -->
+            <pphigh>3000</pphigh><!-- 95% quantile -->
+			<ppextremehigh>3500</ppextremehigh><!-- 99% -->
+        </Drought>
+        <!--<Evapotranspiration Model="1"/>-->
+    </Provenance>
+</Species>
+

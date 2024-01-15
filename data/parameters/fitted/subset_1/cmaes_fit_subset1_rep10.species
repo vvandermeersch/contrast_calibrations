@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Species>
+  <Provenance>
+    <Name>Fagus_sylvatica</Name>
+    <Leaf Model="9">
+      <t0>-87.6196182300582</t0>
+      <Vb>-0.447603739185873</Vb>
+      <d>-1.43760846068362</d>
+      <e>5.27111302147284</e>
+      <Ccrit>1.3862454747269</Ccrit>
+      <Fcrit>49.0212372879567</Fcrit>
+    </Leaf>
+    <Flower Model="9">
+      <t0>-87.6196182300582</t0>
+      <Vb>-0.447603739185873</Vb>
+      <d>-1.43760846068362</d>
+      <e>5.27111302147284</e>
+      <Ccrit>1.3862454747269</Ccrit>
+      <Fcrit>118.750896052913</Fcrit>
+    </Flower>
+    <FruitMaturation Model="1">
+      <aa>-1.31739299842708</aa>
+      <bb>13.1016206984827</bb>
+      <Fcrit>9.9159810641538</Fcrit>
+      <Top>17.0950852864525</Top>
+      <matmoy>16.6374620759898</matmoy>
+      <sigma>7.21733387395081</sigma>
+      <pfe50>0.334623568907903</pfe50>
+      <photosType>2</photosType>
+    </FruitMaturation>
+    <Senescence Model="6">
+      <Pb>14.5434518663149</Pb>
+      <Tb>9.44151526917931</Tb>
+      <alpha>1.60526603497789</alpha>
+      <beta>0.958792977507897</beta>
+      <Scrit>53.9823695477959</Scrit>
+      <sigmaSen>5.45480831641532</sigmaSen>
+    </Senescence>
+    <CompoundBud>2</CompoundBud>
+    <LeafHabit>1</LeafHabit>
+    <Tdeath>-30</Tdeath>
+    <Frost>
+      <FHfrmax1>-8.86244820586115</FHfrmax1>
+      <FHfrmax2>-20.2491453055956</FHfrmax2>
+      <FHminfe>-5.48256691712784</FHminfe>
+      <FHminfl>-8.1507501890201</FHminfl>
+      <Te1>8.18923111212759</Te1>
+      <Te2>-10.0792552578505</Te2>
+      <FHtfemax>-9.49728137815993</FHtfemax>
+      <FHtflmax>-8.01501889931553</FHtflmax>
+      <FHpfemax>-18.1551675871489</FHpfemax>
+      <FHpflmax>-16.9625137526151</FHpflmax>
+      <NL1>3.20606614615795</NL1>
+      <NL2>13.3452325395448</NL2>
+    </Frost>
+    <Drought Model="6">
+      <ppextremelow>547.388508169185</ppextremelow>
+      <pplow>696.55513566161</pplow>
+      <pphigh>1762.1829229725</pphigh>
+      <ppextremehigh>3379.47343867077</ppextremehigh>
+    </Drought>
+  </Provenance>
+</Species>

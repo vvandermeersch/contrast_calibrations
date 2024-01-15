@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Species>
+  <Provenance>
+    <Name>Fagus_sylvatica</Name>
+    <Leaf Model="9">
+      <t0>-113.140999368746</t0>
+      <Vb>0.131569764396056</Vb>
+      <d>-1.03860874011592</d>
+      <e>12.9669026477954</e>
+      <Ccrit>1.33054187551596</Ccrit>
+      <Fcrit>15.6928324165287</Fcrit>
+    </Leaf>
+    <Flower Model="9">
+      <t0>-113.140999368746</t0>
+      <Vb>0.131569764396056</Vb>
+      <d>-1.03860874011592</d>
+      <e>12.9669026477954</e>
+      <Ccrit>1.33054187551596</Ccrit>
+      <Fcrit>25.8203584217203</Fcrit>
+    </Flower>
+    <FruitMaturation Model="1">
+      <aa>-1.74901154334888</aa>
+      <bb>14.5218492154355</bb>
+      <Fcrit>4.92565529858336</Fcrit>
+      <Top>8.8969491812072</Top>
+      <matmoy>16.0044108894839</matmoy>
+      <sigma>3.30611804044782</sigma>
+      <pfe50>0.604687849333212</pfe50>
+      <photosType>2</photosType>
+    </FruitMaturation>
+    <Senescence Model="6">
+      <Pb>5.52308000351294</Pb>
+      <Tb>8.76056501768291</Tb>
+      <alpha>0.393211535902069</alpha>
+      <beta>1.68092303405267</beta>
+      <Scrit>48.8831030672444</Scrit>
+      <sigmaSen>7.67202939766027</sigmaSen>
+    </Senescence>
+    <CompoundBud>2</CompoundBud>
+    <LeafHabit>1</LeafHabit>
+    <Tdeath>-30</Tdeath>
+    <Frost>
+      <FHfrmax1>-8.59051917971536</FHfrmax1>
+      <FHfrmax2>-23.5186122774594</FHfrmax2>
+      <FHminfe>-6.78975969152445</FHminfe>
+      <FHminfl>-2.1724811514262</FHminfl>
+      <Te1>8.95182630479278</Te1>
+      <Te2>-11.9245346388979</Te2>
+      <FHtfemax>-11.5338377196678</FHtfemax>
+      <FHtflmax>-13.2735003502115</FHtflmax>
+      <FHpfemax>-17.3112068207313</FHpfemax>
+      <FHpflmax>-16.3738828430679</FHpflmax>
+      <NL1>10.2730854356625</NL1>
+      <NL2>4.14910742897861</NL2>
+    </Frost>
+    <Drought Model="6">
+      <ppextremelow>403.355435947597</ppextremelow>
+      <pplow>849.774596599533</pplow>
+      <pphigh>2381.23285596883</pphigh>
+      <ppextremehigh>3394.18897441864</ppextremehigh>
+    </Drought>
+  </Provenance>
+</Species>

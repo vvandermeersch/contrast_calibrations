@@ -1,5 +1,5 @@
 
-# Explore difference across calibrations
+# Explore difference across calibrations, historical climates
 
 wd <- "C:/Users/vandermeersch/Documents/CEFE/projects/contrast_calibrations"
 library(data.table)

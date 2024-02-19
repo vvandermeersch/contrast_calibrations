@@ -7,7 +7,7 @@ library(tidyterra)
 source(file.path(wd, "scripts", "functions", "read_mean_outputvalue.R"))
 
 
-gcms <- c("GFDL-ESM4", "MPI-ESM1-2-HR", "MRI-ESM2-0")
+gcms <- c("GFDL-ESM4", "IPSL-CM6A-LR", "MPI-ESM1-2-HR", "MRI-ESM2-0", "UKESM1-0-LL")
 calibrations <- c("subset4_rep1", "subset5_rep4", "subset3_rep8", "subset1_rep7")
 era5land_thresholds <- c(0.785, 0.674, 0.663, 0.803)
 

@@ -54,7 +54,7 @@ contributions <- as.data.frame(do.call(rbind, future_lapply(yr_windows, function
   })))
   return(ctrb)
 })))
-
+plan(sequential);gc()
 
 contributions %>%
   group_by(cal, ssp, index) %>%

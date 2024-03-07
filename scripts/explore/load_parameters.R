@@ -29,7 +29,7 @@ best_values <- as.numeric(read_species_file("D:/calibrations/phenofit/fagus_sylv
 species_parameters <- lapply(species_files, function(x){
   species_values <- data.frame(value = read_species_file(x)) %>% 
     mutate_all(as.numeric)
-  subset <- strsplit(x, "/")[[1]][8]
+  subset <- strsplit(strsplit(x, "/")[[1]][9], "_")[[1]][3]
   rep <- strsplit(strsplit(strsplit(x, "/")[[1]][9], "_")[[1]][4], "[.]")[[1]][1]
   species_values$rep <- paste0(subset, "_", rep)
   species_values$var <- rownames(species_values)
@@ -46,23 +46,23 @@ species_parameters <- na.omit(species_parameters) #remove fixed parameters (boun
 leaf_parameters <- species_parameters %>%
   dplyr::filter(grepl("leaf", species_parameters$var))
 leaf_parameters$var <- factor(leaf_parameters$var, 
-                                 labels = c('leaf1' = parse(text=TeX('$t_0$')),
-                                            'leaf2' = parse(text=TeX('$T_b$')),
-                                            'leaf3' = parse(text=TeX('$d_T$')),
-                                            'leaf4' = parse(text=TeX('$T_{50}$')),
-                                            'leaf5' = parse(text=TeX('$C_{crit}$')),
-                                            'leaf6' = parse(text=TeX('$F_{crit}$'))
+                                 labels = c('leaf1' = parse(text=TeX('$t^{leaf}_0$')),
+                                            'leaf2' = parse(text=TeX('$T^{leaf}_b$')),
+                                            'leaf3' = parse(text=TeX('$d^{leaf}_T$')),
+                                            'leaf4' = parse(text=TeX('$T^{leaf}_{50}$')),
+                                            'leaf5' = parse(text=TeX('$C^{leaf}_{crit}$')),
+                                            'leaf6' = parse(text=TeX('$F^{leaf}_{crit}$'))
                                             ))
 
 flower_parameters <- species_parameters %>%
   dplyr::filter(grepl("flower", species_parameters$var))
 flower_parameters$var <- factor(flower_parameters$var, 
-                              labels = c('flower1' = parse(text=TeX('$t_0$')),
-                                         'flower2' = parse(text=TeX('$T_b$')),
-                                         'flower3' = parse(text=TeX('$d_T$')),
-                                         'flower4' = parse(text=TeX('$T_{50}$')),
-                                         'flower5' = parse(text=TeX('$C_{crit}$')),
-                                         'flower6' = parse(text=TeX('$F_{crit}$'))
+                              labels = c('flower1' = parse(text=TeX('$t^{flower}_0$')),
+                                         'flower2' = parse(text=TeX('$T^{flower}_b$')),
+                                         'flower3' = parse(text=TeX('$d^{flower}_T$')),
+                                         'flower4' = parse(text=TeX('$T^{flower}_{50}$')),
+                                         'flower5' = parse(text=TeX('$C^{flower}_{crit}$')),
+                                         'flower6' = parse(text=TeX('$F^{flower}_{crit}$'))
                               ))
 
 fruit_parameters <- species_parameters %>%
@@ -70,10 +70,10 @@ fruit_parameters <- species_parameters %>%
 fruit_parameters$var <- factor(fruit_parameters$var, 
                               labels = c('fruit1' = parse(text=TeX('$aa$')),
                                          'fruit2' = parse(text=TeX('$bb$')),
-                                         'fruit3' = parse(text=TeX('$F_{crit}$')),
+                                         'fruit3' = parse(text=TeX('$F^{fruit}_{crit}$')),
                                          'fruit4' = parse(text=TeX('$T_{opt}$')),
                                          'fruit5' = parse(text=TeX('$Mat_{moy}$')),
-                                         'fruit6' = parse(text=TeX('$\\sigma$')),
+                                         'fruit6' = parse(text=TeX('$\\sigma^{fruit}$')),
                                          'fruit7' = parse(text=TeX('$pfe_{50}$'))
                               ))
 
@@ -85,7 +85,7 @@ senescence_parameters$var <- factor(senescence_parameters$var,
                                           'senes3' = parse(text=TeX('$\\alpha$')),
                                           'senes4' = parse(text=TeX('$\\beta$')),
                                           'senes5' = parse(text=TeX('$S_{crit}$')),
-                                          'senes6' = parse(text=TeX('$\\sigma$'))
+                                          'senes6' = parse(text=TeX('$\\sigma^{senes}$'))
                                ))
 
 frost_parameters <- species_parameters %>%

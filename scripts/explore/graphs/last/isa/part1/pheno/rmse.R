@@ -1,5 +1,7 @@
 library(data.table)
 library(future.apply)
+library(ggpplot2)
+library(ModelMetrics)
 
 # Simulations against data
 wd <- "C:/Users/vandermeersch/Documents/CEFE/projects/contrast_calibrations"
@@ -10,7 +12,7 @@ species <- "fagus_sylvatica"
 
 models <- c("expert", paste0("subset",rep(1:10, each = 10),"_rep", 1:10))
 
-plan(multisession, workers = 10)
+plan(multisession, workers = 34)
 leafout_simulations <- future_lapply(models, function(m){
   
   leafout_m <- data.frame()
@@ -49,12 +51,92 @@ leafout_simulations <- future_lapply(models, function(m){
 plan(sequential); gc()
 leafout_simulations2 <- as.data.frame(do.call(rbind, leafout_simulations))
 
+clusters <- readRDS(file.path(wd, "data", "metrics", "niv2_clusters.rds"))
+
 leafout_simulations2 %>%
-  group_by(mod, stade) %>%
-  reframe(rmse = rmse(sim_doy, mean_doy))
+  left_join(clusters, join_by(mod)) %>%
+  group_by(clust, mod, stade, year) %>%
+  reframe(rmse = rmse(sim_doy, mean_doy)) %>%
+  mutate(mod = reorder(mod, rmse, median)) %>% 
+  ggplot() +
+  facet_wrap(~ stade, scales = "free_y") +
+  geom_boxplot(aes(x = mod, y = rmse, color = ifelse(mod == 'expert', 0, clust)),
+               outlier.size = 0.2) +
+  theme_minimal() +
+  labs(x = "", y = "RMSE (day)") +
+  theme(axis.text.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.major.x = element_blank(), legend.position = "none") +
+  scale_color_manual(values = c("black", "#577590", "#43AA8B", "#ac92eb", '#F9C74F', "#F9844A"),
+                     breaks = c("0", "1_1", "1_2", "3_1", "2_1", "2_2")) +
+  labs(title = "Yearly RMSE on leafout day (order by median RMSE)")
 
+test <- leafout_simulations2 %>%
+  left_join(clusters, join_by(mod)) %>%
+  dplyr::filter(stade != 10) %>%
+  group_by(lat, lon, clust, mod, year) %>%
+  reframe(rmse = rmse(sim_doy, mean_doy)) %>%
+  mutate(mod = reorder(mod, rmse, median))
 
+test %>%
+  ggplot() +
+  geom_boxplot(aes(x = mod, y = rmse, color = ifelse(mod == 'expert', 0, clust)),
+               outlier.shape = NA) +
+  theme_minimal() +
+  labs(x = "", y = "RMSE (day)") +
+  theme(axis.text.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.major.x = element_blank(), legend.position = "none") +
+  scale_color_manual(values = c("black", "#577590", "#43AA8B", "#ac92eb", '#F9C74F', "#F9844A"),
+                     breaks = c("0", "1_1", "1_2", "3_1", "2_1", "2_2")) +
+  labs(title = "Yearly RMSE on leafout day (order by median RMSE)") +
+  ylim(0,100)
 
+library(ggdist)
+
+test$clust <- ifelse(test$mod == 'expert', 0, test$clust)
+median_rmse <- test %>%
+  group_by(clust) %>%
+  summarise(median_rmse = median(rmse)) %>%
+  dplyr::filter(clust != "3_1")
+
+cal_sel <- c("subset3_rep1","subset6_rep4","subset4_rep3","subset6_rep2","subset6_rep9","subset3_rep7","expert","subset6_rep8","subset4_rep10",
+             "subset1_rep4","subset2_rep1")
+
+ridgeplot <- test %>%
+  mutate(mod = reorder(mod, rmse, median, decreasing = TRUE)) %>% 
+  dplyr::select(mod %in% cal_sel) %>%
+  ggplot(aes(mod, rmse, 
+             fill = clust,
+             color = clust,
+             alpha = after_stat(cut_cdf_qi(cdf, .width = c(0.66, 0.95, 1))))) +
+  stat_halfeye() +
+  # stat_interval() +
+  # stat_summary(geom = "point", fun = median) +
+  scale_x_discrete(labels = toupper) +
+  scale_y_continuous(breaks = seq(0, 200, 15)) +
+  # scale_color_manual(values = MetBrewer::met.brewer("Hokusai3")) +
+  coord_flip(ylim = c(0, 90), clip = "off") +
+  theme_minimal() +
+  theme(
+    panel.grid = element_blank(),
+    panel.grid.major.x = element_line(linewidth = 0.1, color = "grey75"),
+    plot.title.position = "plot",
+    plot.caption.position = "plot",
+    axis.text.y = element_blank(),
+    plot.margin = margin(4, 4, 4, 4),
+    legend.position = 'none'
+  ) +
+  labs(y = "RMSE (day)", x = "") +
+  geom_hline(data = median_rmse, aes(yintercept = median_rmse, color = clust), lty = "dashed") +
+  scale_fill_manual(values = c("grey30", "#577590", "#43AA8B", "#ac92eb", '#F9C74F', "#F9844A"),
+                     breaks = c("0", "1_1", "1_2", "3_1", "2_1", "2_2")) +
+  scale_color_manual(values = c("grey30", "#577590", "#43AA8B", "#ac92eb", '#F9C74F', "#F9844A"),
+                    breaks = c("0", "1_1", "1_2", "3_1", "2_1", "2_2")) +
+  scale_alpha_manual(values = c(0.7, 0.5, 0.3))
+
+ggsave(ridgeplot, filename = file.path(wd, "scripts/explore/graphs/last/isa/part1/pheno", "ridgeplot_rmse_10bests.pdf"),
+       width = 210, height = 297, units = "mm")
 
 
 

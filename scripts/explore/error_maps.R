@@ -7,11 +7,12 @@ library(tidyterra)
 library(cowplot)
 source(file.path(wd, "scripts", "functions", "read_mean_outputvalue.R"))
 
-calibrations <- paste0("subset",rep(1:10, each = 10),"_rep", 1:10)
+# calibrations <- paste0("subset",rep(1:10, each = 10),"_rep", 1:10)
+calibrations <- paste0("subset",rep(1:1, each = 5),"_rep", 1:5)
 fit_dir <- file.path(wd, "data", "fit")
 
-species <- "fagus_sylvatica"
-occ_path <- "D:/species/processed/fagus_sylvatica/fagus_sylvatica_presabs.rds"
+species <- "quercus_pubescens"
+occ_path <- "D:/species/processed/quercus_pubescens/quercus_pubescens_presabs.rds"
 
 fitted_rast <- sum(rast(lapply(calibrations, function(c){
   sim_dir <- file.path(wd, "data", "simulations", "historical", "ERA5-LAND")
@@ -48,7 +49,7 @@ fitted_map <- ggplot() +
         legend.margin=margin(t = 0.05, b=0.05, r = 0.3, l = 0.3, unit='cm'),
         legend.position=c(.7,.9),
         legend.background = element_rect(colour="black", fill="white", linewidth = 0.2)) +
-  coord_cartesian(expand = FALSE)
+  coord_cartesian(expand = FALSE, xlim = c(-10.35, 33.45), ylim = c(34.65, 70.55))
 
 
 expert_rast <- sum(rast(lapply("expert", function(c){
@@ -83,13 +84,13 @@ expert_map <- ggplot() +
         legend.title = element_blank(), legend.text = element_text(size = 8),
         panel.border = element_rect(colour = "black", fill=NA, size=0.2),
         plot.margin = unit(c(2,2,2,2), units = 'mm')) +
-  coord_cartesian(expand = FALSE)
+  coord_cartesian(expand = FALSE, xlim = c(-10.35, 33.45), ylim = c(34.65, 70.55))
 
 error_maps <- 
   plot_grid(expert_map + theme(legend.position = "none"), fitted_map, 
             ncol = 2, rel_widths = c(1,1), labels = c("a.", "b."), label_size = 10, hjust = -2, vjust = 3)
 
-ggsave(error_maps, filename = file.path(wd, "scripts", "explore", "graphs", "last", "error_maps.pdf"),
+ggsave(error_maps, filename = file.path(wd, "scripts", "explore", "graphs", "last", "error_maps_qpubes.pdf"),
        width = 180, height = 80, unit = "mm")
 
 

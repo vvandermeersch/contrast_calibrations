@@ -47,15 +47,16 @@ ggsave(filename=file.path(wd, "scripts", "explore", "graphs", "contrast_indexmap
 
 # Difference between dates
 ## Inverse calibrations
-sim_dir <- "D:/simulations/phenofit/present/fitted/fagus_sylvatica/paper_data/CMAES"
-calibrations <- c("subset4_rep1", "subset5_rep4", "subset3_rep8", "subset1_rep7", "subset7_rep5")
-variables <- c("LeafDormancyBreakDate", "LeafUnfoldingDate" ,"FloweringDate", "FruitMaturationDate", "LeafSenescenceDate")
+sim_dir <- file.path(wd, "data", "simulations", "historical", "ERA5-Land", "fagus_sylvatica")
+calibrations <- c("subset4_rep3", "subset2_rep1", "subset10_rep10")
+variables <- c("LeafDormancyBreakDate", "LeafUnfoldingDate" , "FruitMaturationDate", "LeafSenescenceDate")
 outputs <- data.frame()
 for(v in variables){
-  for(r in calibrations){
-    output <- read_mean_outputvalue(file.path(sim_dir, r), 
+  for(c in calibrations){
+    output <- read_mean_outputvalue(file.path(sim_dir, c), 
                                     years = c(1970:2000), model = "PHENOFIT", output_var = v, correct_date = TRUE)
-    output$id <- r
+    names(output) <- c("lat", "lon", "value")
+    output$id <- c
     output$var <- v
     outputs <- rbind(outputs, output)
   }
@@ -66,6 +67,7 @@ expert_outputs <- data.frame()
 for(v in variables){
   output <- read_mean_outputvalue("D:/simulations/phenofit/present/expert/fagus_sylvatica/VVanderMeersch", 
                                   years = c(1970:2000), model = "PHENOFIT", output_var = v, correct_date = TRUE)
+  names(output) <- c("lat", "lon", "value")
   output$id <- "expert"
   output$var <- v
   expert_outputs <- rbind(expert_outputs, output)

@@ -55,23 +55,33 @@ for(s in 1:nrow(species)){
 gc()
 
 
-index_clusters <- readRDS(file.path(wd, "data", "metrics", "index_cluster_calibrations.rds"))
-
-indices_df <- indices_df %>%
-  left_join(index_clusters)
-  
-indices_df$clust <- ifelse(indices_df$mod == "expert", 0, indices_df$clust)
+clusters <- readRDS(file.path(wd, "data", "metrics", "date_clusters_woSen.rds"))
 
 indices_df2 <- indices_df %>%
-  tidyr::pivot_longer(cols = c("carbsurv", "drgsurv", "leafind", "fruitind", "matind"),
-                      names_to = "var", values_to = "index")
+  left_join(clusters, join_by(mod))
+  
+indices_df2$clust <- ifelse(indices_df2$mod == "expert", 0, indices_df2$clust.5)
 
-boxplot_fagus <- ggplot(data = indices_df2) +
-  facet_grid(var ~ obs, switch = "y") +
+indices_df2$sub <- stringr::str_split(indices_df2$mod, "_", simplify = T)[, 1]
+
+indices_df2 <- indices_df2 %>%
+  tidyr::pivot_longer(cols = c("carbsurv", "drgsurv", "leafind", "fruitind", "matind"),
+                      names_to = "var", values_to = "index") %>%
+  mutate(var = factor(var, levels = c("carbsurv", "drgsurv", "leafind", "fruitind", "matind")))
+
+
+
+boxplot_fagus <- ggplot(data = indices_df2 %>% dplyr::filter(mod != "expert")) +
+  facet_wrap(~ var, scales = "free_y", shrink = TRUE, ncol = 1) +
   geom_boxplot(aes(x = paste0(clust,mod), y = index, fill = as.factor(clust), color = as.factor(clust)), outlier.shape = NA, alpha = 0.3) +
   theme_minimal() +
   theme(axis.text.x = element_blank(), panel.grid.major.x = element_blank(), axis.title = element_blank(),
-        legend.position = "none", strip.text.x = element_text(size = 11))
+        legend.position = "none", strip.text.x = element_text(size = 11)) +
+  scale_fill_manual(values = c("#ac92eb", "#4fc1e8", "#a0d568", '#ffce54', "#ed5564"),
+                    breaks = c(1, 2, 3, 4, 5)) +
+  scale_color_manual(values = c("#ac92eb", "#4fc1e8", "#a0d568", '#ffce54', "#ed5564"),
+                     breaks = c(1, 2, 3, 4, 5))
+
 ggsave(boxplot_fagus, filename = file.path(wd, "scripts", "explore", "graphs", "last", "boxplots_index.pdf"),
        height = 21, width = 29.7, units = "cm")
 

@@ -66,7 +66,7 @@ for(s in 1:nrow(species)){
 gc()
 
 
-clusters <- readRDS(file.path(wd, "data", "metrics", "frostpar_cluster_calibrations.rds"))
+clusters <- readRDS(file.path(wd, "data", "metrics", "niv2_clusters.rds"))
 fhleafmin_values <- readRDS(file.path(wd, "data", "metrics", "fhleafmin_values.rds"))
 
 dates_df2 <- dates_df %>%
@@ -74,7 +74,7 @@ dates_df2 <- dates_df %>%
   left_join(fhleafmin_values, by = c("mod"="rep")) 
 
 dates_df2$clust <- ifelse(dates_df2$mod == "expert", 0, dates_df2$clust)
-dates_df2$FHleafmin <- ifelse(dates_df2$mod == "expert", -5.3, dates_df2$FHleafmin)
+# dates_df2$FHleafmin <- ifelse(dates_df2$mod == "expert", -5.3, dates_df2$FHleafmin)
 
 dates_df2$sub <- stringr::str_split(dates_df2$mod, "_", simplify = T)[, 1]
 
@@ -83,22 +83,24 @@ dates_df2 <- dates_df2 %>%
   tidyr::pivot_longer(cols = c("dormancy_date", "ecodormancy_length", "leafout_date", "flowering_date", "maturation_date", "senescence_date"),
                       names_to = "var", values_to = "index")
 
-boxplot_fagus <- ggplot(data = dates_df2) +
-  facet_grid(var ~ obs, switch = "y", scales = "free_y", shrink = TRUE) +
-  geom_boxplot(aes(x = paste0(clust,mod), y = index, fill = as.factor(clust), color = as.factor(clust)), outlier.shape = NA, alpha = 0.3) +
+boxplot_fagus <- ggplot(data = dates_df2 %>% dplyr::filter(mod != "expert" & var != "flowering_date")) +
+  facet_wrap(~ var, switch = "y", scales = "free_y", shrink = TRUE, ncol = 1) +
+  geom_boxplot(aes(x = mod, y = index, fill = as.factor(clust), color = as.factor(clust)), outlier.shape = NA, alpha = 0.3) +
   theme_minimal() +
   theme(axis.text.x = element_blank(), panel.grid.major.x = element_blank(), axis.title = element_blank(),
-        legend.position = "none", strip.text.x = element_text(size = 11))
-ggsave(boxplot_fagus, filename = file.path(wd, "scripts", "explore", "graphs", "last", "boxplots_dates_indexclusters.pdf"),
-       height = 21, width = 29.7, units = "cm")
+        legend.position = "none", strip.text.x = element_text(size = 11)) +
+  scale_fill_manual(values = c("#ac92eb", "#4fc1e8", "#a0d568", '#ffce54', "#ed5564"),
+                    breaks = c("1_1", "1_2", "3_1", "2_1", "2_2")) +
+  scale_color_manual(values = c("#ac92eb", "#4fc1e8", "#a0d568", '#ffce54', "#ed5564"),
+                    breaks = c("1_1", "1_2", "3_1", "2_1", "2_2"))
 
 
 boxplot_leafout <- ggplot(data = dates_df2[dates_df2$var %in% c("dormancy_date", "ecodormancy_length"), ]) +
   facet_grid(var ~ obs, switch = "y", scales = "free_y", shrink = TRUE) +
-  geom_boxplot(aes(x = mod, y = index, fill = FHleafmin, color = FHleafmin), outlier.shape = NA, alpha = 0.3) +
+  geom_boxplot(aes(x = mod, y = index, fill = clust, color = clust), outlier.shape = NA, alpha = 0.3) +
   theme_minimal() +
   theme(axis.text.x = element_blank(), panel.grid.major.x = element_blank(), axis.title = element_blank(),
         legend.position = "none", strip.text.x = element_text(size = 11))
-ggsave(boxplot_leafout, filename = file.path(wd, "scripts", "explore", "graphs", "last", "boxplots_leafdates_colorFHleafmin.pdf"),
+ggsave(boxplot_leafout, filename = file.path(wd, "scripts", "explore", "graphs", "last", "boxplots_leafdates_slide.pdf"),
        height = 21, width = 29.7, units = "cm")
 

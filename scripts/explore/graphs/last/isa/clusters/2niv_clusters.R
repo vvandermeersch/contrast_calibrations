@@ -76,3 +76,25 @@ final_clusters <- dormunfold_clusters %>%
          clust = paste(clust.niv1, clust.niv2, sep = "_"))
 
 saveRDS(final_clusters, file.path(wd, "data", "metrics", "niv2_clusters.rds"))
+
+
+
+library("ggdendro")
+
+dend <- as.dendrogram(treeM)
+dend_data <- dendro_data(dend, type = "rectangle")
+
+dend_data$labels <- dend_data$labels %>%
+  left_join(final_clusters, by = c("label" = "mod"))
+
+clusters_2steps <- ggplot(dend_data$segments) + 
+  geom_segment(aes(x = x, y = y, xend = xend, yend = yend))+
+  geom_text(data = dend_data$labels, aes(x, y, label = label, col = clust),
+            hjust = 1.05, angle = 60, size = 4)+
+  ylim(-0.4, 3.2) +
+  scale_color_manual(values = c("#577590", "#43AA8B", "#ac92eb", '#F9C74F', "#F9844A"),
+                     breaks = c("1_1", "1_2", "3_1", "2_1", "2_2")) +
+  theme_void() + theme(legend.position = 'none')
+
+ggsave(clusters_2steps, filename = file.path(wd, "scripts/explore/graphs/last/isa/part1", "newclusters_2steps.pdf"),
+       width = 297, height = 210, units = "mm")

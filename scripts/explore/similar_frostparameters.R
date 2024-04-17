@@ -8,10 +8,18 @@ frost_par_sum <- frost_parameters %>%
   group_by(rep) %>%
   summarize(
     FHleafmin = value[var == "frost3"],
-    FHflowermin = value[var == "frost4"]
+    FHflowermin = value[var == "frost4"],
+    FHtfemax = value[var == "frost7"],
+    FHtflmax = value[var == "frost8"],
+    FHpfemax = value[var == "frost9"],
+    FHpflmax = value[var == "frost10"],
+    FHflmax = FHtflmax + FHpflmax,
+    FHfemax = FHtfemax + FHpfemax
   ) %>%
   ungroup()
 head(frost_par_sum)
+
+
 
 frost_pmat <- as.matrix(frost_par_sum[, 2:3])
 rownames(frost_pmat) <- unlist(frost_par_sum[, 1])

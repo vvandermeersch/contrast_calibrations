@@ -77,24 +77,33 @@ test <- leafout_simulations2 %>%
   group_by(lat, lon, clust, mod, year) %>%
   reframe(rmse = rmse(sim_doy, mean_doy)) %>%
   mutate(mod = reorder(mod, rmse, median))
+test$clust <- ifelse(test$mod == 'expert', 0, test$clust)
 
-test %>%
+boxplots <- test %>%
+  mutate(mod = reorder(mod, rmse, median, decreasing = FALSE)) %>% 
   ggplot() +
-  geom_boxplot(aes(x = mod, y = rmse, color = ifelse(mod == 'expert', 0, clust)),
-               outlier.shape = NA) +
+  geom_boxplot(aes(x = mod, y = rmse, color = clust, fill = clust),
+               outlier.shape = NA, alpha = 0.3) +
   theme_minimal() +
   labs(x = "", y = "RMSE (day)") +
   theme(axis.text.x = element_blank(),
         panel.grid.minor.x = element_blank(),
         panel.grid.major.x = element_blank(), legend.position = "none") +
-  scale_color_manual(values = c("black", "#577590", "#43AA8B", "#ac92eb", '#F9C74F', "#F9844A"),
+  scale_color_manual(values = c("grey30", "#577590", "#43AA8B", "#ac92eb", '#F9C74F', "#F9844A"),
+                     breaks = c("0", "1_1", "1_2", "3_1", "2_1", "2_2")) +
+  scale_fill_manual(values = c("grey30", "#577590", "#43AA8B", "#ac92eb", '#F9C74F', "#F9844A"),
                      breaks = c("0", "1_1", "1_2", "3_1", "2_1", "2_2")) +
   labs(title = "Yearly RMSE on leafout day (order by median RMSE)") +
-  ylim(0,100)
+  scale_y_continuous(breaks = seq(0, 200, 15), limits = c(0,90)) +
+  geom_hline(data = median_rmse, aes(yintercept = median_rmse, color = clust), 
+             lty = "dashed", linewidth = 0.7)
+  
+ggsave(boxplots, filename = file.path(wd, "scripts/explore/graphs/last/isa/part1/pheno", "boxplots_rmse_all.pdf"),
+       width = 297, height = 210, units = "mm")
+
 
 library(ggdist)
 
-test$clust <- ifelse(test$mod == 'expert', 0, test$clust)
 median_rmse <- test %>%
   group_by(clust) %>%
   summarise(median_rmse = median(rmse)) %>%
@@ -103,9 +112,9 @@ median_rmse <- test %>%
 cal_sel <- c("subset3_rep1","subset6_rep4","subset4_rep3","subset6_rep2","subset6_rep9","subset3_rep7","expert","subset6_rep8","subset4_rep10",
              "subset1_rep4","subset2_rep1")
 
-ridgeplot <- test %>%
+ridgeplots <- test %>%
   mutate(mod = reorder(mod, rmse, median, decreasing = TRUE)) %>% 
-  dplyr::select(mod %in% cal_sel) %>%
+  dplyr::filter(mod %in% cal_sel) %>%
   ggplot(aes(mod, rmse, 
              fill = clust,
              color = clust,
@@ -116,26 +125,25 @@ ridgeplot <- test %>%
   scale_x_discrete(labels = toupper) +
   scale_y_continuous(breaks = seq(0, 200, 15)) +
   # scale_color_manual(values = MetBrewer::met.brewer("Hokusai3")) +
-  coord_flip(ylim = c(0, 90), clip = "off") +
+  coord_flip(ylim = c(0, 60), clip = "on") +
   theme_minimal() +
   theme(
     panel.grid = element_blank(),
     panel.grid.major.x = element_line(linewidth = 0.1, color = "grey75"),
-    plot.title.position = "plot",
-    plot.caption.position = "plot",
     axis.text.y = element_blank(),
-    plot.margin = margin(4, 4, 4, 4),
+    plot.margin = margin(4, 4, 4, 0),
     legend.position = 'none'
   ) +
   labs(y = "RMSE (day)", x = "") +
-  geom_hline(data = median_rmse, aes(yintercept = median_rmse, color = clust), lty = "dashed") +
+  geom_hline(data = median_rmse, aes(yintercept = median_rmse, color = clust), lty = "dashed", linewidth = 0.7) +
   scale_fill_manual(values = c("grey30", "#577590", "#43AA8B", "#ac92eb", '#F9C74F', "#F9844A"),
                      breaks = c("0", "1_1", "1_2", "3_1", "2_1", "2_2")) +
   scale_color_manual(values = c("grey30", "#577590", "#43AA8B", "#ac92eb", '#F9C74F', "#F9844A"),
                     breaks = c("0", "1_1", "1_2", "3_1", "2_1", "2_2")) +
-  scale_alpha_manual(values = c(0.7, 0.5, 0.3))
+  scale_alpha_manual(values = c(0.7, 0.5, 0.3)) +
+  labs(title = "Yearly RMSE on leafout day (10 best calibrations)")
 
-ggsave(ridgeplot, filename = file.path(wd, "scripts/explore/graphs/last/isa/part1/pheno", "ridgeplot_rmse_10bests.pdf"),
+ggsave(ridgeplots, filename = file.path(wd, "scripts/explore/graphs/last/isa/part1/pheno", "ridgeplot_rmse_10bests.pdf"),
        width = 210, height = 297, units = "mm")
 
 

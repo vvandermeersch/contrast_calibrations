@@ -4,26 +4,23 @@ library(data.table)
 library(ggplot2)
 library(terra)
 library(tidyterra)
+library(dplyr)
 source(file.path(wd, "scripts", "functions", "read_mean_outputvalue.R"))
+
+library(doFuture)
 
 species <- data.frame(
   name = c("fagus_sylvatica"),
   occ_path = c("D:/species/processed/fagus_sylvatica/fagus_sylvatica_presabs.rds")
 )
 
-models <- c()
-models_fs <- c("expert", paste0("subset",rep(1:10, each = 10),"_rep", 1:10))
+models <- c("expert", paste0("subset",rep(1:10, each = 10),"_rep", 1:10))
 sim_dir <- file.path(wd, "data", "simulations", "historical", "ERA5-Land")
 
-dates_df <- data.frame()
-for(s in 1:nrow(species)){
-  
-  models_temp <- models
-  if(species[s, "name"] == "fagus_sylvatica"){
-    models_temp <- models_fs
-  }
-  
-  for(m in models_temp){
+s <- 1
+plan("multisession", workers = 6)
+
+dates_df <- foreach(m = models, .combine = rbind) %dofuture% {
     cat(paste0(m,"\n"))
     
     sim_path <- file.path(sim_dir, species[s, "name"], m)
@@ -54,16 +51,12 @@ for(s in 1:nrow(species)){
     date_abs <- mask(crop(dates, absence), absence) %>%
       as.data.frame()
     
-    dates_df <-rbind(
-      dates_df,
+    rbind(
       data.frame(mod = m, species = species[s, "name"], obs = c("presence"), date_pres),
       data.frame(mod = m, species = species[s, "name"], obs = c("absence"), date_abs))
-    gc()
-    
-  }
-  
+
 }
-gc()
+plan(sequential);gc()
 
 
 clusters <- readRDS(file.path(wd, "data", "metrics", "niv2_clusters.rds"))
@@ -89,10 +82,13 @@ boxplot_fagus <- ggplot(data = dates_df2 %>% dplyr::filter(mod != "expert" & var
   theme_minimal() +
   theme(axis.text.x = element_blank(), panel.grid.major.x = element_blank(), axis.title = element_blank(),
         legend.position = "none", strip.text.x = element_text(size = 11)) +
-  scale_fill_manual(values = c("#ac92eb", "#4fc1e8", "#a0d568", '#ffce54', "#ed5564"),
+  scale_fill_manual(values = c("#577590", "#43AA8B", "#ac92eb", '#F9C74F', "#F9844A"),
                     breaks = c("1_1", "1_2", "3_1", "2_1", "2_2")) +
-  scale_color_manual(values = c("#ac92eb", "#4fc1e8", "#a0d568", '#ffce54', "#ed5564"),
+  scale_color_manual(values = c("#577590", "#43AA8B", "#ac92eb", '#F9C74F', "#F9844A"),
                     breaks = c("1_1", "1_2", "3_1", "2_1", "2_2"))
+
+ggsave(boxplot_fagus, filename = file.path(wd, "scripts/explore/graphs/last/isa/part1", "boxplotdates_newclusters.pdf"),
+       width = 210, height = 297, units = "mm")
 
 
 boxplot_leafout <- ggplot(data = dates_df2[dates_df2$var %in% c("dormancy_date", "ecodormancy_length"), ]) +

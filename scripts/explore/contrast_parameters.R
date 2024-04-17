@@ -19,11 +19,12 @@ for(i in 1:10){
 col_Fcrit_temp <- do.call("rbind", col_Fcrit_temp) %>% dplyr::select(c(rep, col_group))
 
 # colors based on clusters
-clusters <- readRDS(file.path(wd, "data", "metrics", "date_clusters_woSen.rds")) %>%
-  mutate(rep = mod, col_group = ifelse(clust.5 %in% c(2,4,5), 2, clust.5)) %>%
+clusters <- readRDS(file.path(wd, "data", "metrics", "niv2_clusters.rds")) %>%
+  mutate(rep = mod, col_group = clust) %>%
   dplyr::select(rep, col_group)
 
-
+clusters$col_group <- factor(clusters$col_group)
+levels(clusters$col_group) <- list("1" = "1_1", "2" = "1_2", "3" = "3_1", "4" = "2_1", "5" = "2_2")
 
 plot_list <- lapply(c("leaf_flower_parameters", "senescence_parameters",
                       "fruit_parameters", "frost_parameters", "drought_parameters"), function(p){
@@ -40,12 +41,12 @@ plot_list <- lapply(c("leaf_flower_parameters", "senescence_parameters",
   parameters <- left_join(parameters, clusters)
   
   parameter_plot <- parameters %>%
-    ggplot(aes(y = value, x = 2)) +
-    geom_violin(fill = 'lightgrey', alpha= 0.2, size = 0.4, colour = 'darkgrey', width = 6) +
+    ggplot(aes(y = value, x = 3)) +
+    geom_violin(fill = 'lightgrey', alpha= 0.2, size = 0.4, colour = 'darkgrey', width = 7) +
     geom_beeswarm(
-      aes(x = col_group, fill = factor(col_group), col = factor(col_group)),
+      aes(x = as.numeric(col_group), fill = factor(col_group), col = factor(col_group)),
       alpha = 0.3, cex = 2.5, size = 0.4) +
-    geom_boxplot(aes(x = col_group, fill = factor(col_group), col = factor(col_group)), alpha= 0.2, size = 0.4) +
+    geom_boxplot(aes(x = as.numeric(col_group), fill = factor(col_group), col = factor(col_group)), alpha= 0.2, size = 0.4) +
     # scale_y_continuous(breaks = breaks_fun1) +
     geom_point(aes(y = forward, x= 0.55), fill = 'darkred', size = 1.5, alpha = 0.9, shape = 23, colour="white", stat = "unique") +
     # geom_point(data = data.frame(best = unique(data_leaf_par$best), var_name = unique(data_leaf_par$var_name)),
@@ -53,10 +54,10 @@ plot_list <- lapply(c("leaf_flower_parameters", "senescence_parameters",
     #            alpha = 0.9, shape = 23, colour="white", inherit.aes = F) +
     # scale_fill_manual(values = c("#002f61", "#004a72", "#00647e", "#007c84", "#009382", "#00aa76", "#3bbd60", "#83c846", "#bdce29", "#f4d004")) +
     # scale_color_manual(values = c("#002f61", "#004a72", "#00647e", "#007c84", "#009382", "#00aa76", "#3bbd60", "#83c846", "#bdce29", "#f4d004")) +
-    scale_fill_manual(values = c("#ac92eb", "#4fc1e8", "#a0d568", '#ffce54', "#ed5564"),
-                      breaks = c(1, 2, 3, 4, 5)) +
-    scale_color_manual(values = c("#ac92eb", "#4fc1e8", "#a0d568", '#ffce54', "#ed5564"),
-                       breaks = c(1, 2, 3, 4, 5)) + 
+    scale_fill_manual(values = c("grey30", "#577590", "#43AA8B", "#ac92eb", '#F9C74F', "#F9844A"),
+                      breaks = c("0", "1", "2", "3", "4", "5")) +
+    scale_color_manual(values = c("grey30", "#577590", "#43AA8B", "#ac92eb", '#F9C74F', "#F9844A"),
+                       breaks = c("0", "1", "2", "3", "4", "5")) +
     theme_minimal() +
     theme(axis.text.x = element_blank(),
           axis.title.x = element_blank(),
@@ -84,5 +85,5 @@ plot_list <- lapply(c("leaf_flower_parameters", "senescence_parameters",
 
 parameter_plot <- plot_grid(plotlist = plot_list, ncol = 1, align = "hv", axis = 'btlr', rel_heights = c(1,1,1,2,1))
 
-ggsave(plot = parameter_plot, file = file.path(wd, "scripts", "explore", "graphs", "last", "isa", "parameters_fsylvatica_clusterwoSen.pdf"),
-       width = 20, height = 28, unit = "cm")
+ggsave(plot = parameter_plot, file = file.path(wd, "scripts", "explore", "graphs", "last", "isa", "part1", "parameters_fsylvatica_newclusters.pdf"),
+       width = 210, height = 297, unit = "mm")

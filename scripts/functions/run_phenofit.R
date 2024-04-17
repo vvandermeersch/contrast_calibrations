@@ -4,11 +4,11 @@ run_phenofit <-
            output_dir, 
            clim_name, data_dir, 
            cd_capsis = "cd/d E:/USERS/VanderMeersch/applications/capsis4", 
-           java8 = NULL,
+           java8 = NULL, script_name = "ScriptVictor",
            mem = 10000, quiet_mode = TRUE){
     
     command_file <- file.path(tempdir(), "command_file.txt")
-    run_capsis <- paste("capsis -p script phenofit4.myscripts.ScriptVictor", command_file)
+    run_capsis <- paste0("capsis -p script phenofit4.myscripts.", script_name, " ", command_file)
     run <- ifelse(is.null(java8), paste(cd_capsis, paste0("setmem ", mem) , run_capsis, sep=' && '),
                   paste(java8, cd_capsis, paste0("setmem ", mem) , run_capsis, sep=' && '))
     .command_file_setup(command_file = file.path(tempdir(), "command_file.txt"),

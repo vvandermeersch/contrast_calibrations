@@ -1,0 +1,43 @@
+---
+title: "figures"
+author: "Victor Van der Meersch"
+date: "2024-04-17"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+wd <- "C:/Users/vandermeersch/Documents/CEFE/projects/contrast_calibrations"
+
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE,
+                      fig.path= paste0(wd, "/figures/files/"))
+chunkhooks::hook_figure_unit("mm")
+
+library(dplyr)
+library(data.table)
+library(ggplot2)
+library(ggpattern)
+library(gtools)
+library(dplyr)
+library(xml2)
+library(latex2exp)
+library(ggh4x)
+library(ggbeeswarm)
+library(cowplot)
+
+```
+
+## Figure 5
+
+
+```{r fig5, fig.height = 80}
+reload_data_fig5 <- FALSE
+
+source(file.path(wd, "figures", "scripts", "fig5", "barplot.R"))
+source(file.path(wd, "figures", "scripts", "fig5", "parameter_boxplot.R"))
+
+
+plot_grid(barplot, param_boxplot)
+
+       
+```
+

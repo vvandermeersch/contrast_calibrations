@@ -212,7 +212,7 @@ barplot <-
   ggplot(data = data_barplot, aes(x = type, 
              y = mean_ctrb*100, fill = type, pattern = index)) +
   geom_bar_pattern(stat="identity", color="black", 
-                   width = 0.5, linewidth = 0.2, alpha = 0.8,
+                   width = 0.5, linewidth = 0.2, alpha = 0.7,
                    pattern_fill = "black",
                    pattern_colour = "black",
                    pattern_angle = 45,
@@ -226,8 +226,8 @@ barplot <-
          fill = "none") +
   scale_x_discrete(labels = ifelse(xlabels$type == "Expert\ncalibration", paste0(xlabels$type,"\n\n", round(xlabels$auc,2), "\n", round(xlabels$prop_unpred*100,1),"%"),
                                    paste0(xlabels$type,"\n\n", round(xlabels$auc,2), " (", round(xlabels$sd_auc,2), ")\n", round(xlabels$prop_unpred*100,1),"% (", round(xlabels$sd_prop,2), ")"))) +
-  scale_fill_manual(values = c("#ff595e", "#ffca3a", "#8ac926", "#1982c4")) +
-  scale_color_manual(values = c("#ff595e", "#ffca3a", "#8ac926", "#1982c4")) +
+  scale_fill_manual(values = c("grey", "#f9c74f", "#90be6d", "#577590")) +
+  scale_color_manual(values = c("grey", "#f9c74f", "#90be6d", "#577590")) +
   theme_minimal() +
   labs(x = NULL, y = "Mean contribution (%)", fill = NULL) +
   coord_cartesian(clip = "off", ylim = c(0,100), xlim = c(0.8, 4.2)) +
@@ -240,7 +240,8 @@ barplot <-
         legend.text = element_text(size = 7),
         legend.key.height = unit(0.3,"cm"), legend.key.width = unit(0.3,"cm"),
         axis.title = element_text(size = 8), panel.grid.major.x = element_blank(),
-        axis.ticks.y=element_line(color = "grey92", linewidth = 0.5),
+        axis.ticks.y=element_line(color = "grey85", linewidth = 0.5),
         legend.position = "bottom", plot.margin = margin(b = 5.5, r = 5, l = 2.5, t = 23),
-        panel.background = element_rect(color = "grey92", fill = NA, linewidth = 0.5),
-        legend.box.spacing = unit(7.5, "pt"))
+        panel.background = element_rect(color = "grey85", fill = NA, linewidth = 0.5),
+        legend.box.spacing = unit(7.5, "pt"),
+        panel.grid.major.y = element_line(color = "grey92", linewidth = 0.3))

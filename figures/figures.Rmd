@@ -23,11 +23,53 @@ library(latex2exp)
 library(ggh4x)
 library(ggbeeswarm)
 library(cowplot)
+library(terra)
+library(tidyterra)
+library(doFuture)
+library(future.apply)
+library(stringr)
+library(tidyr)
+library(ModelMetrics)
+
+```
+
+## Figure 1
+
+```{r fig1, fig.height = 65}
+reload_data_fig1 <- FALSE
+
+source(file.path(wd, "figures", "scripts", "fig1", "boxplot_similarity.R"))
+source(file.path(wd, "figures", "scripts", "fig1", "historical_maps.R"))
+
+plot_grid(historical_maps, boxplot_similarity, rel_widths = c(0.7, 0.33), labels = c("", "c."), label_size = 10, vjust = 3)
+
+```
+
+## Figure 2
+
+```{r fig2, fig.height = 100}
+reload_data_fig2 <- FALSE
+
+source(file.path(wd, "figures", "scripts", "fig2", "boxplot_dates.R"))
+
+plot_grid(endodormancy, ecodormancy, maturation, senescence, labels = c("a.", "b.", "c.", "d."), label_size = 10, vjust = 1.5)
+
+
+```
+
+## Figure 4
+
+```{r fig4, fig.height = 55}
+reload_data_fig4 <- FALSE
+
+source(file.path(wd, "figures", "scripts", "fig4", "load_leafout_data.R"))
+source(file.path(wd, "figures", "scripts", "fig4", "leafout_RMSE.R"))
+
+leafout_rmse_boxplots
 
 ```
 
 ## Figure 5
-
 
 ```{r fig5, fig.height = 80}
 reload_data_fig5 <- FALSE
@@ -36,8 +78,7 @@ source(file.path(wd, "figures", "scripts", "fig5", "barplot.R"))
 source(file.path(wd, "figures", "scripts", "fig5", "parameter_boxplot.R"))
 
 
-plot_grid(barplot, param_boxplot)
+plot_grid(barplot, param_boxplot, labels = c("a.", "b."), label_size = 10)
 
-       
 ```
 

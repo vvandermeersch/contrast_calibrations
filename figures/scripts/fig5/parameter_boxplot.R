@@ -164,20 +164,21 @@ param_boxplot <-
   geom_boxplot(
     data = data_distrib %>% dplyr::filter(fixed == FALSE),
     aes(y = value, x = as.numeric(col_group), fill = factor(col_group), col = factor(col_group)), 
-    alpha= 0.2, linewidth = 0.2) +
+    alpha= 0.5, linewidth = 0.2) +
   theme_minimal() +
   theme(axis.text.x = element_blank(),
         axis.title.x = element_blank(),
         axis.text.y = element_text(size = 7),
         strip.text.x = element_text(face = "bold", size = 9),
         axis.ticks.x=element_blank(),
-        axis.ticks.y=element_line(color = "grey92", linewidth = 0.5),
+        axis.ticks.y=element_line(color = "grey85", linewidth = 0.5),
         panel.grid.major.x = element_blank(),
         panel.grid.minor.x = element_blank(),
         panel.grid.minor.y = element_blank(),
-        panel.background = element_rect(color = "grey92", fill = NA, linewidth = 0.5),
+        panel.background = element_rect(color = "grey85", fill = NA, linewidth = 0.5),
         legend.position="none", plot.margin = margin(b = 15, r = 2.5, l = -4, t = 0),
-        ggh4x.axis.ticks.length.minor = rel(1)) +
+        ggh4x.axis.ticks.length.minor = rel(1),
+        panel.grid.major.y = element_line(color = "grey92", linewidth = 0.3)) +
   labs(y = "") +
   ggh4x::facetted_pos_scales(y = list(
     var == "FH[leaf]^{\n    min\n}" ~ scale_y_continuous(limits = c(-10, 0), breaks = c(-10, -5, 0), expand = c(0,0), minor_breaks= c(-2.5, -7.5), guide = "axis_minor"),
@@ -187,5 +188,5 @@ param_boxplot <-
     var == "C[crit]^{\n    leaf\n}" ~ scale_y_continuous(limits = c(1, 150), breaks = c(1, 75, 150), expand = c(0,0), minor_breaks= c(38, 112.5), guide = "axis_minor"),
     var == "F[crit]^{\n    leaf\n}" ~ scale_y_continuous(limits = c(1, 120), breaks = c(1, 60, 120), expand = c(0,0), minor_breaks= c(30.5, 90), guide = "axis_minor")
   )) + coord_cartesian(clip = "off", xlim = c(0.7, 4.3)) +
-  scale_fill_manual(values = c("#ff595e", "#ffca3a", "#8ac926", "#1982c4")) +
-  scale_color_manual(values = c("#ff595e", "#ffca3a", "#8ac926", "#1982c4"))
+  scale_fill_manual(values = c("grey", "#f9c74f", "#90be6d", "#577590")) +
+  scale_color_manual(values = c("grey", "#f9c74f", "#90be6d", "#577590"))

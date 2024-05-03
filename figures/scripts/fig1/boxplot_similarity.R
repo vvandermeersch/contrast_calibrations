@@ -51,8 +51,9 @@ if(reload_data_fig1){
     sorensen <- 2*nrow(sim_join[sim_join$fitness.x == 1 & sim_join$fitness.y == 1,])/
       (nrow(sim_join[sim_join$fitness.x == 1,])+nrow(sim_join[sim_join$fitness.y == 1,]))
     return(c(sorensen, paste0(i[1],".",i[2]), ifelse(i[1] == "expert" | i[2] == "expert", "with.expert", 
-                                                     ifelse(i[1] %in% csdm | i[2] %in% csdm, "with.csdm",
-                                                            "only.inverse"))))
+                                                     ifelse(xor(i[1] %in% csdm, i[2] %in% csdm), "with.csdm",
+                                                            ifelse(i[1] %in% csdm & i[2] %in% csdm, "only.csdm",
+                                                                   "only.inverse")))))
   })
   plan(sequential); gc()
   sorensen_divergence_paleo_11500BP <- data.frame(gcm = "HadCM3B_11500BP", sorensen = as.numeric(sor[1,]), comb = sor[2,], cat = sor[3,])
@@ -98,8 +99,9 @@ if(reload_data_fig1){
     sorensen <- 2*nrow(sim_join[sim_join$fitness.x == 1 & sim_join$fitness.y == 1,])/
       (nrow(sim_join[sim_join$fitness.x == 1,])+nrow(sim_join[sim_join$fitness.y == 1,]))
     return(c(sorensen, paste0(i[1],".",i[2]), ifelse(i[1] == "expert" | i[2] == "expert", "with.expert", 
-                                                     ifelse(i[1] %in% csdm | i[2] %in% csdm, "with.csdm",
-                                                            "only.inverse"))))
+                                                     ifelse(xor(i[1] %in% csdm, i[2] %in% csdm), "with.csdm",
+                                                            ifelse(i[1] %in% csdm & i[2] %in% csdm, "only.csdm",
+                                                                   "only.inverse")))))
   })
   plan(sequential); gc()
   sorensen_divergence_paleo_5000BP <- data.frame(gcm = "HadCM3B_5000BP", sorensen = as.numeric(sor[1,]), comb = sor[2,], cat = sor[3,])
@@ -145,8 +147,9 @@ if(reload_data_fig1){
     sorensen <- 2*nrow(sim_join[sim_join$fitness.x == 1 & sim_join$fitness.y == 1,])/
       (nrow(sim_join[sim_join$fitness.x == 1,])+nrow(sim_join[sim_join$fitness.y == 1,]))
     return(c(sorensen, paste0(i[1],".",i[2]), ifelse(i[1] == "expert" | i[2] == "expert", "with.expert", 
-                                                     ifelse(i[1] %in% csdm | i[2] %in% csdm, "with.csdm",
-                                                            "only.inverse"))))
+                                                     ifelse(xor(i[1] %in% csdm, i[2] %in% csdm), "with.csdm",
+                                                            ifelse(i[1] %in% csdm & i[2] %in% csdm, "only.csdm",
+                                                                   "only.inverse")))))
   })
   plan(sequential); gc()
   sorensen_divergence_historical <- data.frame(gcm = "ERA5-LAND", sorensen = as.numeric(sor[1,]), comb = sor[2,], cat = sor[3,])
@@ -256,7 +259,7 @@ boxplot_similarity <- ggplot() +
   geom_boxplot(data = sorensen_divergence_paleo %>% dplyr::filter(cat == "only.inverse" & gcm == "HadCM3B_11500BP"), 
                aes(x = 2, y = 1-sorensen, fill = cat, color = cat), width = 0.8,
                alpha = 0.6,outlier.size = 0.1, linewidth = 0.4) +
-  geom_boxplot(data = sorensen_divergence_paleo %>% dplyr::filter(cat == "with.csdm" & gcm == "HadCM3B_11500BP"), 
+  geom_boxplot(data = sorensen_divergence_paleo %>% dplyr::filter(cat == "only.csdm" & gcm == "HadCM3B_11500BP"), 
                aes(x = 3, y = 1-sorensen, fill = cat, color = cat), width = 0.8,
                alpha = 0.6,outlier.size = 0.1, linewidth = 0.4) +
   geom_boxplot(data = sorensen_divergence_paleo %>% dplyr::filter(cat == "with.expert" & gcm == "HadCM3B_5000BP"), 
@@ -265,7 +268,7 @@ boxplot_similarity <- ggplot() +
   geom_boxplot(data = sorensen_divergence_paleo %>% dplyr::filter(cat == "only.inverse" & gcm == "HadCM3B_5000BP"), 
                aes(x = 6, y = 1-sorensen, fill = cat, color = cat), width = 0.8,  
                alpha = 0.6,outlier.size = 0.1, linewidth = 0.4) +
-  geom_boxplot(data = sorensen_divergence_paleo %>% dplyr::filter(cat == "with.csdm" & gcm == "HadCM3B_5000BP"), 
+  geom_boxplot(data = sorensen_divergence_paleo %>% dplyr::filter(cat == "only.csdm" & gcm == "HadCM3B_5000BP"), 
                aes(x = 7, y = 1-sorensen, fill = cat, color = cat), width = 0.8,
                alpha = 0.6,outlier.size = 0.1, linewidth = 0.4) +
   geom_boxplot(data = sorensen_divergence_historical %>% dplyr::filter(cat == "with.expert"), 
@@ -274,7 +277,7 @@ boxplot_similarity <- ggplot() +
   geom_boxplot(data = sorensen_divergence_historical %>% dplyr::filter(cat == "only.inverse"), 
                aes(x = 10, y = 1-sorensen, fill = cat, color = cat), width = 0.8, 
                alpha = 0.6,outlier.size = 0.1, linewidth = 0.4) +
-  geom_boxplot(data = sorensen_divergence_historical %>% dplyr::filter(cat == "with.csdm"), 
+  geom_boxplot(data = sorensen_divergence_historical %>% dplyr::filter(cat == "only.csdm"), 
                aes(x = 11, y = 1-sorensen, fill = cat, color = cat), width = 0.8, 
                alpha = 0.6,outlier.size = 0.1, linewidth = 0.4) +
   theme_minimal() +
@@ -298,6 +301,61 @@ boxplot_similarity <- ggplot() +
          color = guide_legend(override.aes = list(alpha = 0.2, linewidth = 0.2), nrow = 3, byrow=TRUE)) + 
   scale_fill_manual(
     values = c("#6d90be", "#90be6d", "#be6d90"),
-    breaks = c("only.inverse", "with.expert", "with.csdm"),
-    labels = c("Within inverse calibrations", "Between expert and inverse calib.", "Between CSDM and inverse calib."), aesthetics = c("colour", "fill")
+    breaks = c("only.inverse", "with.expert", "only.csdm"),
+    labels = c("Within inverse calibrations", "Between expert and inverse calib.", "Within correlative models"), aesthetics = c("colour", "fill")
   )
+
+
+boxplot_similarity <- ggplot() +
+  geom_boxplot(data = sorensen_divergence_paleo %>% dplyr::filter(cat == "with.expert" & gcm == "HadCM3B_11500BP"), 
+               aes(x = 1, y = 1-sorensen, fill = cat, color = cat), width = 0.8, 
+               alpha = 0.6,outlier.size = 0.1, linewidth = 0.4) +
+  geom_boxplot(data = sorensen_divergence_paleo %>% dplyr::filter(cat == "only.inverse" & gcm == "HadCM3B_11500BP"), 
+               aes(x = 2, y = 1-sorensen, fill = cat, color = cat), width = 0.8,
+               alpha = 0.6,outlier.size = 0.1, linewidth = 0.4) +
+  geom_boxplot(data = sorensen_divergence_paleo %>% dplyr::filter(cat == "only.csdm" & gcm == "HadCM3B_11500BP"), 
+               aes(x = 3, y = 1-sorensen, fill = cat, color = cat), width = 0.8,
+               alpha = 0.6,outlier.size = 0.1, linewidth = 0.4) +
+  geom_boxplot(data = sorensen_divergence_paleo %>% dplyr::filter(cat == "with.expert" & gcm == "HadCM3B_5000BP"), 
+               aes(x = 5, y = 1-sorensen, fill = cat, color = cat), width = 0.8,  
+               alpha = 0.6,outlier.size = 0.1, linewidth = 0.4) +
+  geom_boxplot(data = sorensen_divergence_paleo %>% dplyr::filter(cat == "only.inverse" & gcm == "HadCM3B_5000BP"), 
+               aes(x = 6, y = 1-sorensen, fill = cat, color = cat), width = 0.8,  
+               alpha = 0.6,outlier.size = 0.1, linewidth = 0.4) +
+  geom_boxplot(data = sorensen_divergence_paleo %>% dplyr::filter(cat == "only.csdm" & gcm == "HadCM3B_5000BP"), 
+               aes(x = 7, y = 1-sorensen, fill = cat, color = cat), width = 0.8,
+               alpha = 0.6,outlier.size = 0.1, linewidth = 0.4) +
+  geom_boxplot(data = sorensen_divergence_historical %>% dplyr::filter(cat == "with.expert"), 
+               aes(x = 9, y = 1-sorensen, fill = cat, color = cat), width = 0.8, 
+               alpha = 0.6,outlier.size = 0.1, linewidth = 0.4) +
+  geom_boxplot(data = sorensen_divergence_historical %>% dplyr::filter(cat == "only.inverse"), 
+               aes(x = 10, y = 1-sorensen, fill = cat, color = cat), width = 0.8, 
+               alpha = 0.6,outlier.size = 0.1, linewidth = 0.4) +
+  geom_boxplot(data = sorensen_divergence_historical %>% dplyr::filter(cat == "only.csdm"), 
+               aes(x = 11, y = 1-sorensen, fill = cat, color = cat), width = 0.8, 
+               alpha = 0.6,outlier.size = 0.1, linewidth = 0.4) +
+  theme_minimal() +
+  scale_x_continuous(breaks = c(2, 6, 10), 
+                     labels = c("Distant past\n(11500 BP)", "Distant past\n(5000 BP)", "Historical\n(1970-2000)")) +
+  scale_y_continuous(limits = c(0, 0.6), expand = c(0,0), breaks = c(0,0.2,0.4,0.6), minor_breaks= c(0.1, 0.3, 0.5), guide = "axis_minor") +
+  theme(panel.grid.minor.x = element_blank(), axis.title.x = element_blank()) +  
+  ylab("Divergence between predictions") +
+  theme(axis.text.y = element_text(size = 7), axis.text.x = element_text(size = 7),
+        legend.text = element_text(size = 7), legend.title = element_blank(),
+        legend.key.height = unit(0.5,"cm"), legend.key.width = unit(0.4,"cm"),
+        axis.title = element_text(size = 8), panel.grid.major.x = element_blank(),
+        axis.ticks.y=element_line(color = "grey85", linewidth = 0.5),
+        legend.position = "top", plot.margin = margin(b = 5.5, r = 2.5, l = 4.5, t = 2),
+        legend.box.spacing = unit(0, "pt"),
+        panel.background = element_rect(color = "grey85", fill = NA, linewidth = 0.5),
+        panel.grid.minor.y = element_blank(), ggh4x.axis.ticks.length.minor = rel(1),
+        panel.grid.major.y = element_line(color = "grey92", linewidth = 0.3)) +
+  coord_cartesian(clip = "off") +
+  guides(fill = guide_legend(override.aes = list(alpha = 0.2, linewidth = 0.2), nrow = 3, byrow=TRUE),
+         color = guide_legend(override.aes = list(alpha = 0.2, linewidth = 0.2), nrow = 3, byrow=TRUE)) + 
+  scale_fill_manual(
+    values = c("#6d90be", "#90be6d", "#be6d90"),
+    breaks = c("only.inverse", "with.expert", "only.csdm"),
+    labels = c("Within inverse calibrations", "Between expert and inverse calib.", "Within correlative models"), aesthetics = c("colour", "fill")
+  )
+

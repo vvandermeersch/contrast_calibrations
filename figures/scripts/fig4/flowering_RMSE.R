@@ -1,6 +1,6 @@
 
 records <- all_records %>%
-  dplyr::filter(stade %in% c(11, 13))
+  dplyr::filter(stade %in% c(60))
 
 sim_dir <- file.path(wd, "data", "simulations", "historical", "ERA5-Land")
 species <- "fagus_sylvatica"
@@ -10,30 +10,30 @@ models <- c("expert", paste0("subset",rep(1:10, each = 10),"_rep", 1:10))
 if(reload_data_fig4){
   
   plan(multisession, workers = 20)
-  leafout_simulations <- future_lapply(models, function(m){
+  flowering_simulations <- future_lapply(models, function(m){
     
-    leafout_m <- data.frame()
-    sim_path <- file.path(sim_dir, species, m)
+    flowering_m <- data.frame()
+    sim_path <- file.path(sim_dir, species, "pbm", m)
     for(yr in 1970:2000){
       
-      leafout <- read_mean_outputvalue(sim_path, years = yr, model = "PHENOFIT",
-                                       output_var = "LeafUnfoldingDate", correct_date = TRUE)
-      names(leafout) <- c("lat", "lon", as.character(yr))
+      flowering <- read_mean_outputvalue(sim_path, years = yr, model = "PHENOFIT",
+                                       output_var = "FloweringDate", correct_date = TRUE)
+      names(flowering) <- c("lat", "lon", as.character(yr))
       
-      leafout <- leafout %>%
+      flowering <- flowering %>%
         inner_join(unique(records[records$year == yr,c("lat", "lon")]), by = join_by(lat, lon))
       
       if(yr == 1970){
-        leafout_m <- leafout
+        flowering_m <- flowering
       }else{
-        leafout_m <- leafout_m %>%
-          full_join(leafout, by = join_by(lat, lon))
+        flowering_m <- flowering_m %>%
+          full_join(flowering, by = join_by(lat, lon))
       }
       
     }
     gc()
     
-    leafout_m <- leafout_m %>%
+    flowering_m <- flowering_m %>%
       pivot_longer(cols = -c(lat, lon), names_to = "year", values_to = "sim_doy", values_drop_na = TRUE) %>%
       mutate(year = as.numeric(year), mod = m) %>% 
       left_join(records[c("lat", "lon", "year", "stade", "mean_doy")], by = join_by(lat, lon, year))
@@ -42,23 +42,22 @@ if(reload_data_fig4){
     #   group_by(lat, lon, year, stade, sim_doy, mean_doy) %>%
     #   reframe(rmse = rmse(sim_doy, mean_doy),  mod = m)
     
-    return(leafout_m)
+    return(flowering_m)
     
   })
   plan(sequential); gc()
-  leafout_simulations <- as.data.frame(do.call(rbind, leafout_simulations))
-  saveRDS(leafout_simulations, file = file.path(wd, "figures", "data", "fig4", "leafout_simulations.rds"))
+  flowering_simulations <- as.data.frame(do.call(rbind, flowering_simulations))
+  saveRDS(flowering_simulations, file = file.path(wd, "figures", "data", "fig4", "flowering_simulations.rds"))
   
 }else{
   
-  leafout_simulations <- readRDS(file.path(wd, "figures", "data", "fig4", "leafout_simulations.rds"))
+  flowering_simulations <- readRDS(file.path(wd, "figures", "data", "fig4", "flowering_simulations.rds"))
 }
 
 clusters <- readRDS(file.path(wd, "data", "metrics", "niv2_clusters.rds"))
 
-data_boxplot <- leafout_simulations %>%
+data_boxplot <- flowering_simulations %>%
   left_join(clusters, join_by(mod)) %>%
-  dplyr::filter(stade != 10) %>%
   group_by(lat, lon, clust, mod, year) %>%
   reframe(rmse = rmse(sim_doy, mean_doy)) %>%
   mutate(mod = reorder(mod, rmse, median))
@@ -69,7 +68,7 @@ median_rmse <- data_boxplot %>%
   summarise(median_rmse = median(rmse)) %>%
   dplyr::filter(clust != "3_1")
 
-leafout_rmse_boxplots <- data_boxplot %>%
+flowering_rmse_boxplots <- data_boxplot %>%
   mutate(mod = reorder(mod, rmse, median, decreasing = FALSE)) %>% 
   ggplot() +
   geom_boxplot(aes(x = mod, y = rmse, color = clust, fill = clust),
@@ -83,14 +82,14 @@ leafout_rmse_boxplots <- data_boxplot %>%
   scale_fill_manual(values = c("grey", "#577590", "#43AA8B", "#ac92eb", '#f9c74f', "#F9844A"),
                     breaks = c("0", "1_1", "1_2", "3_1", "2_1", "2_2")) +
   scale_y_continuous(breaks = seq(0, 200, 15), expand = c(0,0)) +
-  coord_cartesian(ylim = c(0,105), xlim = c(1,101), clip = "off") + 
+  coord_cartesian(ylim = c(0,120), xlim = c(1,101), clip = "off") + 
   # geom_hline(data = median_rmse, aes(yintercept = median_rmse), 
   #            linewidth = 0.8, color = "white", alpha = 0.6) +
   # geom_hline(data = median_rmse, aes(yintercept = median_rmse, color = clust), 
   #            lty = "dotted", linewidth = 0.6) +
   ggstar::geom_star(data = median_rmse, aes(x = 103.2, y = median_rmse, fill = clust, col = clust), 
                     alpha = 0.7, angle = 90, starshape = 26, size = 2) +
-  ylab("RMSE - leafout (days)") + 
+  ylab("RMSE - flowering (days)") + 
   theme(axis.text.y = element_text(size = 7), axis.text.x = element_blank(),
         legend.text = element_text(size = 7), legend.title = element_blank(),
         legend.key.height = unit(0.5,"cm"), legend.key.width = unit(0.4,"cm"),
@@ -102,5 +101,5 @@ leafout_rmse_boxplots <- data_boxplot %>%
         panel.grid.minor.y = element_blank(), ggh4x.axis.ticks.length.minor = rel(1),
         panel.grid.major.y = element_line(color = "grey92", linewidth = 0.3)) +
   ggimage::geom_image(
-    data = data.frame(x = 8, y = 85,image="C:/Users/vandermeersch/Documents/CEFE/phd/notebook/phenofit_schema/leafout.png"),
+    data = data.frame(x = 8, y = 95,image="C:/Users/vandermeersch/Documents/CEFE/phd/notebook/phenofit_schema/flowering.png"),
     aes(x = x, y = y , image = image), size=0.5)

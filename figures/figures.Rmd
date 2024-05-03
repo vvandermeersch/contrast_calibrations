@@ -35,7 +35,7 @@ library(ModelMetrics)
 
 ## Figure 1
 
-```{r fig1, fig.height = 65}
+```{r fig1, fig.height = 65, eval = FALSE}
 reload_data_fig1 <- FALSE
 
 source(file.path(wd, "figures", "scripts", "fig1", "boxplot_similarity.R"))
@@ -47,7 +47,7 @@ plot_grid(historical_maps, boxplot_similarity, rel_widths = c(0.7, 0.33), labels
 
 ## Figure 2
 
-```{r fig2, fig.height = 100}
+```{r fig2, fig.height = 100, eval = FALSE}
 reload_data_fig2 <- FALSE
 
 source(file.path(wd, "figures", "scripts", "fig2", "boxplot_dates.R"))
@@ -57,21 +57,33 @@ plot_grid(endodormancy, ecodormancy, maturation, senescence, labels = c("a.", "b
 
 ```
 
+\newpage 
+
 ## Figure 4
 
-```{r fig4, fig.height = 55}
+```{r fig4, fig.height = 210}
 reload_data_fig4 <- FALSE
 
-source(file.path(wd, "figures", "scripts", "fig4", "load_leafout_data.R"))
+source(file.path(wd, "figures", "scripts", "fig4", "load_pheno_data.R"))
 source(file.path(wd, "figures", "scripts", "fig4", "leafout_RMSE.R"))
+source(file.path(wd, "figures", "scripts", "fig4", "flowering_RMSE.R"))
+source(file.path(wd, "figures", "scripts", "fig4", "maturation_RMSE.R"))
+source(file.path(wd, "figures", "scripts", "fig4", "senescence_RMSE.R"))
 
-leafout_rmse_boxplots
+plot_grid(leafout_rmse_boxplots,
+          flowering_rmse_boxplots,
+          maturation_rmse_boxplots,
+          senescence_rmse_boxplots, 
+          NULL,
+          without_senescence_boxplot, 
+          ncol = 1, rel_heights = c(0.6, 0.6, 0.6, 0.6, -0.05, 0.3),
+          align = "v", axis = "lr")
 
 ```
 
 ## Figure 5
 
-```{r fig5, fig.height = 80}
+```{r fig5, fig.height = 80, eval = FALSE}
 reload_data_fig5 <- FALSE
 
 source(file.path(wd, "figures", "scripts", "fig5", "barplot.R"))

@@ -72,7 +72,7 @@ dates_df2$clust <- ifelse(dates_df2$mod == "expert", 0, dates_df2$clust)
 dates_df2$sub <- stringr::str_split(dates_df2$mod, "_", simplify = T)[, 1]
 
 dates_df2 <- dates_df2 %>%
-  mutate(mod = reorder(mod, dormancy_date, median)) %>% 
+  mutate(mod = reorder(mod, maturation_date, median)) %>% 
   tidyr::pivot_longer(cols = c("dormancy_date", "ecodormancy_length", "leafout_date", "flowering_date", "maturation_date", "senescence_date"),
                       names_to = "var", values_to = "index")
 

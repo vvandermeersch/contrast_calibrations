@@ -14,7 +14,7 @@ fit_dir <- file.path(wd, "data", "fit")
 species <- "fagus_sylvatica"
 
 # Load simulations
-plan(multisession, workers = 20)
+plan(multisession, workers = 10)
 simulations <- as.data.frame(do.call(rbind, future_lapply(calibrations, function(c){
   
   sim_dir <- file.path(wd, "data", "simulations", "historical", "ERA5-LAND")
@@ -46,16 +46,21 @@ sorensen_divergence_historical <- data.frame(gcm = "ERA5-LAND", sorensen = as.nu
 saveRDS(sorensen_divergence_historical, file = file.path(wd, "data", "metrics", "sorensen_divergence_historical.rds"))
 
 ggplot() +
-  geom_boxplot(data = sorensen_divergence_paleo[sorensen_divergence_paleo$cat == "with.expert",], 
-               aes(x = 1, y = 1-sorensen), width = 1, fill = "#40b8ab", color = "#40b8ab", alpha = 0.5) +
-  geom_boxplot(data = sorensen_divergence_paleo[sorensen_divergence_paleo$cat == "only.inverse",], 
-               aes(x = 2, y = 1-sorensen), width = 1, fill = "#0c86c8", color = "#0c86c8", alpha = 0.5) +
-  geom_boxplot(data = sorensen_divergence_historical[sorensen_divergence_historical$cat == "with.expert",], 
-               aes(x = 4, y = 1-sorensen), width = 1, fill = "#40b8ab", color = "#40b8ab", alpha = 0.5) +
-  geom_boxplot(data = sorensen_divergence_historical[sorensen_divergence_historical$cat == "only.inverse",], 
-               aes(x = 5, y = 1-sorensen), width = 1, fill = "#0c86c8", color = "#0c86c8", alpha = 0.5) +
+  geom_boxplot(data = sorensen_divergence_paleo %>% dplyr::filter(cat == "with.expert" & gcm == "HadCM3B_11500BP"), 
+               aes(x = 1, y = 1-sorensen), width = 0.8, fill = "#40b8ab", color = "#40b8ab", alpha = 0.5) +
+  geom_boxplot(data = sorensen_divergence_paleo %>% dplyr::filter(cat == "only.inverse" & gcm == "HadCM3B_11500BP"), 
+               aes(x = 2, y = 1-sorensen), width = 0.8, fill = "#0c86c8", color = "#0c86c8", alpha = 0.5) +
+  geom_boxplot(data = sorensen_divergence_paleo %>% dplyr::filter(cat == "with.expert" & gcm == "HadCM3B_7000BP"), 
+               aes(x = 4, y = 1-sorensen), width = 0.8, fill = "#40b8ab", color = "#40b8ab", alpha = 0.5) +
+  geom_boxplot(data = sorensen_divergence_paleo %>% dplyr::filter(cat == "only.inverse" & gcm == "HadCM3B_7000BP"), 
+               aes(x = 5, y = 1-sorensen), width = 0.8, fill = "#0c86c8", color = "#0c86c8", alpha = 0.5) +
+  geom_boxplot(data = sorensen_divergence_historical %>% dplyr::filter(cat == "with.expert"), 
+               aes(x = 7, y = 1-sorensen), width = 0.8, fill = "#40b8ab", color = "#40b8ab", alpha = 0.5) +
+  geom_boxplot(data = sorensen_divergence_historical %>% dplyr::filter(cat == "only.inverse"), 
+               aes(x = 8, y = 1-sorensen), width = 0.8, fill = "#0c86c8", color = "#0c86c8", alpha = 0.5) +
   theme_minimal() +
-  scale_x_continuous(breaks = c(1.5, 4.5), labels = c("Distant past\n(11500 BP)", "Historical\n(1970-2000)")) +
+  scale_x_continuous(breaks = c(1.5, 4.5, 7.5), 
+                     labels = c("Distant past\n(11500 BP)", "Distant past\n(7000 BP)", "Historical\n(1970-2000)")) +
   theme(panel.grid.minor.x = element_blank(), axis.title.x = element_blank()) +  
   ylab("Divergence between predictions")
   

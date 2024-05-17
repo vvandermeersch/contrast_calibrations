@@ -57,16 +57,27 @@ if(reload_data_fig4){
 clusters <- readRDS(file.path(wd, "data", "metrics", "niv2_clusters.rds"))
 
 data_boxplot <- maturation_simulations %>%
+  dplyr::filter(mean_doy > 212) %>% # discard strange observed date (before 1st August...)
   left_join(clusters, join_by(mod)) %>%
   group_by(lat, lon, clust, mod, year) %>%
-  reframe(rmse = rmse(sim_doy, mean_doy)) %>%
-  mutate(mod = reorder(mod, rmse, median))
+  reframe(rmse = ifelse(sim_doy != 366, rmse(sim_doy, mean_doy), NA), sim_doy = sim_doy) %>%
+  mutate(mod = reorder(mod, rmse, median, na.rm = TRUE, decreasing = FALSE))
 data_boxplot$clust <- ifelse(data_boxplot$mod == 'expert', 0, data_boxplot$clust)
 
 median_rmse <- data_boxplot %>%
   group_by(clust) %>%
-  summarise(median_rmse = median(rmse)) %>%
+  summarise(median_rmse = median(rmse, na.rm = TRUE)) %>%
   dplyr::filter(clust != "3_1")
+
+prop_mat <- data_boxplot %>% group_by(mod) %>%
+  summarise(prop = sum(is.na(rmse))/n()*100)
+
+data_mat <- data_boxplot
+data_boxplot <- data_boxplot %>%
+  left_join(prop_mat, by = join_by(mod)) %>%
+  mutate(rmse = ifelse(prop > 60, NA, rmse)) %>%
+  mutate(mod = reorder(mod, rmse, median, na.rm = TRUE, decreasing = FALSE))
+data_mat$mod = factor(data_mat$mod, levels(data_boxplot$mod))
 
 maturation_rmse_boxplots <- data_boxplot %>%
   mutate(mod = reorder(mod, rmse, median, decreasing = FALSE)) %>% 
@@ -87,13 +98,13 @@ maturation_rmse_boxplots <- data_boxplot %>%
   #            linewidth = 0.8, color = "white", alpha = 0.6) +
   # geom_hline(data = median_rmse, aes(yintercept = median_rmse, color = clust), 
   #            lty = "dotted", linewidth = 0.6) +
-  ggstar::geom_star(data = median_rmse, aes(x = 103.2, y = median_rmse, fill = clust, col = clust), 
+  ggstar::geom_star(data = median_rmse, aes(x = 104.7, y = median_rmse, fill = clust, col = clust), 
                     alpha = 0.7, angle = 90, starshape = 26, size = 2) +
-  ylab("RMSE - fruit maturation (days)") + 
+  ylab("Fruit maturation date") + 
   theme(axis.text.y = element_text(size = 7), axis.text.x = element_blank(),
         legend.text = element_text(size = 7), legend.title = element_blank(),
         legend.key.height = unit(0.5,"cm"), legend.key.width = unit(0.4,"cm"),
-        axis.title.y = element_text(size = 8), axis.title.x = element_blank(),
+        axis.title.y = element_text(size = 7.5), axis.title.x = element_blank(),
         panel.grid.major.x = element_blank(),
         axis.ticks.y=element_line(color = "grey85", linewidth = 0.5),
         legend.position = "none",
@@ -101,5 +112,34 @@ maturation_rmse_boxplots <- data_boxplot %>%
         panel.grid.minor.y = element_blank(), ggh4x.axis.ticks.length.minor = rel(1),
         panel.grid.major.y = element_line(color = "grey92", linewidth = 0.3)) +
   ggimage::geom_image(
-    data = data.frame(x = 8, y = 115,image="C:/Users/vandermeersch/Documents/CEFE/phd/notebook/phenofit_schema/maturation.png"),
-    aes(x = x, y = y , image = image), size=0.5)
+    data = data.frame(x = 14, y = 121,image="C:/Users/vandermeersch/Documents/CEFE/phd/notebook/phenofit_schema/maturation.png"),
+    aes(x = x, y = y , image = image), size=0.4)
+
+without_maturation_boxplot <- data_mat %>%
+  ggplot() +
+  geom_bar(aes(x = mod, alpha = is.na(rmse), fill = clust),
+           position="fill") +
+  scale_alpha_manual(values = c("FALSE" = 0, "TRUE" = 0.7)) +
+  theme_minimal() +
+  theme(axis.text.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.major.x = element_blank(), legend.position = "none") +
+  scale_color_manual(values = c("grey", "#577590", "#43AA8B", "#ac92eb", '#f9c74f', "#F9844A"),
+                     breaks = c("0", "1_1", "1_2", "3_1", "2_1", "2_2")) +
+  scale_fill_manual(values = c("grey", "#577590", "#43AA8B", "#ac92eb", '#f9c74f', "#F9844A"),
+                    breaks = c("0", "1_1", "1_2", "3_1", "2_1", "2_2")) +
+  scale_y_continuous(
+    breaks = seq(0, 1, 0.25), expand = c(0,0),
+    labels = c("0%" , "25", "50", "75", "100%"), position = "left") +
+  coord_cartesian(ylim = c(0,1), clip = "off") + 
+  ylab("No maturation") + 
+  theme(axis.text.y = element_text(size = 6), axis.text.x = element_blank(),
+        legend.text = element_text(size = 7), legend.title = element_blank(),
+        legend.key.height = unit(0.5,"cm"), legend.key.width = unit(0.4,"cm"),
+        axis.title.y = element_text(size = 6.5), axis.title.x = element_blank(),
+        panel.grid.major.x = element_blank(),
+        axis.ticks.y=element_line(color = "grey85", linewidth = 0.5),
+        legend.position = "none",
+        panel.background = element_rect(color = "grey85", fill = NA, linewidth = 0.5),
+        panel.grid.minor.y = element_blank(), ggh4x.axis.ticks.length.minor = rel(1),
+        panel.grid.major.y = element_line(color = "grey92", linewidth = 0.3))

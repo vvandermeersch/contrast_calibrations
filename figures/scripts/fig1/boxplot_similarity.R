@@ -4,8 +4,6 @@ calibrations <- c("expert", paste0("subset",rep(1:10, each = 10),"_rep", 1:10))
 fit_dir <- file.path(wd, "data", "fit")
 species <- "fagus_sylvatica"
 
-source(file.path(wd, "scripts", "functions", "read_mean_outputvalue.R"))
-
 # process-based predictions
 if(reload_data_fig1){
   

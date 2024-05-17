@@ -81,19 +81,19 @@ flowering_rmse_boxplots <- data_boxplot %>%
                      breaks = c("0", "1_1", "1_2", "3_1", "2_1", "2_2")) +
   scale_fill_manual(values = c("grey", "#577590", "#43AA8B", "#ac92eb", '#f9c74f', "#F9844A"),
                     breaks = c("0", "1_1", "1_2", "3_1", "2_1", "2_2")) +
-  scale_y_continuous(breaks = seq(0, 200, 15), expand = c(0,0)) +
+  scale_y_continuous(breaks = seq(0, 200, 15), expand = c(0,0), position = "right") +
   coord_cartesian(ylim = c(0,120), xlim = c(1,101), clip = "off") + 
   # geom_hline(data = median_rmse, aes(yintercept = median_rmse), 
   #            linewidth = 0.8, color = "white", alpha = 0.6) +
   # geom_hline(data = median_rmse, aes(yintercept = median_rmse, color = clust), 
   #            lty = "dotted", linewidth = 0.6) +
-  ggstar::geom_star(data = median_rmse, aes(x = 103.2, y = median_rmse, fill = clust, col = clust), 
-                    alpha = 0.7, angle = 90, starshape = 26, size = 2) +
-  ylab("RMSE - flowering (days)") + 
+  ggstar::geom_star(data = median_rmse, aes(x = -2.8, y = median_rmse, fill = clust, col = clust), 
+                    alpha = 0.7, angle = -90, starshape = 26, size = 2) +
+  ylab("Flowering date") + 
   theme(axis.text.y = element_text(size = 7), axis.text.x = element_blank(),
         legend.text = element_text(size = 7), legend.title = element_blank(),
         legend.key.height = unit(0.5,"cm"), legend.key.width = unit(0.4,"cm"),
-        axis.title.y = element_text(size = 8), axis.title.x = element_blank(),
+        axis.title.y = element_text(size = 7.5), axis.title.x = element_blank(),
         panel.grid.major.x = element_blank(),
         axis.ticks.y=element_line(color = "grey85", linewidth = 0.5),
         legend.position = "none",
@@ -101,5 +101,5 @@ flowering_rmse_boxplots <- data_boxplot %>%
         panel.grid.minor.y = element_blank(), ggh4x.axis.ticks.length.minor = rel(1),
         panel.grid.major.y = element_line(color = "grey92", linewidth = 0.3)) +
   ggimage::geom_image(
-    data = data.frame(x = 8, y = 95,image="C:/Users/vandermeersch/Documents/CEFE/phd/notebook/phenofit_schema/flowering.png"),
-    aes(x = x, y = y , image = image), size=0.5)
+    data = data.frame(x = 14, y = 97,image="C:/Users/vandermeersch/Documents/CEFE/phd/notebook/phenofit_schema/flowering.png"),
+    aes(x = x, y = y , image = image), size=0.4)

@@ -31,6 +31,8 @@ library(stringr)
 library(tidyr)
 library(ModelMetrics)
 
+source(file.path(wd, "scripts", "functions", "read_mean_outputvalue.R"))
+
 ```
 
 ## Figure 1
@@ -61,7 +63,7 @@ plot_grid(endodormancy, ecodormancy, maturation, senescence, labels = c("a.", "b
 
 ## Figure 4
 
-```{r fig4, fig.height = 210}
+```{r fig4, fig.height = 100, fig.width = 180, eval = FALSE}
 reload_data_fig4 <- FALSE
 
 source(file.path(wd, "figures", "scripts", "fig4", "load_pheno_data.R"))
@@ -71,12 +73,18 @@ source(file.path(wd, "figures", "scripts", "fig4", "maturation_RMSE.R"))
 source(file.path(wd, "figures", "scripts", "fig4", "senescence_RMSE.R"))
 
 plot_grid(leafout_rmse_boxplots,
+          NULL,
           flowering_rmse_boxplots,
           maturation_rmse_boxplots,
+          NULL,
           senescence_rmse_boxplots, 
+          NULL, NULL, NULL,
+          without_maturation_boxplot, 
           NULL,
           without_senescence_boxplot, 
-          ncol = 1, rel_heights = c(0.6, 0.6, 0.6, 0.6, -0.05, 0.3),
+          ncol = 3, 
+          rel_heights = c(0.6, 0.6, -0.03, 0.3),
+          rel_widths = c(1, -0.15, 1),
           align = "v", axis = "lr")
 
 ```
@@ -94,3 +102,12 @@ plot_grid(barplot, param_boxplot, labels = c("a.", "b."), label_size = 10)
 
 ```
 
+## Figure 6
+
+```{r fig6, fig.height = 65, eval = TRUE}
+reload_data_fig6 <- FALSE
+
+source(file.path(wd, "figures", "scripts", "fig6", "barplot.R"))
+
+barplot_partial
+```

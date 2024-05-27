@@ -111,3 +111,49 @@ source(file.path(wd, "figures", "scripts", "fig6", "barplot.R"))
 
 barplot_partial
 ```
+
+## Figure 7 
+
+```{r fig7, fig.height = 65, fig.width = 60, eval = TRUE}
+reload_data_fig7 <- FALSE
+
+species <- "fagus_sylvatica"
+source(file.path(wd, "figures", "scripts", "fig7", "load_pheno_data.R"))
+models <- c("expert",paste0("partial/relmax/subset",rep(1:2, each = 5),"_rep", 1:5))
+stades <- c(86)
+ncores <- 11
+source(file.path(wd, "figures", "scripts", "fig7", "maturation_RMSE.R"))
+plot_grid(maturation_rmse_boxplots, without_maturation_boxplot, 
+          rel_heights = c(0.65,0.35), ncol = 1, align = "v", axis = "lr")
+
+species <- "picea_abies"
+source(file.path(wd, "figures", "scripts", "fig7", "load_pheno_data.R"))
+models <- c("expert",paste0("partial/dgt_flo_mat/subset",rep(1, each = 5),"_rep", 1:5))
+stades <- c(60:65)
+ncores <- 6
+source(file.path(wd, "figures", "scripts", "fig7", "flowering_RMSE.R"))
+plot_grid(flowering_rmse_boxplots, without_flowering_boxplot, 
+          rel_heights = c(0.65,0.35), ncol = 1, align = "v", axis = "lr")
+
+species <- "betula_pendula"
+source(file.path(wd, "figures", "scripts", "fig7", "load_pheno_data.R"))
+models <- c("expert",paste0("partial/frost_flo_mat/subset",rep(1, each = 5),"_rep", 1:5))
+stades <- c(60:65)
+ncores <- 6
+source(file.path(wd, "figures", "scripts", "fig7", "flowering_RMSE.R"))
+plot_grid(flowering_rmse_boxplots, without_flowering_boxplot, 
+          rel_heights = c(0.65,0.35), ncol = 1, align = "v", axis = "lr")
+
+species <- "quercus_robur"
+source(file.path(wd, "figures", "scripts", "fig7", "load_pheno_data.R"))
+models <- c("expert",paste0("partial/subset",rep(1:2, each = 5),"_rep", 1:5))
+stades <- c(86)
+ncores <- 11
+source(file.path(wd, "figures", "scripts", "fig7", "maturation_RMSE.R"))
+plot_grid(maturation_rmse_boxplots, without_maturation_boxplot, 
+          rel_heights = c(0.65,0.35), ncol = 1, align = "v", axis = "lr")
+
+
+
+```
+

@@ -1,26 +1,26 @@
 
 # Data from TEMPO
-dir <- "D:/phenology/tempo/fagus_sylvatica/Vdm_Victor_202405021641"
-
-stations_tempo  <- fread(file.path(dir, "sites.csv")) %>% 
-  dplyr::select("site id", latitude, longitude)
-
-records_tempo <- fread(file.path(dir, "pheno-pmp.txt")) %>%
-  dplyr::filter(ANNEE %in% c(1970:2000)) %>%
-  mutate(across(everything(), ~na_if(., -9999))) %>%
-  pivot_longer(cols = -c(CODE_POSTE, VAR_PROV, ANNEE),
-               names_to = "stade", values_to = "doy", values_drop_na = TRUE) %>%
-  left_join(stations_tempo, by = c("CODE_POSTE" = "site id")) %>%
-  reframe(lat = latitude, lon = longitude, year = ANNEE, 
-          stade.raw = stade, 
-          stade = as.numeric(str_split(stade.raw, pattern = "-", simplify = TRUE)[,2]), 
-          doy = doy, source = "TEMPO")
+# dir <- "D:/phenology/tempo/betula_pendula/Victor_Vdm_202405271800"
+# 
+# stations_tempo  <- fread(file.path(dir, "sites.csv")) %>% 
+#   dplyr::select("site id", latitude, longitude)
+# 
+# records_tempo <- fread(file.path(dir, "pheno-pmp.txt")) %>%
+#   dplyr::filter(ANNEE %in% c(1970:2000)) %>%
+#   mutate(across(everything(), ~na_if(., -9999))) %>%
+#   pivot_longer(cols = -c(CODE_POSTE, VAR_PROV, ANNEE),
+#                names_to = "stade", values_to = "doy", values_drop_na = TRUE) %>%
+#   left_join(stations_tempo, by = c("CODE_POSTE" = "site id")) %>%
+#   reframe(lat = latitude, lon = longitude, year = ANNEE, 
+#           stade.raw = stade, 
+#           stade = as.numeric(str_split(stade.raw, pattern = "-", simplify = TRUE)[,2]), 
+#           doy = doy, source = "TEMPO")
 
 # Data from PEP725
-dir <- "D:/phenology/PEP725/fagus_sylvatica"
+dir <- file.path("D:/phenology/PEP725", species)
 
 stations_pep <- fread(file.path(dir, "stations_merged.csv")) %>% 
-  dplyr::select(PEP_ID, LON, LAT)
+  dplyr::select(PEP_ID, LON, LAT) %>% unique()
 
 records_pep <- fread(file.path(dir, "records_merged.csv")) %>%
   left_join(stations_pep, by = "PEP_ID") %>%
@@ -29,7 +29,7 @@ records_pep <- fread(file.path(dir, "records_merged.csv")) %>%
           doy = DAY, source = "PEP725")
 
 # Merge
-records <- rbind(records_tempo, records_pep)
+records <- records_pep
 
 # give.n <- function(x){
 #   return(c(y = 310, label = length(x))) 

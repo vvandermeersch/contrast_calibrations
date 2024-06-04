@@ -30,19 +30,19 @@ fit_exp <- c(file.path(fit_dir, "abies_alba", "expert.rds"),
              file.path(fit_dir, "fraxinus_excelsior", "expert.rds"),
              file.path(fit_dir, "larix_decidua", "expert.rds"))
 
-sim_part <- c("D:/simulations/phenofit/present/fitted/abies_alba/partial/drought_and_frost",
+sim_part <- c("D:/simulations/phenofit/present/fitted/abies_alba/partial/drought_frost",
               "D:/simulations/phenofit/present/fitted/fagus_sylvatica/partial/relmax",
               "D:/simulations/phenofit/present/fitted/quercus_robur/partial",
-              "D:/simulations/phenofit/present/fitted/betula_pendula/partial/frost_mat",
+              "D:/simulations/phenofit/present/fitted/betula_pendula/partial/expfrost_flo_mat",
               "D:/simulations/phenofit/present/fitted/picea_abies/partial/dgt_flo_mat",
               "D:/simulations/phenofit/present/fitted/quercus_pubescens/partial",
               "D:/simulations/phenofit/present/fitted/fraxinus_excelsior/partial",
               "D:/simulations/phenofit/present/fitted/larix_decidua/partial")
 
-fit_part <- c(file.path(fit_dir, "abies_alba", "partial/drought_and_frost"),
+fit_part <- c(file.path(fit_dir, "abies_alba", "partial/drought_frost"),
               file.path(fit_dir, "fagus_sylvatica", "partial/relmax"),
               file.path(fit_dir, "quercus_robur", "partial"),
-              file.path(fit_dir, "betula_pendula", "partial/frost_mat"),
+              file.path(fit_dir, "betula_pendula", "partial/expfrost_flo_mat"),
               file.path(fit_dir, "picea_abies", "partial/dgt_flo_mat"),
               file.path(fit_dir, "quercus_pubescens", "partial"),
               file.path(fit_dir, "fraxinus_excelsior", "partial"),
@@ -97,7 +97,7 @@ if(reload_data_fig6){
     # Partial
     cat("   - partial calibration")
     
-    if(species[s] %in% c("Betula\npendula", "Fagus\nsylvatica", "Picea\nabies")){
+    if(species[s] %in% c("")){
       cal <- paste0("subset",rep(1:1, each = 5),"_rep", 1:5)
     }else if(species[s] %in% c("Fraxinus\nexcelsior", "Larix\ndecidua")){
       cal <- NULL

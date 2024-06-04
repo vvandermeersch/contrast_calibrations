@@ -73,7 +73,7 @@ dates_df2 <- dates_df %>%
 
 endodormancy <- ggplot(data = dates_df2 %>% dplyr::filter(var == "dormancy_date")) +
   geom_boxplot(aes(x = mod, y = index, fill = as.factor(clust), color = as.factor(clust)), 
-               outlier.shape = NA, alpha = 0.3, linewidth = 0.3) +
+               outlier.shape = NA, alpha = 0.3, linewidth = 0.22) +
   theme_minimal() +
   scale_fill_manual(values = c("#577590", "#43AA8B", "#957fc6", '#f9c74f', "#F9844A"),
                     breaks = c("1_1", "1_2", "3_1", "2_1", "2_2")) +

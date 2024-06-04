@@ -9,9 +9,9 @@ species <- "fagus_sylvatica"
 
 if(reload_data_fig1){
   fitted_rast <- sum(rast(lapply(calibrations, function(c){
-    sim_dir <- file.path(wd, "data", "simulations", "historical", "ERA5-LAND")
+    sim_dir <- file.path(wd, "data", "simulations", "paleo", "11500BP")
     output <- read_mean_outputvalue(file.path(sim_dir, species, "pbm", c), 
-                                    years = c(1970:2000), model = "PHENOFIT", output_var = "Fitness")
+                                    years = c(-11514:-11485), model = "PHENOFIT", output_var = "Fitness")
     output <- rast(output[c(2,1,3)])
     background <- ifel(is.na(output), NA, 0) %>% crop(ext(-10.35, 34.85, 34.65, 70.55))
     
@@ -21,16 +21,16 @@ if(reload_data_fig1){
     return(output)
     
   }))) %>% crop(ext(-10.35, 34.85, 34.65, 70.55))
-  saveRDS(fitted_rast, file = file.path(wd, "figures", "data", "fig1", "fitted_map_historical.rds"))
+  saveRDS(fitted_rast, file = file.path(wd, "figures", "data", "fig1", "fitted_map_paleo11500BP.rds"))
 }else{
-  fitted_rast <- readRDS(file = file.path(wd, "figures", "data", "fig1", "fitted_map_historical.rds"))
+  fitted_rast <- readRDS(file = file.path(wd, "figures", "data", "fig1", "fitted_map_paleo11500BP.rds"))
 }
 
 # Load background 
-sim_dir <- file.path(wd, "data", "simulations", "historical", "ERA5-LAND")
+sim_dir <- file.path(wd, "data", "simulations", "paleo", "11500BP")
 output <- read_mean_outputvalue(file.path(sim_dir, species, "pbm", "subset1_rep1"), 
-                                years = c(1970:2000), model = "PHENOFIT", output_var = "Fitness")
-output <- rast(output[c(2,1,3)])
+                                years = c(-11514:-11485), model = "PHENOFIT", output_var = "Fitness")
+output <- extend(rast(output[c(2,1,3)]), ext(-10.35, 34.85, 34.65, 70.55))
 background <- ifel(is.na(output), 1, 0) %>% crop(ext(-10.35, 34.85, 34.65, 70.55))
 rm(output)
 
@@ -53,9 +53,9 @@ fitted_map <- ggplot() +
 
 if(reload_data_fig1){
   expert_rast <- sum(rast(lapply("expert", function(c){
-    sim_dir <- file.path(wd, "data", "simulations", "historical", "ERA5-LAND")
+    sim_dir <- file.path(wd, "data", "simulations", "paleo", "11500BP")
     output <- read_mean_outputvalue(file.path(sim_dir, species, "pbm", c), 
-                                    years = c(1970:2000), model = "PHENOFIT", output_var = "Fitness")
+                                    years = c(-11514:-11485), model = "PHENOFIT", output_var = "Fitness")
     output <- rast(output[c(2,1,3)])
     
     threshold <- readRDS(file.path(fit_dir, "ERA5-LAND", species, paste0(c, ".rds")))$best_threshold
@@ -64,9 +64,9 @@ if(reload_data_fig1){
     return(output)
     
   }))) %>% crop(ext(-10.35, 34.85, 34.65, 70.55))
-  saveRDS(expert_rast, file = file.path(wd, "figures", "data", "fig1", "expert_map_historical.rds"))
+  saveRDS(expert_rast, file = file.path(wd, "figures", "data", "fig1", "expert_map_paleo11500BP.rds"))
 }else{
-  expert_rast <- readRDS(file = file.path(wd, "figures", "data", "fig1", "expert_map_historical.rds"))
+  expert_rast <- readRDS(file = file.path(wd, "figures", "data", "fig1", "expert_map_paleo11500BP.rds"))
 }
 
 
@@ -87,8 +87,8 @@ expert_map <- ggplot() +
   coord_cartesian(expand = FALSE) +
   lims(x = c(-10.35, 34.85), y = c(34.65, 70.55))
 
-historical_maps <- 
+paleo_maps <- 
   ggdraw(plot_grid(NULL, expert_map + theme(legend.position = "none"), fitted_map,
-                   ncol = 3, rel_widths = c(0.1,1,1), labels = c("", "a.", "b."), label_size = 10, hjust = -2, vjust = 3)) +
+            ncol = 3, rel_widths = c(0.1,1,1), labels = c("", "c.", "d."), label_size = 10, hjust = -2, vjust = 3)) +
   geom_text(
-    aes(x = 0.025, y = 0.5, label = "Historical (1970-2000)"), angle = 90, size = 2.7)
+    aes(x = 0.025, y = 0.5, label = "Distant past (11500BP)"), angle = 90, size = 2.7)

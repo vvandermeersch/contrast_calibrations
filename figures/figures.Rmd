@@ -32,18 +32,26 @@ library(tidyr)
 library(ModelMetrics)
 
 source(file.path(wd, "scripts", "functions", "read_mean_outputvalue.R"))
+source(file.path(wd, "scripts", "functions", "read_species_file.R"))
 
 ```
 
 ## Figure 1
 
-```{r fig1, fig.height = 65, eval = FALSE}
+```{r fig1, fig.height = 110, fig.width = 170, eval = TRUE}
 reload_data_fig1 <- FALSE
 
 source(file.path(wd, "figures", "scripts", "fig1", "boxplot_similarity.R"))
 source(file.path(wd, "figures", "scripts", "fig1", "historical_maps.R"))
+source(file.path(wd, "figures", "scripts", "fig1", "paleo_maps.R"))
 
-plot_grid(historical_maps, boxplot_similarity, rel_widths = c(0.7, 0.33), labels = c("", "c."), label_size = 10, vjust = 3)
+# plot_grid(historical_maps, boxplot_similarity, rel_widths = c(0.7, 0.33), labels = c("", "c."), label_size = 10, vjust = 3)
+
+plot_grid(
+  plot_grid(historical_maps, paleo_maps, ncol = 1),
+  plot_grid(NULL, boxplot_similarity, NULL, ncol = 1, rel_heights = c(0.11, 0.8, 0.11)),
+  rel_widths = c(0.7, 0.33), labels = c("", "e."), label_size = 10, vjust = 5)
+
 
 ```
 
@@ -53,8 +61,16 @@ plot_grid(historical_maps, boxplot_similarity, rel_widths = c(0.7, 0.33), labels
 reload_data_fig2 <- FALSE
 
 source(file.path(wd, "figures", "scripts", "fig2", "boxplot_dates.R"))
+source(file.path(wd, "figures", "scripts", "fig2", "cluster_tree.R"))
 
-plot_grid(endodormancy, ecodormancy, maturation, senescence, labels = c("a.", "b.", "c.", "d."), label_size = 10, vjust = 1.5)
+plot_grid(
+  cluster_tree,
+  plot_grid(endodormancy, ecodormancy, maturation, senescence, labels = c("b.", "c.", "d.", "e."), label_size = 10, vjust = 1.5),
+  nrow = 1, rel_widths = c(0.2,0.9),
+  labels = c("a.", ""), label_size = 10, vjust = 1.5
+)
+
+
 
 
 ```
@@ -63,7 +79,7 @@ plot_grid(endodormancy, ecodormancy, maturation, senescence, labels = c("a.", "b
 
 ## Figure 4
 
-```{r fig4, fig.height = 100, fig.width = 180, eval = FALSE}
+```{r fig4, fig.height = 100, fig.width = 180, eval = TRUE}
 reload_data_fig4 <- FALSE
 
 source(file.path(wd, "figures", "scripts", "fig4", "load_pheno_data.R"))
@@ -85,7 +101,8 @@ plot_grid(leafout_rmse_boxplots,
           ncol = 3, 
           rel_heights = c(0.6, 0.6, -0.03, 0.3),
           rel_widths = c(1, -0.15, 1),
-          align = "v", axis = "lr")
+          labels = c("a.", "", "b.", "c.", "", "d."), label_size = 10, 
+          align = "v", axis = "lr", hjust = c(-0.5, 0, -2.5, -0.5, 0, -2.5))
 
 ```
 
@@ -105,7 +122,7 @@ plot_grid(barplot, param_boxplot, labels = c("a.", "b."), label_size = 10)
 ## Figure 6
 
 ```{r fig6, fig.height = 65, eval = TRUE}
-reload_data_fig6 <- FALSE
+reload_data_fig6 <- TRUE
 
 source(file.path(wd, "figures", "scripts", "fig6", "barplot.R"))
 
@@ -114,8 +131,13 @@ barplot_partial
 
 ## Figure 7 
 
-```{r fig7, fig.height = 65, fig.width = 60, eval = TRUE}
+```{r fig7, fig.height = 70, fig.width = 160, eval = TRUE}
 reload_data_fig7 <- FALSE
+
+labels <- c(`fagus_sylvatica` = "Fagus\nsylvatica",
+            `quercus_robur` = "Quercus\nrobur",
+            `picea_abies` = "Picea\nabies",
+            `betula_pendula` = "Betula\npendula")
 
 species <- "fagus_sylvatica"
 source(file.path(wd, "figures", "scripts", "fig7", "load_pheno_data.R"))
@@ -123,26 +145,10 @@ models <- c("expert",paste0("partial/relmax/subset",rep(1:2, each = 5),"_rep", 1
 stades <- c(86)
 ncores <- 11
 source(file.path(wd, "figures", "scripts", "fig7", "maturation_RMSE.R"))
-plot_grid(maturation_rmse_boxplots, without_maturation_boxplot, 
-          rel_heights = c(0.65,0.35), ncol = 1, align = "v", axis = "lr")
-
-species <- "picea_abies"
-source(file.path(wd, "figures", "scripts", "fig7", "load_pheno_data.R"))
-models <- c("expert",paste0("partial/dgt_flo_mat/subset",rep(1, each = 5),"_rep", 1:5))
-stades <- c(60:65)
-ncores <- 6
-source(file.path(wd, "figures", "scripts", "fig7", "flowering_RMSE.R"))
-plot_grid(flowering_rmse_boxplots, without_flowering_boxplot, 
-          rel_heights = c(0.65,0.35), ncol = 1, align = "v", axis = "lr")
-
-species <- "betula_pendula"
-source(file.path(wd, "figures", "scripts", "fig7", "load_pheno_data.R"))
-models <- c("expert",paste0("partial/frost_flo_mat/subset",rep(1, each = 5),"_rep", 1:5))
-stades <- c(60:65)
-ncores <- 6
-source(file.path(wd, "figures", "scripts", "fig7", "flowering_RMSE.R"))
-plot_grid(flowering_rmse_boxplots, without_flowering_boxplot, 
-          rel_heights = c(0.65,0.35), ncol = 1, align = "v", axis = "lr")
+data_boxplotf <- data_boxplot
+data_matf <- data_mat
+levels(data_boxplotf$mod)[levels(data_boxplotf$mod)=="expert"] <- "expertf"
+levels(data_matf$mod)[levels(data_matf$mod)=="expert"] <- "expertf"
 
 species <- "quercus_robur"
 source(file.path(wd, "figures", "scripts", "fig7", "load_pheno_data.R"))
@@ -150,8 +156,77 @@ models <- c("expert",paste0("partial/subset",rep(1:2, each = 5),"_rep", 1:5))
 stades <- c(86)
 ncores <- 11
 source(file.path(wd, "figures", "scripts", "fig7", "maturation_RMSE.R"))
-plot_grid(maturation_rmse_boxplots, without_maturation_boxplot, 
-          rel_heights = c(0.65,0.35), ncol = 1, align = "v", axis = "lr")
+data_boxplot <- rbind(data_boxplot, data_boxplotf)
+data_mat <- rbind(data_mat, data_matf)
+
+source(file.path(wd, "figures", "scripts", "fig7", "maturation_plot.R"))
+
+species <- "betula_pendula"
+source(file.path(wd, "figures", "scripts", "fig7", "load_pheno_data.R"))
+models <- c("expert", paste0("partial/expfrost_flo_mat/subset",rep(1:2, each = 5),"_rep", 1:5))
+stades <- c(60:65)
+ncores <- 6
+source(file.path(wd, "figures", "scripts", "fig7", "flowering_RMSE.R"))
+data_boxplotf <- data_boxplot
+data_flof <- data_flo
+levels(data_boxplotf$mod)[levels(data_boxplotf$mod)=="expert"] <- "expertf"
+levels(data_flof$mod)[levels(data_flof$mod)=="expert"] <- "expertf"
+
+species <- "picea_abies"
+source(file.path(wd, "figures", "scripts", "fig7", "load_pheno_data.R"))
+models <- c("expert",paste0("partial/dgt_flo_mat/subset",rep(1:2, each = 5),"_rep", 1:5))
+stades <- c(60:65)
+ncores <- 6
+source(file.path(wd, "figures", "scripts", "fig7", "flowering_RMSE.R"))
+data_boxplot <- rbind(data_boxplot, data_boxplotf)
+data_flo <- rbind(data_flo, data_flof)
+
+source(file.path(wd, "figures", "scripts", "fig7", "flowering_plot.R"))
+
+source(file.path(wd, "figures", "scripts", "fig7", "parameter_boxplot2.R"))
+
+plot_grid(
+  plot_grid(maturation_rmse_boxplots, NULL, without_maturation_boxplot, 
+          rel_heights = c(0.65, -0.02, 0.35), ncol = 1, align = "v", axis = "lr"),
+  plot_grid(flowering_rmse_boxplots, NULL, without_flowering_boxplot, 
+          rel_heights = c(0.65, -0.02, 0.35), ncol = 1, align = "v", axis = "lr"),
+  parameter_boxplot,
+  nrow = 1, rel_widths = c(1,1,1),
+  labels = c("a.", "b.", "c."), label_size = 10)
+  
+
+
+
+# plot_grid(maturation_rmse_boxplots, without_maturation_boxplot, 
+#           rel_heights = c(0.65,0.35), ncol = 1, align = "v", axis = "lr")
+# 
+# species <- "quercus_robur"
+# source(file.path(wd, "figures", "scripts", "fig7", "load_pheno_data.R"))
+# models <- c("expert",paste0("partial/subset",rep(1:2, each = 5),"_rep", 1:5))
+# stades <- c(86)
+# ncores <- 11
+# source(file.path(wd, "figures", "scripts", "fig7", "maturation_RMSE.R"))
+# plot_grid(maturation_rmse_boxplots, without_maturation_boxplot, 
+#           rel_heights = c(0.65,0.35), ncol = 1, align = "v", axis = "lr")
+# 
+# species <- "picea_abies"
+# source(file.path(wd, "figures", "scripts", "fig7", "load_pheno_data.R"))
+# models <- c("expert",paste0("partial/dgt_flo_mat/subset",rep(1, each = 5),"_rep", 1:5))
+# stades <- c(60:65)
+# ncores <- 6
+# source(file.path(wd, "figures", "scripts", "fig7", "flowering_RMSE.R"))
+# plot_grid(flowering_rmse_boxplots, without_flowering_boxplot, 
+#           rel_heights = c(0.65,0.35), ncol = 1, align = "v", axis = "lr")
+# 
+# species <- "betula_pendula"
+# source(file.path(wd, "figures", "scripts", "fig7", "load_pheno_data.R"))
+# models <- c("expert",paste0("partial/frost_flo_mat/subset",rep(1, each = 5),"_rep", 1:5))
+# stades <- c(60:65)
+# ncores <- 6
+# source(file.path(wd, "figures", "scripts", "fig7", "flowering_RMSE.R"))
+# plot_grid(flowering_rmse_boxplots, without_flowering_boxplot, 
+#           rel_heights = c(0.65,0.35), ncol = 1, align = "v", axis = "lr")
+
 
 
 

@@ -1,0 +1,413 @@
+\documentclass[letterpaper,8pt]{extarticle}  % "extarticle" gives more global font size options. use 8pt with Montserrat and 10pt with EBGaramond
+\usepackage{import}
+\usepackage{local}
+\usepackage[left=.95in,top=.65in,bottom=.75in,right=.85in]{geometry}
+\usepackage{lipsum} % to generate text
+
+\title{(Temporary...) Can inverse calibration help improving process-based species distribution models?}
+
+\author{%
+\textbf{Victor Van der Meersch\textcolor{Accent}{\textsuperscript{1*}}, %
+Isabelle Chuine\textcolor{Accent}{\textsuperscript{1}} %
+}\\
+\begin{small}\textcolor{Accent}{\textsuperscript{1}}CEFE, CNRS, Univ. Montpellier - 34000 Montpellier, France \\ 
+\textcolor{Accent}{\textsuperscript{*}}Correspondence: \textcolor{Accent}{victor.vandermeersch@cefe.cnrs.fr} \\ \end{small}
+}
+
+
+\date{}
+\begin{document}
+
+\maketitle
+
+\section*{Abstract}
+
+\begin{doublespacing}
+\begin{linenumbers}
+
+\noindent
+\textbf{...}
+
+%\begin{multicols*}{2} % if you want two columns
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+
+% Isabelle: give a more general point of view? 
+% How to better calibrate models, incorporate more data, to make the most of all the data and knowledge available? And quantify the relevant ecological drivers... to assess species vulnerability
+
+% Marta Benito: trait-based SDMs, refine SDM with measurements from large networks of common gardens - https://doi.org/10.1111/nph.15716, + more transferable https://nsojournals.onlinelibrary.wiley.com/doi/full/10.1111/ecog.05179 ?
+% Using mechanistic model outputs as predictors, e.g. https://doi-org.inee.bib.cnrs.fr/10.1111/gcb.13454...
+% Compare statistical model ability to reproduce the output of a PB model ("perfect model approach") of crop yield -> statistical models are usefull, in particular are at broader spatial scales (https://doi-org.inee.bib.cnrs.fr/10.1016/j.agrformet.2010.07.008)
+% blend mechanstic and phenomenological approaches: https://link.springer.com/article/10.1007/s10980-013-9927-4, to keep mechanistic models tractable, OR https://onlinelibrary.wiley.com/doi/full/10.1111/gcb.13570
+
+% Isabelle: there are many different models, maybe we should focus on parameter estimation -  the problem has more to do with parameter values than process representation? (but recent improvement in plant hydraulics modelling, still a lack of knowledge about dormancy... ?)
+% I don't know if I really agree: see https://doi-org.inee.bib.cnrs.fr/10.1038/nclimate1916 
+% => a greater proportion of the uncertainty is due to variations among crop models, even after calibration with  same grain yield and growth dynamic data 
+% => AND Lack of clarity about hypotheses + re-examination of basic processes, reduction of complexity and increased transparency are all necessary for progress (Harrison et al 2021...)
+
+% "Model parameter estimation tends to be ad hoc and is frequently based on single values"
+% "the incorporation of new processes often increases further the number of poorly known parameters that need to be specified"
+
+There have been repeated calls for focusing efforts on the development of process-based models in ecology \citep{Urban2016, Singer2016, Pilowsky2022}. Because they describe cause-to-effect relationships, they are assumed to provide more robust projections in novel climatic conditions. However, process-based models are still applicable to too few species \citep{Evans2016}, and their widespread use would require to address the two main source of errors: the model's structure and the values of its parameters.
+
+The structure of a model is defined by its underlying assumptions and level of simplification. Our understanding of the processes that drive species functioning and ecosystem dynamics has grown substantially in the last decades. This has led to significant improvements in how we represent these processes in models, e.g. plant hydraulics \citep{Ruffault2022} or ... %(but some remains challenging: dormancy, carbon allocation...) 
+These advancements enable researchers to explore complex interacting mechanisms, providing useful insights and tools for determining conservation and management strategies in a changing world \citep{Urban2016}. However, the incorporation of new detailed processes can become a trap \citep{Franklin2020}, as it often increases the number of poorly known parameters and limits the number of species for which these models can be applied. %parameter burden!
+
+Indeed, process-based modeling depends a great deal on the calibration and the availability of data \citep{Cabral2017}. In a classical framework, parameters are typically determined from experiments, measurements, and expert knowledge. When it is too difficult or impossible, a cost-effective solution to the problem of estimating many parameters is the use of inverse modeling to bridge observations and simulations \citep{Evans2016}. This involves adjusting the parameters until the model outputs closely match the observed data, often using an optimization algorithm. Resulting parameter values are conditional on model structure and on observed data: the model structure explicitly constrains how climatic factors influence species performance, and the parameters and simulation outputs depend on the observations in a similar way to statistical models \citep{Zhang2024}. Inverse modeling is frequently used in process-based models to infer model parameters or at least some of them. Process-related data can be used to fit some part of the models separately or sequentially, e.g. tree ring series have been used to calibrate a sapwood growth submodel \citep{DeCaceres2023}, and phenological records are frequently used to calibrate phenological submodels \citep{Chuine2013}. Several data sources can also be combined to calibrate several processes simultaneously in a model-data fusion fashion \citep[e.g.][]{Trotsiuk2020}. This allows to integrate data at multiple spatiotemporal scales \citep{Hartig2012, Niu2014}, and reduce potential overfitting issues \citep{Bacour2023}.
+
+However, being able to reproduce observed data, even from several sources, does not guarantee converging towards biologically sound parameter estimates. First, models are a simplification of reality for several reasons. Whether intentional or not, this simplification may miss important processes \citep{Forrester2021}, and inverse calibration may thus lead to parameter values that compensate for these missing processes. Second, even in a structurally correct model, measurements are not likely to coincide precisely with what the model simulates \citep{Zhang2024}. Third, some parameters might also be model-specific (i.e. conceptual ?), and not correspond to something observable nor measurable.
+
+Regarding process-based species range models, inverse modelling can benefit from species distribution data available across large scales \citep{Evans2016}. These data have traditionally only been used by correlative niche models, and attempts to use them to calibrate process-based models have been rare \citep{Higgins2012, VanderMeersch2023}, probably because this does not align well with the general idea of this modelling approach. While using only species occurrence data to infer the values of many parameters can be seen as a brute-force approach, such inverse calibrated process-based models may outperform correlative models and better reproduce the distributional patterns of the species on different spatio-temporal situations \citep{Higgins2020, VanderMeersch2024}.  Moreover, it could help making them easier to apply for a greater number of species and on a larger scale \citep[e.g.][]{Conradi2024}. However, a good model fit to observations, even over a long-term period, does not necessarily imply a good estimation of the processes truly responsible for these observations. 
+To reach high levels of confidence in model projections,  \cite{VanderMeersch2024} showed that ecological processes should still be simulated with a high level of mechanistic realism and that using species occurrence data alone to calibrate models may not provide the highest model performance, especially in novel conditions. 
+
+Here, we investigate the differences between the parameters obtained after a classical calibration and those inferred using inverse calibration, and what it implies in terms of simulated processes and model performances. We seek to understand whether and to what extent inverse calibration using species occurrence (i) can lead to realistic parameters and processes and (ii) may help us improving process-based models. To do this, we focus on PHENOFIT, a process-based model... We first examined in detail 100 calibrations obtained for \emph{Fagus sylvatica}, analyzing the compensations between parameters and the realism of the simulated processes against observations all over Europe. We then investigated whether inverse calibration could facilitate parameter value estimation of some processes for which we lack data, by using CMA-ES to improve eight species parameter sets. ...
+
+
+%\cite{Higgins2012} modified a simple theoretical model of plant growth (initially without environmental forcing) with flexible (mostly empirical?) functions to take into account monthly bioclimatic variables. The parameters of this model were then inferred using a differential evolution genetic algorithm. It has been shown to perform better than a common correlative species distribution model outside the spatial domain used for model calibration \citep{Higgins2020}. 
+% The model was designed specifically for this inverse modelling experiment: it uses only monthly environmental variables, and thus has a relatively low complexity compared to the majority of other process-based approaches. 
+%In the same spirit, \cite{VanderMeersch2023} calibrated PHENOFIT, a more complex model running at a daily step, using only species distribution data. Model was treated as a black box, and a powerfull evolutionnary algorithm (CMA-ES) was used to optimize parameter values. This "fitted" PHENOFIT achieved a high goodness-of-fit (AUC~0.9) during calibration, and was then shown to outperform several correlative models in predicting past vegetation dynamics over the Holocene, in very dissimilar climatic conditions \citep{paperrobustnesspubliéunjourinchallah}. 
+
+
+
+%In particular, PHENOFIT was not specifically designed for inverse calibration. The classical way of using the model is to run simulations with an "expert" set of parameter values (determined mainly from experiments and measurements), and most processes simulated within the model can be confronted with field data. 
+%It thus offers a great opportunity to investigate the differences between these parameters (\emph{best-guess} estimates) and those inferred using inverse calibration, and what it implies in terms of simulated processes and model performances. Here, we examine in detail these discrepancies to understand whether and to what extent inverse calibration using species occurrence (i) can lead to realistic parameters and processes and (ii) may help us improving process-based models. To do this, we first examined in detail the calibrations obtained for \emph{Fagus sylvatica} in \citet{VanderMeersch2023}, analyzing the compensations between parameters and the realism of the simulated processes against observations all over Europe. We then investigated whether inverse calibration could facilitate parameter value estimation of some processes for which we lack data, by using CMA-ES to improve eight species parameter sets. ...
+
+% Few initial ideas:
+% => compensate for missing information + compensation between processes\\
+% => missing process OR problems with some submodels?\\
+% => bias in the data?\\
+% => what can we learn from such large scale data?
+% => crossing scales?  inform and better constrain critical niche parameters?
+% => is the process model used appropriate?
+
+%$\rightarrow$ are the parameter values realistic? \\
+%$\rightarrow$ to what extent can we use inverse calibration to improve models? \\
+
+
+%(\Cref{fig:1A,fig:1B})
+
+
+%-------------------------------------------------------------------%
+\section{Materials and Methods}
+
+\subsection{Process-based modeling with PHENOFIT}
+
+PHENOFIT is a process-based model developed for temperate tree species which has been used to project their distributions using climatic conditions. It estimates the probability of presence of an adult tree defined as the product of the probability of survival and the probability of reproductive success at a yearly time step (i.e. fitness). 
+Each phenological event (leaf unfolding, flowering, fruit maturation and leaf senescence) is simulated with daily climate forcing, and the model assumes that a tree species range depends mainly on the synchronization of its timing of development to the local abiotic conditions. Thus, for example, the fitness can be reduced when a severe drought event occurs between budburst and leaf senescence, or when a substantial proportions of leaves and flowers that take part to the development of the fruits are killed by frost. In the following, we will provide a more detailed description of three important processes of PHENOFIT, which will be discussed further in this article.
+
+\subsubsection{Leaf unfolding submodel}
+IL FAUT RESTER GENERIQUE ICI. JE L'ECRIRAI.
+% This model, called UniChill, is a sequential two-phase model (endodormancy and ecodormancy phases).  The endodormancy phase begins at day $t_0$. The daily rate of chilling $R_c$ is defined as a threshold function of the daily mean temperature $T_d$:
+% \begin{linenomath*}
+%     \begin{equation}
+%         R_c(T_d) = \left\{ \begin{array}{ll}
+%       0 & T_d \geq T_b \\
+%       1 & T_d < T_b \\
+%     \end{array} 
+%     \right.
+%     \end{equation}
+% \end{linenomath*}
+% where $T_b$ is the threshold temperature below which the bud  accumulates chilling units. The endodormancy releases when the accumulated rate of chilling has reached the level $C_{crit}$.
+
+% Then, the ecodormancy phase begins. The daily rate of forcing $R_f$ is defined as a sigmoid function of the daily mean temperature $T_d$:
+% \begin{linenomath*}
+%     \begin{equation}
+%        R_f(T_d) = \frac{1}{1 + e^{-d_T(T_d-T_{50})}}
+%     \end{equation}
+% \end{linenomath*}
+% where $d_T$ is the slope and $T_{50}$ the mid-response temperature. Bud break occurs when the accumulated rate of forcing has reached the level $F_{crit}$.
+
+% Thus, the UniChill model has 6 parameters: $t_0$, $T_b$ and $C_{crit}$ for the first phase, $d_T$, $T_{50}$ and $F_{crit}$ for the second phase. 
+
+\subsubsection{Frost hardiness submodel}
+
+Frost hardiness of vegetative and reproductive organs is modelled according to \citet{Leinonen1996}, as a function of the additive effect of photoperiod and temperature, and depends on the state of development (or phenological state): hardiness varies dynamically between a maximum value reached during bud winter dormancy and a minimum value reached at bud break and flowering. The model has several parameters, including the minimum level of frost hardiness $FH_{min}$ and the maximum level of frost hardiness ($FH_{max}$) conveyed both by photoperiod ($FHp_{max}$) and temperature $FHt_{max}$)   (see Appendix for a detailed description of the model). 
+
+\subsubsection{Fruit maturation submodel}
+
+Fruits development is modeled in two phases:  a first phase of cell multiplication and growth, and a second phase of photosynthetic assimilate accumulation. This second phase is the most important, and depends on several components including the proportion of leaves that resisted frost, water availability and photosynthetic activity. The latter varies according to temperature conditions following the unimodal function of \citet{Wang1998} which involves an optimal temperature parameter $T_{opt}$. Fruits are considered ripe when their state of development has reached the parameter $Mat_{moy}$ ($\pm3\sigma$).  Fruit maturation is integrated over time and starts at $Mat_{moy}$ $-3\sigma$. and ends at $Mat_{moy}$ $+3\sigma$.
+
+\subsubsection{Climate and soil data used to run the model}
+
+Historical simulations (1970-2000) were run with climate variables extracted from the ERA5-Land hourly dataset \citep{MunozSabater2021}. As in \citet{VanderMeersch2023}, we computed daily mean values of several variables: temperatures (minimum, mean and maximum), dewpoint temperature, precipitation, global radiation and wind speed. Daily potential evapotranspiration was calculated using the standard FAO Penman–Monteith equation \citep{Allen1998}. Soil water holding capacity was calculated with the field capacity and wilting point data from EU-SoilHydroGrids \citep{Toth2017} and the percentage of coarse fragments from SoilGrids250m \citep{Hengl2017}.
+
+Paleosimulations were run using the same climatic forcing as in \citet{VanderMeersch2024}. Daily data were generated, using the weather generator GWGEN \citep{Sommer2017}, from the monthly simulations of HadCM3B-M2.1 coupled general circulation model \citep{Armstrong2019}.
+
+\subsection{Model calibration}
+
+\subsubsection{Expert calibration}
+
+PHENOFIT has been calibrated for several European tree species, and validated  by comparing their historical and Holocene distribution to the modelled fitness  \citep{Saltre2013, Duputie2015, Gauzere2020, VanderMeersch2024}. Some parameters were directly measured or found in the literature, e.g. the frost hardiness submodel parameters. Phenology submodel parameters were inferred by inverse modelling using phenological data across Europe (provided through the TEMPO data portal \url{data.pheno.fr}, and the PEP725 database \url{pep725.eu}). %Finally, a few parameters are prescribed based on expert knowledge as no data to estimate them exist. 
+This expert calibration of the model does not involve species occurrence data at any point.
+
+\subsubsection{Inverse calibration with CMA-ES algorithm and species occurrence data}
+
+Following \citet{VanderMeersch2023}, we calibrated PHENOFIT using the covariance matrix adaptation evolution strategy (CMA-ES), which  is a robust algorithm for complex optimization problems \citep{Hansen2001}. It is inspired by Darwin's theory of evolution to find the most fit parameter sets. We ran the CMA-ES calibration on the multicore cluster GenOuest \url{genouest.org}.
+
+The objective function for the calibration was the area under the receiver operating characteristic curve (AUC), to maximize model discriminating capacity (i.e. potential to distinguish between species presences and absences). To compute the AUC, we used the same occurrence data as in REF. These were mainly extracted from the EU-Forest dataset \citep{Mauri2017} completed with presence records extracted from the Global Biodiversity Information Facility (\url{gbif.org}) to account for tree occurrences outside forests. We removed GBIF occurrences outside natural species ranges as defined by Atlas Flora Europeae \citep{AFE2005} and EuroVegMap \citep{EVM2003}. In order to reduce calibration computational costs, we selected subsets of 1000 occurrences,  based on a k-means clustering to make sure that all species environmental preferences were proportionally represented (see \citet{VanderMeersch2023} for details). The EU-Forest cells where the species is not reported present were considered as (pseudo-)absences.
+
+ First, we ran inverse calibrations for eight different species (\emph{Abies alba}, \emph{Betula pendula}, \emph{Fagus sylvatica}, \emph{Fraxinus excelsior}, \emph{Larix decidua}, \emph{Picea abies}, \emph{Quercus pubescens} and \emph{Quercus robur}), using species occurrences and the same parameter bounds as in \citet{VanderMeersch2023} in order to remain in realistic parameter ranges. XX calibrations were realized for each species except for \textit{Fagus sylvatica} (100 calibrations  \citet{VanderMeersch2023}). These calibrations are called \emph{full} inverse calibrations in the following (all parameters optimized at once). Second, we ran a second set of inverse calibrations to optimize only a subset of parameters. These parameters corresponded to processes that we identified as responsible for false absence errors (Fig4) in the predictions of the expert calibration version of the model. Other parameters were fixed at the expert values. For each species, we ran 5 calibrations on 2 different occurrence subsets (i.e. 10 repetitions). These calibrations are called \emph{partial} inverse calibrations in the following. 
+
+\subsection{Parameter estimates' evaluation}
+
+Clustering des calibrations...\\
+Main limiting factors (fig4)...\\
+Phenological data...
+
+\section{Results}
+
+\subsection{Coherent and stable predictions despite process discrepancies}
+
+\begin{itemize}
+
+\item Agreement between calibrations, relatively stable in different conditions than calibration (maps + similarity index), \emph{F. sylvatica}\\
+$\rightarrow$ divergences from default/classical/expert
+
+\begin{figure}[htpb]
+\centering
+\begin{subcaptiongroup}
+\phantomcaption\label{fig:1A} 
+\phantomcaption\label{fig:1B}
+\phantomcaption\label{fig:1C}
+\phantomcaption\label{fig:1D}
+\phantomcaption\label{fig:1E}
+\end{subcaptiongroup}
+\includegraphics{fig1-1.pdf}
+\caption{Simulated presence of \emph{F. sylvatica} with \textbf{(a,c)} the expert parametrization and \textbf{(b,d)} the set of 100 inverse calibrations, in the historical climatic conditions \textbf{(a,b)} and in the paleoclimatic conditions \textbf{(c,d)}. \textbf{(e)} S\o rensen dissimilarity between inverse calibrations, and between expert calibration and inverse calibrations. S\o rensen dissimilarity between 5 different correlative models is shown for comparison. BP stand for "Before Present" (1950).}
+\label{fig:1}
+\end{figure}
+
+\item But quite different parameter values obtained, and resulting processes\\
+do we get a narrower range than the prior range ?\\
+$\rightarrow$ Figure: selected parameter distribution, associated boxplots on dates with clusters
+
+\begin{figure}[htpb]
+\centering
+\begin{subcaptiongroup}
+\phantomcaption\label{fig:2A} 
+\phantomcaption\label{fig:2B}
+\phantomcaption\label{fig:2C}
+\phantomcaption\label{fig:2D}
+\phantomcaption\label{fig:2E}
+\end{subcaptiongroup}
+\includegraphics{fig2-1.pdf}
+\caption{\textbf{(a)} Partition of the 100 inverse calibrations for \emph{F.sylvatica} after a two-step clustering based on the phenological processes simulated: \textbf{(b)} bud endodormancy, \textbf{(c)} bud ecodormancy, \textbf{(d)} fruit maturation and \textbf{(e)} leaf senescence. Note that we do not show flowering as it occurs almost simultaneously with budburst, since beech buds are mixed.}
+\label{fig:2}
+\end{figure}
+
+\subsection{Realism...}
+
+\item These can lead to model outputs which are unrealistic \\
+$\rightarrow$ Figure: RMSE on phenological dates \\
+$\rightarrow$ Figure: XY plot flowering/maturation \\
+$\rightarrow$ But some are not so bad...
+
+\begin{figure}[htpb]
+\hspace*{-1cm}
+\centering
+\begin{subcaptiongroup}
+\phantomcaption\label{fig:3A} 
+\phantomcaption\label{fig:3B}
+\phantomcaption\label{fig:3C}
+\phantomcaption\label{fig:3D}
+\phantomcaption\label{fig:3E}
+\end{subcaptiongroup}
+\includegraphics{fig4-1.pdf}
+\caption{Root-mean-square error (RMSE) between phenological dates that were observed (between 1970 and 2000) and those that were predicted by the different calibrations, for \textbf{(a)} leaf unfolding, \textbf{(b)} flowering, \textbf{(c)} fruit maturation and \textbf{(d)} leaf senescence. For fruit maturation and leaf senescence, the bottom row plots show the percentage of observations for which the parameter sets predicts that the event does not occur (i.e. no maturation or no leaf senenescence). Colors are based on the clustering shown in Fig. 2, grey corresponds to the expert parameter set. Arrows in the midle indicate the median RMSE for each group.}
+\label{fig:3}
+\end{figure}
+
+\subsection{Partial calibration...}
+
+\item Partial calibration can be a way to improve model performance \\
+$\rightarrow$ Figure: different tests of partial calibration on \emph{Fagus sylvatica} \\
+$\rightarrow$ and other species
+
+%\begin{figure}[htpb]
+%\centering
+%\includegraphics{fig5-1.pdf}
+%\caption{Partial calibrations on \emph{Fagus sylvatica.}}
+%\label{fig:partcalfagus}
+%\end{figure}
+
+\begin{figure}[htpb]
+\hspace*{-0.5cm}
+\centering
+\includegraphics{fig6-1 - icons.pdf}
+\caption{Results of the \emph{partial} calibrations for the eight species considered, where only some of the parameters were optimized. The y-axis shows the percentage of observed presences that are predicted as absences by the model (i.e. \emph{false absences}), and the bar patterns represent the main simulated processes explaining these errors. The bottom row shows the AUC, a standard discrimination performance metric (and the standard deviation in parenthesis).  }
+\label{fig:4}
+\end{figure}
+
+\begin{figure}[htpb]
+\hspace*{-1cm}
+\centering
+\begin{subcaptiongroup}
+\phantomcaption\label{fig:5A} 
+\phantomcaption\label{fig:5B}
+\phantomcaption\label{fig:5C}
+\end{subcaptiongroup}
+\includegraphics{fig7-1 - icons.pdf}
+\caption{Partial calibrations, RMSE when data is available}
+\label{fig:5}
+\end{figure}
+
+\end{itemize}
+
+\section{Discussion}
+
+Our results show that inverse calibration of process-based models does not necessarily lead to realistic parameters and processes. They further demonstrate that inverse calibration can be highly useful as a model diagnostic tool, and, more importantly, to calibrate selected parts of the model where specific data and expert knowledge are lacking, albeit important cautions.
+
+\subsection{Inverse calibration can lead to accurate species range predictions despite unrealistic parameter estimates}
+
+Some parameter sets outperformed the expert calibrations used for this study (especially when few data are available for the expert calibration), but most resulted in larger errors (averages =), up to 2 months in the worst case (\Cref{fig:3}). For some processes, inverse calibration induced even unrealistic functional traits. For example, a significant portion of the calibrations considered beech as an evergreen species, or at least not senescent, in some areas (\Cref{fig:3D}).
+
+Despite similar predictions of species distribution (\Cref{fig:1B}), we observed that simulated processes could strongly diverge between calibrated models. Some calibration runs led for example to a short endodormancy phase, followed by a longer ecodormancy phase, and vice-versa (\Cref{fig:2A,,fig:2B}). This arises because the compensation between these two processes has little effect on the functional trait they regulate, the leaf unfolding date, and thus on the predicted distributions. The non-identifiability of parameter values obtained with inverse calibration is a known issue \citep{He2017, Cameron2022, VanderMeersch2023}, when different sets of parameters may result in equivalent model outputs. Here we show that compensations can occur between components of a same process or between different processes. For example, errors between simulated and observed leafout dates vary greatly across calibrations (\Cref{fig:3A}), suggesting that these errors are compensated by another process for example leaf frost hardiness or fruit development. 
+
+Unexpectedly, these discrepancies in the simulated individual processes did not cause a sharp increase in the dissimilarity between the predictions of the different calibrated models over the Holocene (\Cref{fig:1C,,fig:1D,,fig:1E}), even in the very different climatic conditions of the Early Holocene (Appendix). In other words, while inverse calibrations led sometimes to very different parameter sets and thus very different "phenotypes" (early/late budburst, deciduous/evergreen...), the predictions nevertheless remained consistent across long time scales and novel climatic conditions. Therefore, the optimization algorithm manages to find consistently a similar relationship between climatic conditions and the higher-level model output (fitness), regardless of the divergent lower-level processes (frost hardiness, fruit development, etc). The signal in the occurrence data seems to dominate the model's behavior, as the calibration is able to \emph{memorize} the distribution patterns without necessarily capturing the realistic underlying processes. Such behavior is emphasised by the assumptions and design of the model, as some simplifications may allow many different processes leading to similar outputs. The strength of the optimization algorithm is also its weakness: it appears to accommodate the model structure, making it flexible enough to fit the data well. The functional forms assumed in the model structure are thus not sufficient alone to constrain the parameter estimates. This highlights the importance of not focusing solely on some metrics of (apparent) performance, even in novel climatic conditions, but rather investigating the intermediate outputs of the model.
+
+Finally, and similarly to correlative models \citep{BarbetMassin2010, Duputie2014},  process-based models are affected by the bias in the occurrence data used for the calibration. For example, all simulations predict a low \emph{Fagus sylvatica} fitness in south-west France contrary to the expert model predictions (\Cref{fig:1B}), whereas its absence is potentially more attributable to the legacy of forest management (extensive maritime pine plantations) than to truly limiting climatic conditions as the presence of some old relict beech forests in the region suggests \citep{Lafontaine2014}.
+%(IL FAUT QUE JE TROUVE UNE REF POUR APPUYER CA).
+
+%Brouillon, les points à évoquer:  Data bias: Landes, Pau valley \\
+% $\rightarrow$ Calibrations manage to remove Fagus from there, to fit the data, even though it could be there? \\
+%- les paramètres/processus sont pas très réalistes, il peut y a voir des compensatiosn très importantes... 
+%- on ne peut pas croire aveuglément la calibration
+% - voire même création de nouvelles espèces! Need to be careful 
+
+% From Higgins 2020: "Implicit in this discussion is that the parameter estimates are constrained by the model's structure. That is, how an environmental factor influences the projected species distribution is constrained by the model's assumptions. [...] This makes the model less flexible than correlative models because the model defines a priori which environmental factors influence which physiological processes, and the functional form of this influence" => really??
+
+\subsection{Inverse calibration can help identifying model limitations and opportunities for improvement}
+
+Our results reveal both the power and the shortcomings of inverse calibration in ecological modelling, and call for a careful use of the method when one aims at providing projections in very different conditions from the calibration conditions. They further suggest that inverse calibration can be an effective diagnostic tool to improve  process-based models, both in terms of model hypotheses and parameterisation. Using species occurrence data to calibrate such models might be fruitful, if a detailed evaluation of the realism of the parameter estimates and the values of the functional traits (phenotypes) they produce is carried out.
+
+Inverse calibration can help identify processes that are not accounted for, or incompletely accounted for in the model, even though they may be important in the context of the study, and reversely that some processes taken into account int the model have little impacts on the targeted outputs. For example, the discrepancies between leaf senescence simulations across the different calibrations (\Cref{fig:2D,,fig:3D}) highlight that, in the model, leaf senescence has no significant impact on fitness and therefore is not really constrained by the calibration data. This is because, in the model, there is no nutrient remobilization at leaf senescence which confer an advantage at loosing leaves before the first frost event. Thus, inverse calibrations indicate that it might be opportune to refine the model by adding nutrient remobilization.
+
+Using inverse calibration with species occurrence data can improve models in several ways. First, it can help improving the modelling of processes that have a significant impact on the model outputs but for which we have limited measurements and observations. For example, for forest tree species, observations of fruit maturation are often sparse and limited to some areas. It is therefore difficult to find the correct parameter values for the fruit maturation submodel, which can cause errors (e.g. Fagus, \Cref{fig:3C}). Relaxing the fruit maturation submodel parameters in the expert version of the model for several species and calibrating them using inverse calibration and species occurrence data (\Cref{fig:4}) not only increased the goodness-of-fit of the models as expected, but also resulted in more accurate predicted fruit maturation dates on average (\Cref{fig:5A}).
+Second, as pointed by \cite{Harrison2021}, the estimation of process-based model parameters are sometimes \emph{ad hoc} or rely on outdated data. Thus \emph{partial} inverse calibration can also be an opportunity to identify the parameters where the disagreement between the expert value and the calibrated values is systematically significant, which could indicate the need to reassess the expert values. For example, the maximum frost resistance of buds during winter, ${FH}^{max}$ , used in the expert version of the model for \emph{Fagus sylvatica} is rather conservative \citep[-20;][]{Till1956, Lenz2013} to avoid ///JE NE COMPRENDS PAS POURQUOI TU DIS CA:// underestimating the risks associated with cold, whereas inverse calibration yields lower values (-32 on average, \Cref{fig:5C}), in agreement with more recent studies \citep{Delaporte2015, Hofmann2015, Kreyling2014, Lenz2016}.
+ 
+However, we should keep in mind that the parameter values inferred with such \emph{partial} calibrations are conditioned by the rest of the fixed processes and by the structural errors and hypotheses of the model. For example, the minimum frost resistance of leaves at leaf unfolding, ${FH}^{min}$, converged towards an unrealistically low value of -10°C for both \emph{Fagus sylvatica} and \emph{Abies alba} (the lower bound constraining the optimization of this parameter, (\Cref{fig:5C}), either because the fixed parameters of the leaf unfolding submodel are not valid for the entire study area while there might be local adaptation of populations to harsher winters \citep{Kreyling2014}, and the calibration compensates too early leaf unfolding with a higher frost resistance of leaves, or because the model does not account for the different resistance to frost between a freshly unfold leaf and a mature leaf.  
+% add something about Betula pendula: unlike other species, partial calibration struggle to reach an AUC>0.75 despite 3 subprocesses calibrated + high RMSE on flowering date + scattered values of FHmin (FigX) => may indicate something problematic with Betula? some process not accounted in the model? or realized distribution really does not reflect the fundamental niche?
+% Finally, using occurrence data for inverse calibration can be fruitful, but nothing can spare us from "lifting the hood" and examining the processes and species on a case-by-case basis.
+
+%Brouillon, les points à évoquer: two limitations: current parametrisation OR current model structure and hypothesis
+% a diagnostic tool?
+% partial calibration
+
+\subsection{Inverse calibration can provide a more comprehensive assessment of model uncertainties}
+
+In many process-based model applications, parameter uncertainties are not considered and simulations are run with a single parameter sets \citep{Niu2014, Lobell2010}. Typically, in previous studies using PHENOFIT, all parameters had a chosen fixed value, and model deterministic outputs did not account for parameter uncertainties. To avoid being overconfident with individual model projections, multiple inverse calibrations could be used to generate an ensemble of model projections (Fig1b). The spread of model outputs across the ensemble may then allow to assess the uncertainty associated with the parameter values, and to provide a more comprehensive range of projections rather than single deterministic outcomes.
+
+However, these projections will always be contingent on model hypothesis and structure. Model process representation may indeed represent a large source of uncertainty, as processes can usually be modeled with various equations determining their functional form \citep{Keenan2011}. One could test a set of alternative mathematical structure to quantify the impacts of this structural uncertainty \citep{Huber2020}. An efficient way could be to include them during the calibration procedure, i.e. by also optimizing similarly plausible process formulations rather than just the parameter values.
+
+
+
+%we cannot distinguish between between "model-data difference due to parameter error, model structural error or observation error" (Cameron et al. 2022)
+
+
+% Brouillon, les points à évoquer:  dépasser les valeurs fixes de paramètres/ informer sur les incertitudes
+
+\subsection{...}
+
+
+
+- perspectives
+
+
+
+
+\subsection{Idées au brouillon, en partie reprise ci-dessus:}
+
+\begin{itemize}
+
+\item We obtain different parameters/processes despite similar output simulations, high uncertainty in the parameter estimates resulting from ivnerse calibration
+$\rightarrow$ compensations \\
+$\rightarrow$ really different phenotypes... and new species (evergreen Fagus!)\\
+"inverse calibration procedure may lead to more accurate higher-level dynamics in such a situation without necessarily being based on an accurate model structure or identifying the correct corresponding parameter values" (Cailleret et al. 2019) \\
+we cannot distinguish between between "model-data difference due to parameter error, model structural error or observation error" (Cameron et al. 2022) and optimization algorithm "has no means to change the structure of the model" (ça serait possible? à creuser!)
+
+\item Data bias: Landes, Pau valley \\
+$\rightarrow$ Calibrations manage to remove Fagus from there, to fit the data, even though it could be there? \\
+
+
+\item Offering insights into model limitations, identify where it should be improve, i.e. prospects for the model?\\
+$\rightarrow$ e.g. no impact of senescence \\
+closely connected to structural model error\\
+"processes or drivers that are not accounted for by the model (exogenous uncertainties)"\\
+$\rightarrow$ We did not test model uncertainty directly though, any projections will always be contingent on model structure. Possible to try a "set of alternative formulations (ensemble simulations) to quantify the impacts of structural uncertainty" (Huber et al. 2020), but the best would be to include it during the optimization process, i.e. also optimized similarly plausible process formualtions \\
+"Any given process can usually be modeled in a variety of ways (e.g., the —in terms of how processes and states are connected to, or feed back upon, each other—and the functional form of the relationship between processes and drivers)" (Keenan et al. 2011, Oecologia), it would be possible theoretically to test for model uncertainty ? => the most difficult to identify and quantify? \\
+And beware of the fixed internal relations (could be included as variables in the optimization process ?)
+
+\item Estimate parameter/model uncertainty ranges  \\
+the parameter uncertainty is commonly ignored, and the simualtions are run with a single parameter sets (https://doi-org.inee.bib.cnrs.fr/10.1016/j.agrformet.2010.07.008) \\
+future uncertainty is mostly adressed through simulations based on multiple GCMs - but with one model, one parameter set? \\
+"using fixed values for all the parameters in one deterministic model does not account for uncertainty in the parameters and state variables" (Niu2014) => PHENOFIT : each input parameter has a chosen fixed value, and we get a single output of the model \\
+Thus interesting to compare direct (prior) and inverse (posterior) parameter estimates and resulting processes...\\
+
+\item When used carefully, partial calibration can improve model goodness-of-fit while infering realistic parameter values? \\
+Two possibilities to add more constraints with the same data: fix some parameter values/processes or narrow the ranges? \\
+Can help to get a closer integration of data, "model parameter estimation tends to be ad hoc and is frequently based on single values for ‘model’ species that are long outdated" (S. Harrisson), e.g. FHmax Fagus?\\
+Check parameter realism however: e.g. FHmin -> -10 (too low? due to no difference between young/mature leaves? => model limitations)
+
+\item multiple calibrations: avoiding being overconfident with individual model projections, avoiding one deterministic trajectory about the future behavior of the system: "intercomparison studies that use data-informed models would be a significant step toward rigorously assessing errors due to model process representation" (Keenan et al. 2011) \\
+$\rightarrow$ model process representation indeed represent a large source of uncertainty?\\
+$\rightarrow$ increased realism is of little value if it is accompanied by over-parameterisation and ever-increasing parameter uncertainty (Harrison et al 2021) \\
+
+
+\item perspective: calibrating process-based models using multiple constraints (Cameron et al. 2022), integration of various sources of knowledge \\
+example: assimilating several data streams simultaneously, reduce potential overfitting issues (Bacour et al. 2023)\\
+ $\rightarrow$ but need to look at "the imbalance before the calibration starts", "the underlying issue is not one of sample size or information content per se" but rather related to "model structural deficiencies and data systematic biases"\\
+ + How to  account for spatial variability? (local adaptation)\\
+ various spatial resolution datasets ? \\
+ "cost function for each data stream passes a χ2 test (at 90\% confidence) for acceptance/rejection (after variance normalization based on the minimum cost function obtained (e.g., Franks et al., 1999; Richardson et al., 2010). This approach is preferable to using the aggregate cost function, as it ensures that model predictions are consistent with each of the individual data streams." (Keenan et al. 2012), each data stream is given equal importance in the optimization \\
+ $\rightarrow$ conducting a synthetic experiment with data is also a way to validate the ivnerse calibration framework (Keenan et al. 2011, Oecologia)
+
+ \item recent emergence of new data sources offers new opportunities and raises new questions for the use of inverse modeling? \\
+ (but need to be careful when adding complexity... it may not necessarily be the objective to aim for)
+    
+\end{itemize}
+
+% Bayesian OK but : "single posterior (direct estimates as informative prior) did not qualitatively change the results compared to the uninformative inversion, as the inverse signal (likelihood) was substantially stronger than the prior (i.e., the posterior parameter estimates were strongly informed by the data)" (Cailleret et al. 2019)\\
+% + bayesian method using very flat prior PDF generates results close to those estimated by a "frequentist" method (Chapter 7 - Parameter Estimation with Bayesian Methods’. In Working with Dynamic Crop Models (Second Edition)) $\rightarrow$ need to use more informative priors, such as in Heiland et al. (prior from Slovakia applied to Germany) \\
+% + from Keenan et al. 2011: a confidence interval should be conditional on both data and the model, BUT if "a confidence interval is conditional on both data and the model", what do the uncertainty estimates really represent?
+
+
+\end{linenumbers}
+\end{doublespacing}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{Acknowledgments}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\lipsum[13] 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{Author Contributions}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Conceptualization: Methodology: Investigation: Visualization: Writing:  Editing: Funding Acquisition: Supervision: . 
+
+%\section{Author Competing Interests}
+%\lipsum[14][2]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand\refname{References}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{footnotesize}
+%\renewcommand{\bibnumfmt}[1]{#1.}
+\bibliographystyle{spbasic.bst} % abbrvnat or unsrt
+\textnormal{\bibliography{contrast.bib}}
+\end{footnotesize}
+\newpage
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Tables
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\newpage
+%\include{table.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Figures
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\include{figures.tex}
+\end{document}

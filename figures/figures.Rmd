@@ -79,7 +79,7 @@ plot_grid(
 
 ## Figure 4
 
-```{r fig4, fig.height = 100, fig.width = 180, eval = TRUE}
+```{r fig4, fig.height = 100, fig.width = 180, eval = FALSE}
 reload_data_fig4 <- FALSE
 
 source(file.path(wd, "figures", "scripts", "fig4", "load_pheno_data.R"))
@@ -121,8 +121,8 @@ plot_grid(barplot, param_boxplot, labels = c("a.", "b."), label_size = 10)
 
 ## Figure 6
 
-```{r fig6, fig.height = 65, eval = TRUE}
-reload_data_fig6 <- TRUE
+```{r fig6, fig.height = 65, eval = FALSE}
+reload_data_fig6 <- FALSE
 
 source(file.path(wd, "figures", "scripts", "fig6", "barplot.R"))
 
@@ -131,7 +131,7 @@ barplot_partial
 
 ## Figure 7 
 
-```{r fig7, fig.height = 70, fig.width = 160, eval = TRUE}
+```{r fig7, fig.height = 70, fig.width = 160, eval = FALSE}
 reload_data_fig7 <- FALSE
 
 labels <- c(`fagus_sylvatica` = "Fagus\nsylvatica",
@@ -231,4 +231,31 @@ plot_grid(
 
 
 ```
+
+\newpage
+
+# Supplementary information
+
+```{r figS1, fig.height = 125, fig.width = 140, eval = TRUE}
+
+source(file.path(wd, "figures", "scripts", "supp", "figS1", "pheno_obs.R"))
+
+plot_grid(
+  plot_grid(fagusmat, quercusmat, betulaflo, piceaflo, nrow = 2),
+  get_plot_component(piceaflo + theme(legend.position = "bottom"), 'guide-box-bottom', return_all = TRUE),
+  ncol=1, rel_heights = c(2,0.12))
+  
+
+```
+
+```{r figS2, fig.height = 55, fig.width = 100, eval = TRUE}
+
+source(file.path(wd, "figures", "scripts", "supp", "figS2", "past_climate.R"))
+
+sorensen_plot
+  
+
+```
+
+
 

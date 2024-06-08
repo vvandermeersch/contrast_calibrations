@@ -15,7 +15,7 @@ maturation_rmse_boxplots <- data_boxplot %>%
   scale_fill_manual(values = c("#577590", "#f9c74f"), labels = c("Expert", "Partial")) +
   scale_color_manual(values = c("#577590", "#f9c74f"), labels = c("Expert", "Partial")) +
   scale_y_continuous(breaks = seq(0, 200, 15), expand = c(0,0)) +
-  coord_cartesian(ylim = c(0,105), xlim = c(1,11), clip = "off") + 
+  coord_cartesian(ylim = c(0,90), xlim = c(1,11), clip = "off") + 
   # geom_hline(data = median_rmse, aes(yintercept = median_rmse), 
   #            linewidth = 0.8, color = "white", alpha = 0.6) +
   # geom_hline(data = median_rmse, aes(yintercept = median_rmse, color = clust), 

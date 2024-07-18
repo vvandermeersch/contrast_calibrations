@@ -6,13 +6,13 @@ compute_best_threshold <- function(output,
   cat(paste0(filename, "\n"))
   # Compute AUC on every pres/abs points
   fitness_presabs <- inner_join(sp_presabs, output, by = c("lat", "lon"))
-  auc_tot <- round(auc(roc(fitness_presabs$pred, as.factor(sp_presabs$pres))),6)
+  auc_tot <- round(AUC::auc(roc(fitness_presabs$pred, as.factor(sp_presabs$pres))),6)
   cat(paste0("   AUC: ", round(auc_tot, 3), "\n"))
   
   # Best threshold
-  youden_index <- sensitivity(fitness_presabs$pred, as.factor(sp_presabs$pres), perc.rank = F)$measure +
-    specificity(fitness_presabs$pred, as.factor(sp_presabs$pres), perc.rank = F)$measure - 1
-  thresholds <- sensitivity(fitness_presabs$pred, as.factor(sp_presabs$pres), perc.rank = F)$cutoffs
+  youden_index <- AUC::sensitivity(fitness_presabs$pred, as.factor(sp_presabs$pres), perc.rank = F)$measure +
+    AUC::specificity(fitness_presabs$pred, as.factor(sp_presabs$pres), perc.rank = F)$measure - 1
+  thresholds <- AUC::sensitivity(fitness_presabs$pred, as.factor(sp_presabs$pres), perc.rank = F)$cutoffs
   best_threshold <- thresholds[which(youden_index == max(youden_index))]
   cat(paste0("   Best threshold: ", round(best_threshold, 3), "\n"))
   

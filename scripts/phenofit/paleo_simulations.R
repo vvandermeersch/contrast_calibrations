@@ -17,13 +17,13 @@ species_files <- data.frame(
 for(s in 1:nrow(species_files)){
   
   cat(paste0(species_files[s, "name"], "\n"))
-  output_dir_s <- file.path(wd, "data", "simulations", "paleo", "7000BP", species_files[s, "name"])
+  output_dir_s <- file.path(wd, "data", "simulations", "paleo", "5000BP", species_files[s, "name"])
   
   run_phenofit(species_file = file.path(parameter_dir,  species_files[s, "path"]),
-               years = c(-7014,-6985), 
+               years = c(-5014,-4985), 
                output_dir = output_dir_s, 
                clim_name = "HadCM3B", 
-               data_dir = file.path(climate_folder, "7000BP"),
+               data_dir = file.path(climate_folder, "5000BP"),
                cd_capsis = "cd/d D:/applications/capsis4", script_name = "ScriptVictor",
                java8 = "cd C:/Program Files/Java/scripts && java8.cmd",
                quiet_mode = TRUE, mem = 10000)

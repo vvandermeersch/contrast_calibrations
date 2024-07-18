@@ -1,6 +1,6 @@
 read_mean_outputvalue <- function(sim_dir, years,
                                   model = "PHENOFIT", output_var = "Fitness",
-                                  correct_date = FALSE){
+                                  correct_date = FALSE, correct_mat = FALSE){
   
   if(model == "PHENOFIT" & output_var != "EcodormancyCustom" & output_var != "SenescenceCustom" & output_var != "MaturationCustom"){
     output <- fread(paste0(sim_dir,"/", output_var, ".txt"), header=T, sep="\t", fill=T)
@@ -11,6 +11,9 @@ read_mean_outputvalue <- function(sim_dir, years,
     
     if(correct_date){
       output <- output[, replace(.SD, .SD >= 365 | .SD <= -999 | is.na(.SD), 366)] # correct dates if necessary
+    }
+    if(correct_mat){
+      output[,3:ncol(output)] <- output[, replace(.SD, .SD > 1, 1), .SDcols = as.character(years)] # correct maturation if necessary
     }
     
     output[, mean := rowMeans(.SD), .SDcols = as.character(years)] # average over years

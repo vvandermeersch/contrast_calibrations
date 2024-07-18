@@ -1,32 +1,47 @@
 
-species <- c("A. alba", "F. sylv.", "Q. rob.")
+species <- c("A. alba", "F. sylv.", "Q. rob.", "B. pend.", "P. abies", "Q. pub.")
 fit_dir <- "C:/Users/vandermeersch/Documents/CEFE/projects/contrast_calibrations/data/fit/ERA5-LAND"
 occurrences <- c("D:/species/processed/abies_alba/abies_alba_presabs.rds",
                  "D:/species/processed/fagus_sylvatica/fagus_sylvatica_presabs.rds",
-                 "D:/species/processed/quercus_robur/quercus_robur_presabs.rds")
+                 "D:/species/processed/quercus_robur/quercus_robur_presabs.rds",
+                 "D:/species/processed/betula_pendula/betula_pendula_presabs.rds",
+                 "D:/species/processed/picea_abies/picea_abies_presabs.rds",
+                 "D:/species/processed/quercus_pubescens/quercus_pubescens_presabs.rds")
 
 sim_exp <- c("D:/simulations/phenofit/present/expert/abies_alba/VVanderMeersch2",
              "D:/simulations/phenofit/present/expert/fagus_sylvatica/VVanderMeersch",
-             "D:/simulations/phenofit/present/expert/quercus_robur/ADuputie_Chuine")
+             "D:/simulations/phenofit/present/expert/quercus_robur/ADuputie_Chuine",
+             "D:/simulations/phenofit/present/expert/betula_pendula/DAsse",
+             "D:/simulations/phenofit/present/expert/picea_abies/Chuine2",
+             "D:/simulations/phenofit/present/expert/quercus_pubescens/BLeys")
 
 
 fit_exp <- c(file.path(fit_dir, "abies_alba", "expert.rds"),
              file.path(fit_dir, "fagus_sylvatica", "expert.rds"),
-             file.path(fit_dir, "quercus_robur", "expert.rds"))
+             file.path(fit_dir, "quercus_robur", "expert.rds"),
+             file.path(fit_dir, "betula_pendula", "expert.rds"),
+             file.path(fit_dir, "picea_abies", "expert.rds"),
+             file.path(fit_dir, "quercus_pubescens", "expert.rds"))
 
 sim_part <- c("D:/simulations/phenofit/present/fitted/abies_alba/partial/drought_and_frost",
               "D:/simulations/phenofit/present/fitted/fagus_sylvatica/partial/relmax",
-             "D:/simulations/phenofit/present/fitted/quercus_robur/partial")
+             "D:/simulations/phenofit/present/fitted/quercus_robur/partial",
+             "D:/simulations/phenofit/present/fitted/betula_pendula/partial/frost_mat",
+             "D:/simulations/phenofit/present/fitted/picea_abies/partial/dgt_flower",
+             "D:/simulations/phenofit/present/fitted/quercus_pubescens/partial")
 
 fit_part <- c(file.path(fit_dir, "abies_alba", "partial/drought_and_frost"),
               file.path(fit_dir, "fagus_sylvatica", "partial/relmax"),
-              file.path(fit_dir, "quercus_robur", "partial"))
+              file.path(fit_dir, "quercus_robur", "partial"),
+              file.path(fit_dir, "betula_pendula", "partial/frost_mat"),
+              file.path(fit_dir, "picea_abies", "partial/dgt_flower"),
+              file.path(fit_dir, "quercus_pubescens", "partial"))
 
 
 
 
 ctrb_species <- c()
-for(s in 1:3){
+for(s in 1:6){
   cat(paste0("\nProcessing ",  species[s], " ...\n"))
   
   # Expert

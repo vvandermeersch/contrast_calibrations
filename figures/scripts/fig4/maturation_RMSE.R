@@ -1,6 +1,6 @@
 
 records <- all_records %>%
-  dplyr::filter(stade %in% c(86))
+  dplyr::filter(stade %in% c(80:86))
 
 sim_dir <- file.path(wd, "data", "simulations", "historical", "ERA5-Land")
 species <- "fagus_sylvatica"
@@ -100,6 +100,7 @@ maturation_rmse_boxplots <- data_boxplot %>%
   #            lty = "dotted", linewidth = 0.6) +
   ggstar::geom_star(data = median_rmse, aes(x = 104.7, y = median_rmse, fill = clust, col = clust), 
                     alpha = 0.7, angle = 90, starshape = 26, size = 2) +
+  
   ylab("Fruit maturation date") + 
   theme(axis.text.y = element_text(size = 7), axis.text.x = element_blank(),
         legend.text = element_text(size = 7), legend.title = element_blank(),
@@ -143,3 +144,11 @@ without_maturation_boxplot <- data_mat %>%
         panel.background = element_rect(color = "grey85", fill = NA, linewidth = 0.5),
         panel.grid.minor.y = element_blank(), ggh4x.axis.ticks.length.minor = rel(1),
         panel.grid.major.y = element_line(color = "grey92", linewidth = 0.3))
+
+cat("Maturation RMSE\n")
+data_boxplot %>%
+  group_by(ifelse(clust %in% c("0", "3_1"), clust, ifelse(clust %in% c("1_2", "2_1"), "1", "2"))) %>% 
+  summarise(mean = mean(rmse, na.rm = TRUE), sd = sd(rmse, na.rm = TRUE), 
+            median = median(rmse, na.rm = TRUE),
+            quantile(rmse, 0.25, na.rm = TRUE), quantile(rmse, 0.75, na.rm = TRUE))
+

@@ -80,4 +80,15 @@ data_boxplot <- data_boxplot %>%
   mutate(mod = reorder(mod, rmse, median, na.rm = TRUE, decreasing = FALSE))
 data_mat$mod = factor(data_mat$mod, levels(data_boxplot$mod))
 
+cat("Maturation RMSE\n")
+data_boxplot %>%
+  group_by(mod) %>% 
+  summarise(mean = mean(rmse, na.rm = TRUE), sd = sd(rmse, na.rm = TRUE), 
+            median = median(rmse, na.rm = TRUE),
+            quantile(rmse, 0.25, na.rm = TRUE), quantile(rmse, 0.75, na.rm = TRUE))
+
+cat("KW - partial")
+ggpubr::compare_means(rmse ~ mod,  
+                      data = na.omit(data_boxplot), method = "kruskal.test")
+dunn <- na.omit(data_boxplot) %>% rstatix::dunn_test(rmse ~ mod, p.adjust.method = "holm")
 

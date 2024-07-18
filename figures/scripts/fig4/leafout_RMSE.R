@@ -1,6 +1,6 @@
 
 records <- all_records %>%
-  dplyr::filter(stade %in% c(11, 13))
+  dplyr::filter(stade %in% c(10:15))
 
 sim_dir <- file.path(wd, "data", "simulations", "historical", "ERA5-Land")
 species <- "fagus_sylvatica"
@@ -69,6 +69,7 @@ median_rmse <- data_boxplot %>%
   summarise(median_rmse = median(rmse)) %>%
   dplyr::filter(clust != "3_1")
 
+
 leafout_rmse_boxplots <- data_boxplot %>%
   mutate(mod = reorder(mod, rmse, median, decreasing = FALSE)) %>% 
   ggplot() +
@@ -90,6 +91,7 @@ leafout_rmse_boxplots <- data_boxplot %>%
   #            lty = "dotted", linewidth = 0.6) +
   ggstar::geom_star(data = median_rmse, aes(x = 104.7, y = median_rmse, fill = clust, col = clust), 
                     alpha = 0.7, angle = 90, starshape = 26, size = 2) +
+  
   ylab("Leafout date") + 
   theme(axis.text.y = element_text(size = 7), axis.text.x = element_blank(),
         legend.text = element_text(size = 7), legend.title = element_blank(),
@@ -104,3 +106,20 @@ leafout_rmse_boxplots <- data_boxplot %>%
   ggimage::geom_image(
     data = data.frame(x = 14, y = 85,image="C:/Users/vandermeersch/Documents/CEFE/phd/notebook/phenofit_schema/leafout.png"),
     aes(x = x, y = y , image = image), size=0.4)
+
+cat("Leafout RMSE\n")
+data_boxplot %>%
+  group_by(substr(clust, 0, 1)) %>% 
+  summarise(mean = mean(rmse, na.rm = TRUE), sd = sd(rmse, na.rm = TRUE), 
+            median = median(rmse, na.rm = TRUE),
+            quantile(rmse, 0.25), quantile(rmse, 0.75))
+
+# data_boxplot %>%
+#   mutate(group = substr(clust, 0, 1)) %>%
+#   dplyr::filter(group %in% c("0", "1", "2")) %>%
+#   dunn_test(rmse ~ group, p.adjust.method = "holm")
+
+
+
+
+

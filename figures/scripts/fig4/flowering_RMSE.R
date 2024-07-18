@@ -1,6 +1,6 @@
 
 records <- all_records %>%
-  dplyr::filter(stade %in% c(60))
+  dplyr::filter(stade %in% c(60:65))
 
 sim_dir <- file.path(wd, "data", "simulations", "historical", "ERA5-Land")
 species <- "fagus_sylvatica"
@@ -68,6 +68,8 @@ median_rmse <- data_boxplot %>%
   summarise(median_rmse = median(rmse)) %>%
   dplyr::filter(clust != "3_1")
 
+
+
 flowering_rmse_boxplots <- data_boxplot %>%
   mutate(mod = reorder(mod, rmse, median, decreasing = FALSE)) %>% 
   ggplot() +
@@ -89,6 +91,7 @@ flowering_rmse_boxplots <- data_boxplot %>%
   #            lty = "dotted", linewidth = 0.6) +
   ggstar::geom_star(data = median_rmse, aes(x = -2.8, y = median_rmse, fill = clust, col = clust), 
                     alpha = 0.7, angle = -90, starshape = 26, size = 2) +
+  
   ylab("Flowering date") + 
   theme(axis.text.y = element_text(size = 7), axis.text.x = element_blank(),
         legend.text = element_text(size = 7), legend.title = element_blank(),

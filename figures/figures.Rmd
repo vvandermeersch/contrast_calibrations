@@ -38,7 +38,7 @@ source(file.path(wd, "scripts", "functions", "read_species_file.R"))
 
 ## Figure 1
 
-```{r fig1, fig.height = 110, fig.width = 170, eval = TRUE}
+```{r fig1, fig.height = 110, fig.width = 170, eval = FALSE}
 reload_data_fig1 <- FALSE
 
 source(file.path(wd, "figures", "scripts", "fig1", "boxplot_similarity.R"))
@@ -121,7 +121,7 @@ plot_grid(barplot, param_boxplot, labels = c("a.", "b."), label_size = 10)
 
 ## Figure 6
 
-```{r fig6, fig.height = 65, eval = FALSE}
+```{r fig6, fig.height = 65, eval = TRUE}
 reload_data_fig6 <- FALSE
 
 source(file.path(wd, "figures", "scripts", "fig6", "barplot.R"))
@@ -132,7 +132,7 @@ barplot_partial
 ## Figure 7 
 
 ```{r fig7, fig.height = 70, fig.width = 160, eval = FALSE}
-reload_data_fig7 <- FALSE
+reload_data_fig7 <- TRUE
 
 labels <- c(`fagus_sylvatica` = "Fagus\nsylvatica",
             `quercus_robur` = "Quercus\nrobur",
@@ -140,6 +140,7 @@ labels <- c(`fagus_sylvatica` = "Fagus\nsylvatica",
             `betula_pendula` = "Betula\npendula")
 
 species <- "fagus_sylvatica"
+tempo_dir <- "D:/phenology/tempo/fagus_sylvatica/Vdm_Victor_202405021641"
 source(file.path(wd, "figures", "scripts", "fig7", "load_pheno_data.R"))
 models <- c("expert",paste0("partial/relmax/subset",rep(1:2, each = 5),"_rep", 1:5))
 stades <- c(86)
@@ -151,6 +152,7 @@ levels(data_boxplotf$mod)[levels(data_boxplotf$mod)=="expert"] <- "expertf"
 levels(data_matf$mod)[levels(data_matf$mod)=="expert"] <- "expertf"
 
 species <- "quercus_robur"
+tempo_dir <- "D:/phenology/tempo/quercus_robur/Victor_Vdm_202406251802"
 source(file.path(wd, "figures", "scripts", "fig7", "load_pheno_data.R"))
 models <- c("expert",paste0("partial/subset",rep(1:2, each = 5),"_rep", 1:5))
 stades <- c(86)
@@ -162,6 +164,7 @@ data_mat <- rbind(data_mat, data_matf)
 source(file.path(wd, "figures", "scripts", "fig7", "maturation_plot.R"))
 
 species <- "betula_pendula"
+tempo_dir <- "D:/phenology/tempo/betula_pendula/Victor_Vdm_202405271800"
 source(file.path(wd, "figures", "scripts", "fig7", "load_pheno_data.R"))
 models <- c("expert", paste0("partial/expfrost_flo_mat/subset",rep(1:2, each = 5),"_rep", 1:5))
 stades <- c(60:65)
@@ -173,6 +176,7 @@ levels(data_boxplotf$mod)[levels(data_boxplotf$mod)=="expert"] <- "expertf"
 levels(data_flof$mod)[levels(data_flof$mod)=="expert"] <- "expertf"
 
 species <- "picea_abies"
+tempo_dir <- "D:/phenology/tempo/picea_abies/Victor_Vdm_202406251804"
 source(file.path(wd, "figures", "scripts", "fig7", "load_pheno_data.R"))
 models <- c("expert",paste0("partial/dgt_flo_mat/subset",rep(1:2, each = 5),"_rep", 1:5))
 stades <- c(60:65)
@@ -180,6 +184,19 @@ ncores <- 6
 source(file.path(wd, "figures", "scripts", "fig7", "flowering_RMSE.R"))
 data_boxplot <- rbind(data_boxplot, data_boxplotf)
 data_flo <- rbind(data_flo, data_flof)
+
+# species <- "larix_decidua"
+# source(file.path(wd, "figures", "scripts", "fig7", "load_pheno_data.R"))
+# models <- c("expert",paste0("partial/dgt_flo_mat/subset",rep(2, each = 5),"_rep", 1:5))
+# stades <- c(60:65)
+# ncores <- 6
+# source(file.path(wd, "figures", "scripts", "fig7", "flowering_RMSE.R"))
+# data_boxplot <- rbind(data_boxplot, data_boxplotf)
+# data_flo <- rbind(data_flo, data_flof)
+
+#species <- "fraxinus_excelsior"
+#source(file.path(wd, "figures", "scripts", "fig7", "load_pheno_data.R"))
+
 
 source(file.path(wd, "figures", "scripts", "fig7", "flowering_plot.R"))
 
@@ -236,19 +253,19 @@ plot_grid(
 
 # Supplementary information
 
-```{r figS1, fig.height = 125, fig.width = 140, eval = TRUE}
+```{r figS1, fig.height = 220, fig.width = 120, eval = FALSE}
 
 source(file.path(wd, "figures", "scripts", "supp", "figS1", "pheno_obs.R"))
 
 plot_grid(
-  plot_grid(fagusmat, quercusmat, betulaflo, piceaflo, nrow = 2),
+  plot_grid(fagusleaf, fagusflo, fagusmat, fagussen, quercusmat, betulaflo, piceaflo, ncol = 2),
   get_plot_component(piceaflo + theme(legend.position = "bottom"), 'guide-box-bottom', return_all = TRUE),
   ncol=1, rel_heights = c(2,0.12))
   
 
 ```
 
-```{r figS2, fig.height = 55, fig.width = 100, eval = TRUE}
+```{r figS2, fig.height = 55, fig.width = 100, eval = FALSE}
 
 source(file.path(wd, "figures", "scripts", "supp", "figS2", "past_climate.R"))
 

@@ -78,11 +78,17 @@ data_boxplot <- data_boxplot %>%
   left_join(prop_flo, by = join_by(mod)) %>%
   mutate(rmse = ifelse(prop > 60, NA, rmse)) %>%
   mutate(mod = reorder(mod, rmse, median, na.rm = TRUE, decreasing = FALSE))
-data_mat$mod = factor(data_mat$mod, levels(data_boxplot$mod))
+data_flo$mod = factor(data_flo$mod, levels(data_boxplot$mod))
 
 
 # data_boxplot %>%
 #   group_by(mod) %>%
 #   summarise(med = median(rmse, na.rm = TRUE))
 
+cat("Flowering RMSE\n")
+data_boxplot %>%
+  group_by(mod) %>% 
+  summarise(mean = mean(rmse, na.rm = TRUE), sd = sd(rmse, na.rm = TRUE), 
+            median = median(rmse, na.rm = TRUE),
+            quantile(rmse, 0.25, na.rm = TRUE), quantile(rmse, 0.75, na.rm = TRUE))
 

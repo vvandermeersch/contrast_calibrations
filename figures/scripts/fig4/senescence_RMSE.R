@@ -1,6 +1,6 @@
 
 records <- all_records %>%
-  dplyr::filter(stade %in% c(94, 95))
+  dplyr::filter(stade %in% c(90:95))
 
 sim_dir <- file.path(wd, "data", "simulations", "historical", "ERA5-Land")
 species <- "fagus_sylvatica"
@@ -78,6 +78,8 @@ data_boxplot <- data_boxplot %>%
   mutate(mod = reorder(mod, rmse, median, na.rm = TRUE, decreasing = FALSE))
 data_sen$mod = factor(data_sen$mod, levels(data_boxplot$mod))
 
+
+
 senescence_rmse_boxplots <- data_boxplot %>%
   ggplot() +
   geom_boxplot(aes(x = mod, y = rmse, color = clust, fill = clust),
@@ -99,6 +101,7 @@ senescence_rmse_boxplots <- data_boxplot %>%
   #            lty = "dotted", linewidth = 0.6) +
   ggstar::geom_star(data = median_rmse, aes(x = -2.8, y = median_rmse, fill = clust, col = clust), 
                     alpha = 0.7, angle = -90, starshape = 26, size = 2) +
+
   ylab("Leaf senescence date") + 
   theme(axis.text.y = element_text(size = 7), axis.text.x = element_blank(),
         legend.text = element_text(size = 7), legend.title = element_blank(),
@@ -144,6 +147,16 @@ without_senescence_boxplot <- data_sen %>%
         panel.grid.minor.y = element_blank(), ggh4x.axis.ticks.length.minor = rel(1),
         panel.grid.major.y = element_line(color = "grey92", linewidth = 0.3))
 
+cat("Senesncence RMSE\n")
+data_boxplot %>%
+  group_by(ifelse(clust %in% c("0", "3_1"), clust, ifelse(clust %in% c("1_2", "2_1"), "1", "2"))) %>% 
+  summarise(mean = mean(rmse, na.rm = TRUE), sd = sd(rmse, na.rm = TRUE), 
+            median = median(rmse, na.rm = TRUE),
+            quantile(rmse, 0.25, na.rm = TRUE), quantile(rmse, 0.75, na.rm = TRUE))
 
 
+unique(data_boxplot[c("clust", "mod", "prop")]) %>%
+  mutate(c = ifelse(prop > 99.9, 1, 0)) %>%
+  group_by(ifelse(mod == "expert", 0, 1)) %>%
+  summarise(sum = sum(c))
 

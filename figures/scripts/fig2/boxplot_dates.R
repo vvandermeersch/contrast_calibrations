@@ -95,6 +95,11 @@ endodormancy <- ggplot(data = dates_df2 %>% dplyr::filter(var == "dormancy_date"
         panel.grid.major.y = element_line(color = "grey92", linewidth = 0.3),
         plot.margin = margin(t = 20, b = 10, r = 5.5, l = 5.5))
 
+cat("Endodormancy DOY\n")
+dates_df2 %>% dplyr::filter(var == "dormancy_date") %>%
+  group_by(substr(clust, 0, 1)) %>% 
+  summarise(mean = mean(index, na.rm = TRUE), sd = sd(index, na.rm = TRUE), median = median(index, na.rm = TRUE))
+
 ecodormancy <- ggplot(data = dates_df2 %>% dplyr::filter(var == "ecodormancy_length")) +
   geom_boxplot(aes(x = mod, y = index, fill = as.factor(clust), color = as.factor(clust)), 
                outlier.shape = NA, alpha = 0.3, linewidth = 0.3) +
@@ -119,6 +124,12 @@ ecodormancy <- ggplot(data = dates_df2 %>% dplyr::filter(var == "ecodormancy_len
         panel.grid.major.y = element_line(color = "grey92", linewidth = 0.3),
         plot.margin = margin(t = 20, b = 10, r = 5.5, l = 5.5))
 
+cat("Ecodormancy length\n")
+dates_df2 %>% dplyr::filter(var == "ecodormancy_length") %>%
+  group_by(substr(clust, 0, 1)) %>% 
+  summarise(mean = mean(index, na.rm = TRUE), sd = sd(index, na.rm = TRUE))
+  
+
 maturation <- ggplot(data = dates_df2 %>% dplyr::filter(var == "maturation_date")) +
   geom_boxplot(aes(x = mod, y = index, fill = as.factor(clust), color = as.factor(clust)), 
                outlier.shape = NA, alpha = 0.3, linewidth = 0.3) +
@@ -142,6 +153,11 @@ maturation <- ggplot(data = dates_df2 %>% dplyr::filter(var == "maturation_date"
         panel.grid.minor.y = element_blank(), ggh4x.axis.ticks.length.minor = rel(1),
         panel.grid.major.y = element_line(color = "grey92", linewidth = 0.3),
         plot.margin = margin(t = 10, b = 20, r = 5.5, l = 5.5))
+
+cat("Maturation doy\n")
+dates_df2 %>% dplyr::filter(var == "maturation_date") %>%
+  group_by(substr(clust, 0, 3)) %>% 
+  summarise(mean = mean(index, na.rm = TRUE), sd = sd(index, na.rm = TRUE), median = median(index, na.rm = TRUE), n()/46949)
 
 senescence <- ggplot(data = dates_df2 %>% dplyr::filter(var == "senescence_date")) +
   geom_boxplot(aes(x = mod, y = index, fill = as.factor(clust), color = as.factor(clust)), 

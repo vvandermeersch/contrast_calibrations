@@ -36,8 +36,8 @@ sim_part <- c("D:/simulations/phenofit/present/fitted/abies_alba/partial/drought
               "D:/simulations/phenofit/present/fitted/betula_pendula/partial/expfrost_flo_mat",
               "D:/simulations/phenofit/present/fitted/picea_abies/partial/dgt_flo_mat",
               "D:/simulations/phenofit/present/fitted/quercus_pubescens/partial",
-              "D:/simulations/phenofit/present/fitted/fraxinus_excelsior/partial",
-              "D:/simulations/phenofit/present/fitted/larix_decidua/partial")
+              "D:/simulations/phenofit/present/fitted/fraxinus_excelsior/partial/frost_flo_mat",
+              "D:/simulations/phenofit/present/fitted/larix_decidua/partial/dgt_flo_mat")
 
 fit_part <- c(file.path(fit_dir, "abies_alba", "partial/drought_frost"),
               file.path(fit_dir, "fagus_sylvatica", "partial/relmax"),
@@ -45,8 +45,8 @@ fit_part <- c(file.path(fit_dir, "abies_alba", "partial/drought_frost"),
               file.path(fit_dir, "betula_pendula", "partial/expfrost_flo_mat"),
               file.path(fit_dir, "picea_abies", "partial/dgt_flo_mat"),
               file.path(fit_dir, "quercus_pubescens", "partial"),
-              file.path(fit_dir, "fraxinus_excelsior", "partial"),
-              file.path(fit_dir, "larix_decidua", "partial"))
+              file.path(fit_dir, "fraxinus_excelsior", "partial/frost_flo_mat"),
+              file.path(fit_dir, "larix_decidua", "partial/dgt_flo_mat"))
 
 if(reload_data_fig6){
   
@@ -98,8 +98,8 @@ if(reload_data_fig6){
     cat("   - partial calibration")
     
     if(species[s] %in% c("")){
-      cal <- paste0("subset",rep(1:1, each = 5),"_rep", 1:5)
-    }else if(species[s] %in% c("Fraxinus\nexcelsior", "Larix\ndecidua")){
+      cal <- paste0("subset",rep(2, each = 5),"_rep", 1:5)
+    }else if(species[s] %in% c("")){
       cal <- NULL
     }else{
       cal <- paste0("subset",rep(1:2, each = 5),"_rep", 1:5)
@@ -156,6 +156,7 @@ if(reload_data_fig6){
 
 barplot_partial <- 
   ctrb_species %>%
+  # dplyr::filter(species != "Fraxinus\nexcelsior") %>%
   group_by(type, index, species) %>%
   summarise(mean_ctrb = mean(mean_ctrb), 
             sd_auc = sd(auc),
@@ -193,8 +194,8 @@ barplot_partial <-
             aes(x = x, y = y, label = label),
             size = 2.5, color = "grey30",
             inherit.aes = FALSE) +
-  theme(axis.text.y = element_text(size = 7), axis.text.x = element_text(size = 7),
-        legend.text = element_text(size = 7), legend.title = element_text(size = 7),
+  theme(axis.text.y = element_text(size = 8), axis.text.x = element_text(size = 7),
+        legend.text = element_text(size = 8), legend.title = element_text(size = 8),
         legend.key.height = unit(0.3,"cm"), legend.key.width = unit(0.3,"cm"),
         axis.title = element_text(size = 8), panel.grid.major.x = element_blank(),
         axis.ticks.y=element_line(color = "grey85", linewidth = 0.5),
@@ -202,4 +203,4 @@ barplot_partial <-
         panel.background = element_rect(color = "grey85", fill = NA, linewidth = 0.5),
         legend.box.spacing = unit(7.5, "pt"),
         panel.grid.major.y = element_line(color = "grey92", linewidth = 0.3),
-        strip.text = element_text(size = 7, color = "grey30"))
+        strip.text = element_text(size = 8, color = "grey30"))

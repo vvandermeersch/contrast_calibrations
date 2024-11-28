@@ -57,7 +57,7 @@ plot_grid(
 
 ## Figure 2
 
-```{r fig2, fig.height = 100, eval = FALSE}
+```{r fig2, fig.height = 100, eval = TRUE}
 reload_data_fig2 <- FALSE
 
 source(file.path(wd, "figures", "scripts", "fig2", "boxplot_dates.R"))
@@ -132,7 +132,7 @@ barplot_partial
 ## Figure 7 
 
 ```{r fig7, fig.height = 70, fig.width = 160, eval = FALSE}
-reload_data_fig7 <- TRUE
+reload_data_fig7 <- FALSE
 
 labels <- c(`fagus_sylvatica` = "Fagus\nsylvatica",
             `quercus_robur` = "Quercus\nrobur",

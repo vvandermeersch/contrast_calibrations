@@ -111,7 +111,7 @@ ecodormancy <- ggplot(data = dates_df2 %>% dplyr::filter(var == "ecodormancy_len
   coord_cartesian(clip = 'off', ylim = c(0, 400)) +
   scale_x_discrete(expand = c(0.01,0.01)) +
   scale_y_continuous(expand = c(0,0)) +
-  ylab("Encodormancy length (no. days)") +
+  ylab("Ecodormancy length (no. days)") +
   theme(axis.text.y = element_text(size = 7), axis.text.x = element_blank(),
         legend.text = element_text(size = 7), legend.title = element_blank(),
         legend.key.height = unit(0.5,"cm"), legend.key.width = unit(0.4,"cm"),

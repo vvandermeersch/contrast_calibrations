@@ -143,7 +143,7 @@ species <- "fagus_sylvatica"
 tempo_dir <- "D:/phenology/tempo/fagus_sylvatica/Vdm_Victor_202405021641"
 source(file.path(wd, "figures", "scripts", "fig7", "load_pheno_data.R"))
 models <- c("expert",paste0("partial/relmax/subset",rep(1:2, each = 5),"_rep", 1:5))
-stades <- c(86)
+stades <- c(80:86)
 ncores <- 11
 source(file.path(wd, "figures", "scripts", "fig7", "maturation_RMSE.R"))
 data_boxplotf <- data_boxplot
@@ -155,7 +155,7 @@ species <- "quercus_robur"
 tempo_dir <- "D:/phenology/tempo/quercus_robur/Victor_Vdm_202406251802"
 source(file.path(wd, "figures", "scripts", "fig7", "load_pheno_data.R"))
 models <- c("expert",paste0("partial/subset",rep(1:2, each = 5),"_rep", 1:5))
-stades <- c(86)
+stades <- c(80:86)
 ncores <- 11
 source(file.path(wd, "figures", "scripts", "fig7", "maturation_RMSE.R"))
 data_boxplot <- rbind(data_boxplot, data_boxplotf)

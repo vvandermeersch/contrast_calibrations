@@ -1,0 +1,229 @@
+\DocumentMetadata{testphase=new-or-1}
+\documentclass[a4paper, 11pt]{article}
+\usepackage{comment} % enables the use of multi-line comments (\ifx \fi) 
+\usepackage{lipsum} %This package just generates Lorem Ipsum filler text. 
+\usepackage{fullpage} % changes the margin
+\usepackage{pdfpages}
+\usepackage{subcaption}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{bibentry}
+\usepackage[round,sort,comma]{natbib}
+\bibliographystyle{plainnat}
+\usepackage{gensymb}
+
+\begin{document}
+%Header-Make sure you update this information!!!!
+\noindent
+\large\textbf{Response to Reviewers} \hfill \textbf{ECOMOD-24-141} \\
+\normalsize Ecological Modelling \hfill \textit{} \\
+
+\noindent\hrulefill
+\tableofcontents
+\noindent\hrulefill
+
+\renewcommand*\thetable{R\arabic{table}}
+\renewcommand*\thefigure{R\arabic{figure}}
+
+\definecolor{customblue}{rgb}{0.36, 0.54, 0.66}
+\definecolor{customred}{rgb}{0.759, 0.365, 0.396}
+
+\newcommand{\textappr}{\raisebox{0.5ex}{\texttildelow}}
+
+\section{General Comment from the Editor}
+
+Dear authors,
+
+\noindent Thank you for submitting your manuscript to our journal. We have now received two constructive and detailed reviews. I fully agree with both. \\
+\textcolor{customblue}{Thank you for giving us the opportunity to revise our manuscript. We have worked to clarify the points raised by the 2 reviewers in this new version. In the following, our responses to the reviewer comments will appear \textbf{in blue} and the changes we made in the text \textbf{\textcolor{customred}{in red}}.}\\
+
+
+\noindent In addition to the reviews, I have a request: it is wonderful that you have provided all the data, model codes as R scripts, etc. in your GitHub folder. However, since you did not mention the use of the R environment and the availability of the code in the 'Materials and methods' section of your manuscript, it took a while for the reader to find out that you had provided all the necessary information on Github. Although the 'Data availability' section contains all the necessary information, it would be helpful if you could include a note at the beginning of the 'Methods' section.\\
+\textcolor{customblue}{Thank you for this suggestion. We now mentioned the GitHub repo at the beginning of this section.}\\
+
+\clearpage
+
+\section{Response to Reviewer 1}
+In this manuscript, Van der Meersch and Chuine explored the potential of using an inverse calibration method to improve a species distribution model of forest trees that is based on phenological processes. Considering that process-based models are key to predict the future composition and functioning of forests, it is essential to calibrate them accurately. In complement to direct calibration approaches, inverse calibration approaches have flourished over the last years thanks to the growing size, quality and accessibility of ecological database, and to the huge progresses in computer sciences. If the latter method has advantages, it also has drawbacks; both being well described and highlighted in the manuscript. The paper is globally well written ; however I have some comments and suggestions that may/should be considered before publication of the manuscript.\\
+\textcolor{customblue}{Thank you sincerely for your thoughtful comments. We are pleased to hear that you found the aim of the work relevant and the manuscript well-written. We have carefully considered your concerns and have made every effort to address them comprehensively.}\\
+
+\subsection{Methodological questionings}
+
+P6-L179-184: Just to be clear: each of these 100 calibrations have been run with a different occurrence subset? And, in this subset, only the presences have been sampled, and the model consider all absences without randomly sampling them? I'm asking that to better understand if the variability in model outputs depends on the variability in the sampling characteristics or on the calibration process itself. \\
+\textcolor{customblue}{Sorry it was not clear. The 100 calibrations were run on 10 different subsets (i.e. 10 repetitions by subset), and we randomly sampled the same number of absences than presences. We have made this point clearer in the manuscript.}\\
+In the text,\\ 
+- lines 181-182: \textcolor{customred}{"We then randomly sampled the same number of absences."}\\ 
+- lines 183-184: \textcolor{customred}{"on 10 different presence/absence subsets (i.e. 10 calibrations per subset)"}\\
+
+\noindent The answer to this question will determine the interpretation of the Fig. 5: Considering the strong variation in model outputs at intra-specific level (100 simulations on beech; Fig. 3), I'm wondering if the differences among species shown in Fig. 5 are just obtained by chance (5 simulations * 2 occurrence dataset only) or not.\\
+\textcolor{customblue}{This is an interesting point. Note however that the strong variations in Fig. 3 are obtained with a \emph{full} inverse calibration, i.e. all parameters are fitted at once, while in Fig. 5 only few parameters are calibrated. The differences among species in the Fig. 5---and in particular the fact that $FH^{min}$ parameter for \emph{Betula pendula} seems to vary more than for the other 3 species---are likely not obtained by chance.}\\
+
+\noindent In the Discussion or in the M\&M, I would appreciate some sentences on the advantages/limits of your CMA-ES method in comparison to other inverse calibration approaches, such as the Bayesian one (as done in your precedent paper in Methods in Ecol. and Evol., but in a shorter version).\\
+\textcolor{customblue}{Thank you for this suggestion.}\\
+In the text, lines 171-175: \textcolor{customred}{"CMA-ES is easy to use, as it requires minimal tuning to effectively explore the parameter space. Global optimization algorithms such as CMA-ES are commonly used to calibrate complex models, but are not as robust as proper statistical inference (e.g., Bayesian methods) and primarily focus on identifying the most fit parameter set."}\\ 
+
+\noindent I understand the choice of using RMSE to assess the accuracy of the predictions in comparison with the observations (e.g., in Figs. 3 and 5). However, it doesn't highlight if the model systematically overestimates or underestimated any date (such as the leafout date). Would that be possible to include such information ?\\
+\textcolor{customblue}{Yes, we totally agree with your point.  We now mentioned this aspect in the Results.}\\
+In the text, 
+- line X: \textcolor{customred}{"Both tend to overestimate the leafout day (with an average bias of 24.0$\pm$25.9 days)"}\\ 
+- line X: \textcolor{customred}{"On average, inverse calibrated models tend to overestimate the senescence date, with a bias of 16.9$\pm$25.9 days."}\\ 
+
+\subsection{Other comments}
+
+P1-L20 : 'more'… in comparison to what?\\
+\textcolor{customblue}{We remove the word 'more' to keep a clear Abstract.}\\
+
+\noindent P2-L16: can you add a reference supporting your statement that carbon allocation is not well represented in ecological models?\\
+\textcolor{customblue}{Response}\\
+In the text, line X: \textcolor{customred}{"Modification"}\\ 
+
+\noindent P2-L20: reference at the end of the sentence?\\
+\textcolor{customblue}{Corrected.}\\
+
+\noindent P2-L23: "Process-explicit modeling depends a great deal on the calibration and the availability of data" this seems also true for correlative models…\\
+\textcolor{customblue}{We agree. We precise our idea to better reflect that process-explicit models need many different data (not only species distribution data as correlative models do).}\\
+In the text, line 24: \textcolor{customred}{"many different data sources"}\\ 
+
+\noindent P4-L88 : there are numerous definitions of fitness, but I'm not sure that this one is correct.\\
+\textcolor{customblue}{Response}\\
+In the text, line X: \textcolor{customred}{"Modification"}\\ 
+
+\noindent P6-L158: inverse or direct modelling?\\
+\textcolor{customblue}{Phenological submodels are inverse-calibrated using phenological data, related to each submodel}\\
+In the text, line 159: \textcolor{customred}{"inverse calibration"}\\ 
+
+\noindent Figure 1: would that be possible to show the actual presence of beech, and not only simulated information? \\
+\textcolor{customblue}{Response}\\
+In the text, line X: \textcolor{customred}{"Modification"}\\  
+
+\noindent Also, your overall approach aims at maximizing the AUC, while a presence/absence threshold has been determined here to derive a TSS and then build the maps. So, I'm wondering why the authors didn't choose to directly maximize TSS by optimizing the model parameters and this threshold all together.\\
+\textcolor{customblue}{Because of the computational challenge of running many process-based model simulations, we had to calibrate the model on a subset of 2000 presences/absences (see Methods), whereas the threshold is typically computed using the entire dataset (of presences/absences). We thus chose to focus on AUC because it is threshold-independent measure, and we thus maximize the ability of the model to discriminate between presences and absences regardless of the threshold. However, as highlighted in our previous paper in MEE, we believe that it would be interesting to investigate the effects of choosing a different objective function. In particular, if one has a strong expert opinion on the threshold discriminating presences and absences, it would be possible to fix its value a priori.}\\
+
+\noindent P15-L358-364: there are also legacies of forest management for silver fir, whose climatic niche seems actually larger than the realized one (e.g., see Tinner et al. 2013), and for spruce which has been probably planted outside of its niche (areas where the species is currently declining).\\
+\textcolor{customblue}{Response}\\
+In the text, line X: \textcolor{customred}{"Modification"}\\ 
+
+\noindent P16-L371-374: if the input data is correct as well…\\
+\textcolor{customblue}{Agreed!}\\
+In the text, line 377: \textcolor{customred}{"and if the data used is correct"}\\ 
+
+\noindent P16-L382: add 'in the PHENOFIT model' after 'fitness'.\\
+\textcolor{customblue}{Done}\\
+
+\noindent P16-L387: and a carbon allocation scheme?\\
+\textcolor{customblue}{Response}\\
+In the text, line X: \textcolor{customred}{"Modification"}\\ 
+
+\noindent P17-L427-429: I'm pretty sure that some PEMs do so (e.g., Rey et al. 2016; Oberpiller et al. 2021)\\
+\textcolor{customblue}{Response}\\
+In the text, line X: \textcolor{customred}{"Modification"}\\ 
+
+\noindent The Figure A.6. could be inserted in the main text\\
+\textcolor{customblue}{Response}\\
+In the text, line X: \textcolor{customred}{"Modification"}
+
+\clearpage
+
+\section{Response to Referee 2}
+
+\subsection{General comments}
+
+The title could be more representative of the content. The authors effectively tested calibration (and therefore the predictions), not the models themselves (e.g. different mechanistic structures). So, maybe the title could evoke model calibration more explicitly.\\
+\textcolor{customblue}{Response}\\
+In the text, line X: \textcolor{customred}{"Modification"}\\ 
+
+\noindent The Abstract requires some re-wording to better reflect the experimental design (see specific comments below).\\
+\textcolor{customblue}{Response}\\
+In the text, line X: \textcolor{customred}{"Modification"}\\ 
+
+\noindent The calibration experiments being compared are great and well designed. Maybe one could add more details on the expert-based calibration (that is, what parameters were measured, found in the literature). It seems that some submodels of this strategy are already inverted. Here, it is important to be clear what submodel and what data was used.\\
+\textcolor{customblue}{Thank you......}\\
+In the text, line X: \textcolor{customred}{"Modification"}\\ 
+
+\noindent It is an important outcome that the inverse modelling via AI can be accurate, even with wrong estimated parameters. In this account, the next must be always explicit that this was the for the specific method used in this manuscript not of inverse modelling in general. Sentences like that of line 340, which just mention 'inverse calibration' without specifying the calibration algorithm and strategy used can be misleading. That is because other functions of likelihood comparisons and/or algorithm may be better in inverting the model, so the text should not generalize. It could also be that the data used was just not enough to identify the parameters adequately. Hence, the discussion text needs to integrate these nuances.\\
+\textcolor{customblue}{Response}\\
+In the text, 
+- line 346: \textcolor{customred}{"our inverse calibration framework"}\\ 
+
+\noindent In regard of previous comment. Maybe the authors can also discuss potential alternative methods for automatic calibration and necessary data that follow up studies could try. Potentially if informing the algorithm with both occurrence data and phenological data could be enough to identify the parameters.\\
+\textcolor{customblue}{Response}\\
+In the text, line X: \textcolor{customred}{"Modification"}
+
+\subsection{Specific and minor points}
+
+\noindent Abstract: P 36-37: can you clarify how the model structure plays a role in both the (i) and (ii) strategies outlined a couple of sentences earlier. Was inverting the model in both strategies an improvement? What does parsimoniously mean in this case, strategy (i) or (ii)? Please, clarify.\\
+\textcolor{customblue}{Response}\\
+In the text, line X: \textcolor{customred}{"Modification"}\\
+
+\noindent Please check spaces before and after commas and periods.\\
+\textcolor{customblue}{Response}\\
+In the text, line X: \textcolor{customred}{"Modification"}\\
+
+\noindent Main text, l. 30: much earlier attempts of inverted mechanistic distribution models:
+Cabral \& Schurr 2010, Pagel \& Schurr 2012. \\
+\textcolor{customblue}{Thank you for these references. The preprint we cite line 30 is a methodological review of calibration/uncertainty analysis for ecological process-based models, and thus not an attempt to calibrate one specific model (such as RangeShifter). We included your two references later in the text (see below).}\\
+
+\noindent Maybe the authors can speculate about the reason of this big temporal gap in inverting distribution models.\\
+\textcolor{customblue}{Response.}\\
+
+\noindent Also, Rangeshifter papers before that cited one tended to calibrate their experiments without inverting (that is calibrating directly from trait data). Can you also comment on this? Were those calibrations reliable (without inverting)? Same questionings go for the cited calibrated phenological models (l. 39). Maybe also useful for the discussion session.\\
+\textcolor{customblue}{Thank you for this suggestion. Our results (figures 3 and 5) and discussion already highlight and investigate the differences differences between parameter estimates of a PEM obtained with classical calibration (without inverting) or with inverse calibration, but as you said below, this point was not clear in the Abstract. We have made it clearer now.}\\
+In the text, line X: \textcolor{customred}{"Modification"}\\
+
+\noindent L. 44-54: all true and important. However, there is evidence that inverting models can deal with structural misspecifications, often generating good fit to data, but integrating slight changes in inverted parameter values that accommodate the structural/model errors or uncertainty (Oberpriller et al. 2021). That begs the question: for inverted models, how much deviance from the truth (estimated parameter values vs. independent parameter estimates) are we ready to accept if the predictions still match data? => maybe rather worth revisiting this in the discussion.\\
+\textcolor{customblue}{Response}\\
+In the text, line X: \textcolor{customred}{"Modification"}\\
+
+\noindent L. 55-57: see suggested references. Also, is that a matter of alignment or a matter of data availability and computational power?\\
+\textcolor{customblue}{From our understanding, Cabral \& Schurr (2010) used only abundance data, while Pagel \& Schurr (2012) combined both species distribution data and abundance data. We thus only added the reference to Pagel \& Schurr (2012).\\
+We believe that today species distribution data are more available than specific process-related data (e.g. measurements from frost hardiness experiments), so we do not think that it is a matter of data availability.}\\
+In the text,\\
+- line 40: \textcolor{customred}{"Pagel and Schurr, 2011"}\\
+- line 57: \textcolor{customred}{"Pagel and Schurr, 2011"}\\
+
+\noindent L. 71: this comparison is great, but it is not clear from the abstract. Please re-formulate the abstract to reflect this.\\
+\textcolor{customblue}{Thank you! We have worked to improve the Abstract.}\\
+In the text, line X: \textcolor{customred}{"Modification"}\\
+
+\noindent L. 122-123: also with the (local) environment?\\
+\textcolor{customblue}{Sorry it was not clear. We have reformulated this sentence.}\\
+In the text, line X: \textcolor{customred}{"Development rates ($R$) are response functions to daily temperature that can be linear or nonlinear (usually with a single optimum), with their functional form potentially varying across species and developmental phases."}\\
+
+\noindent L. 182: why 100 calibrations? Does each calibration provide an optimized set of parameter values. Do you compare convergence or similarity among those calibrations? (this seems clearer once the reader reaches the results, but it would be nice to make this clearer at this point)\\
+\textcolor{customblue}{Thank you for this suggestion. We tried to make our goal clearer in this part.}\\
+In the text:\\
+- lines X: \textcolor{customred}{"First, we aimed to investigate to what extent fully calibrating the model using only species distribution data could consistently improve the model and the parameter values obtained with the expert calibration. We compared one hundred parameter sets for \emph{Fagus sylvatica}, obtained by inverse calibration on 10 different presence/absence subsets (i.e. 10 calibrations per subset) [...]"}\\
+- lines X: \textcolor{customred}{"Second, we wanted to determine whether inverse calibration using species distribution data could improve some parts of the model where expert calibration may fall short due to data limitations. We conducted a second set of inverse calibrations, focusing only on some model parameters, for eight different species [...]"}\\
+
+\noindent L. 194: Were these 'factors' the three 'sub-components of fitness'? Please, be consistent with the terms to avoid confusion.\\
+\textcolor{customblue}{Yes, sorry. Modified.}\\
+
+\noindent L. 214: you mean weather generator?\\
+\textcolor{customblue}{Sorry for this typo. Corrected.}\\
+
+\noindent Figure 1e: what correlative models? Correlative models have not been mentioned in the main text. Please, clarify.\\
+\textcolor{customblue}{Response}\\
+In the text, line X: \textcolor{customred}{"Modification"}\\
+
+\noindent Figure 2: very interesting pic. What makes the calibrations differ? Is that due to initial combinations?\\
+\textcolor{customblue}{Thank you. Both the subset of data used for calibration and the stochasticity of the optimization algorithm play a role in the divergence between calibrations. These strong differences highlight the non-identifiability in model parameters (i.e. the existence of several optima).}\\
+In the text, line X: \textcolor{customred}{"Modification"}\\
+
+\noindent Figure 4: very cool results. I wonder whether might be useful to compare the partial calibrations of the species with multiple processes calibrated, but than calibrating only one or two of the processes. This can be also informative to pick up the process profiting from inversion the most.\\
+\textcolor{customblue}{Response}\\
+In the text, line X: \textcolor{customred}{"Modification"}\\
+
+\noindent Figure 5: please use italic font for species names. Check in main text throughout as well (e.g. l. 287).\\
+\textcolor{customblue}{Sorry. Modified.}\\
+
+\noindent L. 382-387: I really like how the authors used the outcomes to explain the eco-physiology and potential associated model improvements. Great paragraph conclusion. More of this.\\
+\textcolor{customblue}{Response}\\
+In the text, line X: \textcolor{customred}{"Modification"}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+\renewcommand\refname{References}
+\bibliography{phd_bibliography}
+
+\end{document}

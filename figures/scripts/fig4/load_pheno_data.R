@@ -1,6 +1,6 @@
 
 # Data from TEMPO
-dir <- "D:/phenology/tempo/fagus_sylvatica/Vdm_Victor_202405021641"
+dir <- file.path(wd, 'data', 'phenology', 'tempo', 'fagus_sylvatica', 'Vdm_Victor_202405021641')
 
 stations_tempo  <- fread(file.path(dir, "sites.csv")) %>% 
   dplyr::select("site id", latitude, longitude)
@@ -17,7 +17,7 @@ records_tempo <- fread(file.path(dir, "pheno-pmp.txt")) %>%
           doy = doy, source = "TEMPO")
 
 # Data from PEP725
-dir <- "D:/phenology/PEP725/fagus_sylvatica"
+dir <- file.path(wd, 'data', 'phenology', 'PEP725', 'fagus_sylvatica')
 
 stations_pep <- fread(file.path(dir, "stations_merged.csv")) %>% 
   dplyr::select(PEP_ID, LON, LAT)

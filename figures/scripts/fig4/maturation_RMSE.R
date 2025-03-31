@@ -113,7 +113,7 @@ maturation_rmse_boxplots <- data_boxplot %>%
         panel.grid.minor.y = element_blank(), ggh4x.axis.ticks.length.minor = rel(1),
         panel.grid.major.y = element_line(color = "grey92", linewidth = 0.3)) +
   ggimage::geom_image(
-    data = data.frame(x = 14, y = 121,image="C:/Users/vandermeersch/Documents/CEFE/phd/notebook/phenofit_schema/maturation.png"),
+    data = data.frame(x = 14, y = 121,image=file.path(wd, 'figures', 'files','img', 'maturation.png')),
     aes(x = x, y = y , image = image), size=0.4)
 
 without_maturation_boxplot <- data_mat %>%

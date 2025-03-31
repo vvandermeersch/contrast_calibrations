@@ -104,7 +104,7 @@ leafout_rmse_boxplots <- data_boxplot %>%
         panel.grid.minor.y = element_blank(), ggh4x.axis.ticks.length.minor = rel(1),
         panel.grid.major.y = element_line(color = "grey92", linewidth = 0.3)) +
   ggimage::geom_image(
-    data = data.frame(x = 14, y = 85,image="C:/Users/vandermeersch/Documents/CEFE/phd/notebook/phenofit_schema/leafout.png"),
+    data = data.frame(x = 14, y = 85,image=file.path(wd, 'figures', 'files','img', 'leafout.png')),
     aes(x = x, y = y , image = image), size=0.4)
 
 cat("Leafout RMSE\n")
@@ -120,6 +120,15 @@ data_boxplot %>%
 #   dunn_test(rmse ~ group, p.adjust.method = "holm")
 
 
+data_estimate <- leafout_simulations %>%
+  left_join(clusters, join_by(mod)) %>%
+  dplyr::filter(stade != 10) %>%
+  group_by(lat, lon, clust, mod, year) %>%
+  reframe(difdoy = sim_doy-mean_doy) %>%
+  mutate(mod = reorder(mod, difdoy, median))
+data_estimate$clust <- ifelse(data_estimate$mod == 'expert', 0, data_estimate$clust)
 
-
+data_estimate %>%
+  dplyr::filter(clust != '0') %>%
+  summarise(mean = mean(difdoy, na.rm = TRUE), sd = sd(difdoy, na.rm = TRUE))
 

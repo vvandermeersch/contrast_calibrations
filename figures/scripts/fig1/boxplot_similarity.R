@@ -340,7 +340,7 @@ boxplot_similarity <- ggplot() +
   ylab("Divergence between predictions") +
   theme(axis.text.y = element_text(size = 7), axis.text.x = element_text(size = 7),
         legend.text = element_text(size = 7), legend.title = element_blank(),
-        legend.key.height = unit(0.5,"cm"), legend.key.width = unit(0.4,"cm"),
+        legend.key.height = unit(0.4,"cm"), legend.key.width = unit(0.4,"cm"),
         axis.title = element_text(size = 8), panel.grid.major.x = element_blank(),
         axis.ticks.y=element_line(color = "grey85", linewidth = 0.5),
         legend.position = "top", plot.margin = margin(b = 5.5, r = 2.5, l = 4.5, t = 2),
@@ -349,13 +349,14 @@ boxplot_similarity <- ggplot() +
         panel.grid.minor.y = element_blank(), ggh4x.axis.ticks.length.minor = rel(1),
         panel.grid.major.y = element_line(color = "grey92", linewidth = 0.3)) +
   coord_cartesian(clip = "off") +
-  guides(fill = guide_legend(override.aes = list(alpha = 0.2, linewidth = 0.2), nrow = 3, byrow=TRUE),
-         color = guide_legend(override.aes = list(alpha = 0.2, linewidth = 0.2), nrow = 3, byrow=TRUE)) + 
+  guides(fill = guide_legend(override.aes = list(alpha = 0.2, linewidth = 0.2), nrow = 3, byrow=FALSE),
+         color = guide_legend(override.aes = list(alpha = 0.2, linewidth = 0.2), nrow = 3, byrow=FALSE)) + 
   scale_fill_manual(
     values = c("#6d90be", "#90be6d", "#be6d90"),
     breaks = c("only.inverse", "with.expert", "only.csdm"),
     labels = c("Within inverse calibrations", "Between expert and inverse calib.", "Within correlative models"), aesthetics = c("colour", "fill")
-  )
+  ) +
+  theme(legend.spacing = unit(0,'pt'))
 
 cat("KW - Sorensen similarity - Only inverse")
 data <- rbind(sorensen_divergence_paleo, sorensen_divergence_historical) %>% 

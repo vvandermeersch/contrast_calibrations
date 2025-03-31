@@ -114,7 +114,7 @@ senescence_rmse_boxplots <- data_boxplot %>%
         panel.grid.minor.y = element_blank(), ggh4x.axis.ticks.length.minor = rel(1),
         panel.grid.major.y = element_line(color = "grey92", linewidth = 0.3)) +
   ggimage::geom_image(
-    data = data.frame(x = 14, y = 97,image="C:/Users/vandermeersch/Documents/CEFE/phd/notebook/phenofit_schema/senescence.png"),
+    data = data.frame(x = 14, y = 97,image=file.path(wd, 'figures', 'files','img', 'senescence.png')),
     aes(x = x, y = y , image = image), size=0.4)
 
 
@@ -159,4 +159,15 @@ unique(data_boxplot[c("clust", "mod", "prop")]) %>%
   mutate(c = ifelse(prop > 99.9, 1, 0)) %>%
   group_by(ifelse(mod == "expert", 0, 1)) %>%
   summarise(sum = sum(c))
+
+data_estimate <- senescence_simulations %>%
+  left_join(clusters, join_by(mod)) %>%
+  group_by(lat, lon, clust, mod, year) %>%
+  reframe(difdoy = ifelse(sim_doy != 366, sim_doy-mean_doy, NA), sim_doy = sim_doy) %>%
+  mutate(mod = reorder(mod, difdoy, median, na.rm = TRUE, decreasing = FALSE))
+data_estimate$clust <- ifelse(data_estimate$mod == 'expert', 0, data_estimate$clust)
+
+data_estimate %>%
+  dplyr::filter(clust != '0') %>%
+  summarise(mean = mean(difdoy, na.rm = TRUE), sd = sd(difdoy, na.rm = TRUE))
 

@@ -34,6 +34,12 @@ output <- rast(output[c(2,1,3)])
 background <- ifel(is.na(output), 1, 0) %>% crop(ext(-10.35, 34.85, 34.65, 70.55))
 rm(output)
 
+# Load "true" distribution from Caudullo et al.
+nativedist <- vect(file.path(wd, "data", "range", "fagus_sylvatica", "Fagus_sylvatica_plg_clip.shp"))
+nativedist.points <- vect(file.path(wd, "data", "range", "fagus_sylvatica", "Fagus_sylvatica_pnt.shp"))
+introdist <- vect(file.path(wd, "data", "range", "fagus_sylvatica", "Fagus_sylvatica_syn_plg_clip.shp"))
+introdist.points <- vect(file.path(wd, "data", "range", "fagus_sylvatica", "Fagus_sylvatica_syn_pnt.shp"))
+
 fitted_map <- ggplot() + 
   geom_spatraster_contour(data = background, na.rm = FALSE, color = "grey") +
   geom_spatraster(data = fitted_rast) +
@@ -92,3 +98,21 @@ historical_maps <-
                    ncol = 3, rel_widths = c(0.1,1,1), labels = c("", "a.", "b."), label_size = 10, hjust = -2, vjust = 3)) +
   geom_text(
     aes(x = 0.025, y = 0.5, label = "Historical (1970-2000)"), angle = 90, size = 2.7)
+
+distribution_map <- ggplot() + 
+  geom_spatraster_contour(data = background, na.rm = FALSE, color = "grey") +
+  geom_spatvector(data = nativedist, fill = '#7fb17f', alpha = 1, color = '#7fb17f') +
+  geom_spatvector(data = nativedist.points, color = '#7fb17f', alpha = 1, shape = 16, size = 0.4) +
+  geom_spatvector(data = introdist, fill = '#7fb17f', alpha = 1, color = '#7fb17f') +
+  geom_spatvector(data = introdist.points, color = '#7fb17f', alpha = 1, shape = 16, size = 0.4) +
+  theme_void() +
+  guides(fill = guide_colorbar(title.position = "top", direction = "horizontal", 
+                               frame.colour = "black", frame.linewidth = 0.2, ticks = FALSE)) +
+  theme(legend.key.height = unit(0.15, 'cm'), legend.key.width = unit(0.8, 'cm'),
+        legend.title = element_blank(), legend.text = element_text(size = 7),
+        panel.border = element_rect(colour = "grey85", fill=NA, size=0.75),
+        plot.margin = unit(c(2,0,0,0), units = 'mm'),
+        legend.position= 'none',
+        legend.background = element_rect(colour="black", fill="white", linewidth = 0.2)) +
+  coord_sf(expand = FALSE) +
+  lims(x = c(-10.35, 34.85), y = c(34.65, 65.55)) 

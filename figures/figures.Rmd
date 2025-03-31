@@ -6,7 +6,7 @@ output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
-wd <- "C:/Users/vandermeersch/Documents/CEFE/projects/contrast_calibrations"
+wd <- "~/projects/contrast_calibrations"
 
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE,
                       fig.path= paste0(wd, "/figures/files/"))
@@ -38,7 +38,7 @@ source(file.path(wd, "scripts", "functions", "read_species_file.R"))
 
 ## Figure 1
 
-```{r fig1, fig.height = 110, fig.width = 170, eval = FALSE}
+```{r fig1, fig.height = 110, fig.width = 170, eval = TRUE}
 reload_data_fig1 <- FALSE
 
 source(file.path(wd, "figures", "scripts", "fig1", "boxplot_similarity.R"))
@@ -49,15 +49,16 @@ source(file.path(wd, "figures", "scripts", "fig1", "paleo_maps.R"))
 
 plot_grid(
   plot_grid(historical_maps, paleo_maps, ncol = 1),
-  plot_grid(NULL, boxplot_similarity, NULL, ncol = 1, rel_heights = c(0.11, 0.8, 0.11)),
-  rel_widths = c(0.7, 0.33), labels = c("", "e."), label_size = 10, vjust = 5)
+  plot_grid(distribution_map, boxplot_similarity, ncol = 1, rel_heights = c(0.5, 0.8),
+            labels = c("e.", "f."), label_size = 10, vjust = c(3, 4)),
+  rel_widths = c(0.7, 0.33))
 
 
 ```
 
 ## Figure 2
 
-```{r fig2, fig.height = 100, eval = TRUE}
+```{r fig2, fig.height = 100, eval = FALSE}
 reload_data_fig2 <- FALSE
 
 source(file.path(wd, "figures", "scripts", "fig2", "boxplot_dates.R"))
@@ -121,7 +122,7 @@ plot_grid(barplot, param_boxplot, labels = c("a.", "b."), label_size = 10)
 
 ## Figure 6
 
-```{r fig6, fig.height = 65, eval = TRUE}
+```{r fig6, fig.height = 65, eval = FALSE}
 reload_data_fig6 <- FALSE
 
 source(file.path(wd, "figures", "scripts", "fig6", "barplot.R"))
